@@ -2,28 +2,201 @@
 <html>
 <head>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Custom schedules for your diet plan.">
+  <meta name="keywords" content="fasting, diet, health, intermittent fasting, alternate day fasting, diet plan">
 
-  <title>Fasting Hours</title>
+  <title>Fasting Hours - Custom Schedules for Your Diet Plan</title>
+
+  <link rel="icon" href="/img/timer.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
   <style>    
     html, 
     body {
       align-items: center;
       background-color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      justify-content: center;
+      font-family: 'Roboto', sans-serif;
       margin: 0;
       padding: 0;
+    }
+
+    section {
+      background: #f4f4f4;
+      width: 100%;
+    }
+
+    section header {
+      display: flex;
+      flex-direction: row;
+    }
+
+    section header button {
+      align-self: center;
+      appearance: none;
+      background: #0050e6;
+      border-radius: 8px;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 16px;
+      height: 40px;
+      margin: 0;
+      padding: 0 16px 0 16px;
+    }
+
+    section header div {
+      display: flex;
+      flex-basis: 0;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 8px;
+    }
+
+    section header h1 {
+      font-size: 24px;
+      margin: 0;
+      padding: 0;
+    }    
+
+    section header p {
+      font-size: 18px;
+      margin: 0;
+      opacity: 0.60;
+      padding: 0;
+    }    
+
+    section article {
+      margin: 0 auto;      
+      padding: 48px 16px 96px 16px;
+      width: 80%;
+    }
+
+    section article h3 {
+      font-size: 48px;
+      font-weight: 400;
+      margin: 0;
+      padding: 56px 0 0 0;
+      text-align: center;
+    }
+
+    section article h3 span {
+      font-weight: 600;
+    }    
+
+    ul {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      justify-content: center;
+      list-style: none;
+      margin: -48px auto 0 auto;
+      padding: 0;
+    }
+
+    ul li {
+      background: #ffffff;
+      border: solid 1px #e0e0e0;
+      box-shadow: 0 0 12px rgba( 0, 0, 0, 0.10 );      
+      border-radius: 8px;
+      height: 175px;
+      width: 125px;
+    }
+
+    ul li.today {
+      border: solid 1px #0050e6;
+    }
+
+    [hidden] {
+      display: none;
+    }
+
+    p.disclaimer {
+      font-size: 14px; 
+      opacity: 0.60; 
+      padding: 16px 0 16px 0;      
+      text-align: center; 
     }
   </style>
 
 </head>
 <body>
 
-  <p>Fasting Hours</p>
+  <section>
+    <article>
+      <header>
+        <div>
+          <h1>Fasting Hours</h1>
+          <p>Custom schedules for your diet plan.</p>
+        </div>
+        <button type="button">Login</button>
+      </header>
+      <fh-fasting-day>
+        <h3 hidden>Today is a <span>fasting</span> day.</h3>
+        <h3 hidden><span>Eat</span> normally today.</h3>
+      </fh-fasting-day>
+    </article>
+  </section>
+
+  <fh-fasting-week>
+    <ul>
+      <li>
+        <div>
+          <p>Saturday</p>
+          <p>April 19</p>
+        </div>
+        <p>24-hour<br>fast <span>or</span> Less than 500 calories</p>
+      </li>
+      <li>
+        <div>
+          <p>Sunday</p>
+          <p>April 20</p>
+        </div>
+        <p>Eat normally</p>
+      </li>    
+      <li>
+        <div>
+          <p>Sunday</p>
+          <p>April 20</p>
+        </div>
+        <p>Eat normally</p>
+      </li>    
+      <li>
+        <div>
+          <p>Sunday</p>
+          <p>April 20</p>
+        </div>
+        <p>Eat normally</p>
+      </li>    
+      <li>
+        <div>
+          <p>Sunday</p>
+          <p>April 20</p>
+        </div>
+        <p>Eat normally</p>
+      </li>    
+      <li>
+        <div>
+          <p>Sunday</p>
+          <p>April 20</p>
+        </div>
+        <p>Eat normally</p>
+      </li>    
+      <li>
+        <div>
+          <p>Sunday</p>
+          <p>April 20</p>
+        </div>
+        <p>Eat normally</p>
+      </li>                    
+    </ul>
+  </fh-fasting-week>
+
+  <p class="disclaimer">FastingHours.com is not medical advice; consult your doctor before starting a diet plan.</p>
+
+  <script src="/script/fasting-hours.js" type="module"></script>
 
 </body>
 </html> 
