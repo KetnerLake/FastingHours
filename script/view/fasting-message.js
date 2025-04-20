@@ -1,18 +1,16 @@
-customElements.define( 'fh-fasting-day', class extends HTMLElement {
+customElements.define( 'fh-fasting-message', class extends HTMLElement {
   constructor() {
     super();
 
     // Elements
-    this.$messages = this.querySelectorAll( 'h3' );
+    this.$message = this.querySelector( 'h3' );
 
     // Setup
     const day = this.dayOfYear();    
     if( ( day % 2 ) === 0 ) {
-      this.$messages[0].setAttribute( 'hidden', '' );
-      this.$messages[1].removeAttribute( 'hidden' );
+      this.$message.innerHTML = '<span>Eat</span> normally today.';      
     } else {
-      this.$messages[0].removeAttribute( 'hidden' );
-      this.$messages[1].setAttribute( 'hidden', '' );      
+      this.$message.innerHTML = 'Today is a <span>fasting</span> day.';      
     }
   }
 
