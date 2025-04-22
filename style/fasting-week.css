@@ -1,81 +1,109 @@
 fh-fasting-week ul {
   display: flex;
   flex-direction: row;
-  gap: 16px;
   justify-content: center;
   list-style: none;
-  margin: -50px auto 0 auto;
+  margin: -48px auto 0 auto;
   padding: 0;
 }
 
 fh-fasting-week ul li {
-  background: #ffffff;
-  border: solid 1px #e0e0e0;
-  box-shadow: 0 0 12px rgba( 0, 0, 0, 0.10 );      
+  border-right: solid 1px #e0e0e0;
   box-sizing: border-box;
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
-  height: 200px;
-  overflow: hidden;
+  margin: 0 0 0 4px;
+  padding: 0 8px 0 4px;
   width: 125px;
+}
+
+fh-fasting-week ul li:last-of-type {
+  border-right: none;
 }
 
 fh-fasting-week ul li div {
   align-items: center;
-  background: #e0e0e0;
-  border-bottom: solid 1px #e0e0e0;
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 8px 0 8px 0;
 }
 
-fh-fasting-week ul li div p:first-of-type {
+fh-fasting-week ul li div p {
   color: #161616;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
+  font-size: 16px;  
   margin: 0;
   padding: 0;
-  text-align: center;
+  text-align: center;  
+}
+
+fh-fasting-week ul li div p:first-of-type {
+  font-weight: 400;
+  line-height: 16px;
 }
 
 fh-fasting-week ul li div p:last-of-type {
-  color: #161616;
   font-size: 12px;
   font-weight: 400;
   line-height: 12px;
-  margin: 0;
   opacity: 0.60;
-  padding: 0;
-  text-align: center;
   text-transform: uppercase;
-}
-
-fh-fasting-week ul li.today {
-  border: solid 2px #0050e6;
-}
-
-fh-fasting-week ul li.today div {
-  background: #0050e6;
-  border-bottom: solid 1px #0050e6;
 }
 
 fh-fasting-week ul li.today div p {
-  color: #ffffff;
+  color: #0379c0;
 }
 
-fh-fasting-week ul li > p {
-  font-size: 16px;
+fh-fasting-week ul li.today div p:first-of-type {
   font-weight: 600;
-  margin: auto 0;
+}
+
+/*
+  * Error: #f87171
+  * Warning: #fbbf24
+  * Success: #4ade80
+  */
+
+
+fh-fasting-week ul li > p {
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  min-height: 56px;
   padding: 0;
   text-align: center;
 }
 
-fh-fasting-week ul li > p span {
+fh-fasting-week ul li > p.fasting {
+  background: #fee2e2;
+  border: solid 1px #fca5a5;  
+  padding: 10px 0 10px 0;
+}
+
+fh-fasting-week ul li > p.i16 span,
+fh-fasting-week ul li > p.omad span,
+fh-fasting-week ul li > p.fasting span {
+  font-size: 12px;
+  opacity: 0.60;
   display: block;
-  padding: 8px 0 8px 0;
   text-transform: uppercase;
+}
+
+fh-fasting-week ul li > p.normal {
+  background: #dcfce7;
+  border: solid 1px #86efac;  
+  line-height: 54px;  
+}
+
+fh-fasting-week ul li > p.i16,
+fh-fasting-week ul li > p.omad {
+  background: #fef3c7;
+  border: solid 1px #fcd34d;
+  padding: 10px 0 10px 0;
+}
+
+fh-fasting-week ul li > p:first-of-type {
+  margin: 8px 0 0 0;
 }

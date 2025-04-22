@@ -41,57 +41,53 @@
 
   <p class="disclaimer">FastingHours.com is not medical advice; consult your doctor before starting a diet plan.</p>
 
-  <details>
-    <summary>
-      <div>
-        <h3>Settings <span>(click to expand)</span></h3>
-        <i>keyboard_arrow_down</i>
-      </div>
-    </summary>
+  <section>
     <article>
-      <p>
-        My first fasting day of the week is 
-        <select>
-          <option>Sunday</option>
-          <option selected>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>                                         
-          <option>Saturday</option>
-        </select>
-        .
-      </p>
-      <p>
-        My odd day is 
-        <select>
-          <option>Sunday</option>
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>                                         
-          <option selected>Saturday</option>
-        </select>
-        .
-      </p> 
-      <p>
-        On my odd day I 
-        <select>
-          <option>fast</option>
-          <option selected>eat normally</option>
-          <option>eat 16:8</option>          
-          <option>eat OMAD</option>
-        </select>
-        .
-      </p>
+      <header>
+        <div>
+          <h1>Customize</h1>
+        </div>
+      </header>
     </article>
-  </details>
+  </section>
 
   <article class="blog">
-    <h3>About Alternate Day Fasting</h3>
-    
-    <h5>Introduction</h5>
+    <div>
+      <fh-select>
+        <label>First fasting day of the week?</label>
+        <select id="start">
+          <option value="0">Sunday</option>
+          <option selected value="1">Monday</option>
+          <option value="2">Tuesday</option>
+          <option value="3">Wednesday</option>
+          <option value="4">Thursday</option>
+          <option value="5">Friday</option>        
+          <option value="6">Saturday</option>
+        </select>
+        <i>keyboard_arrow_down</i>
+      </fh-select>
+      <fh-select>
+        <label>How do you eat on the last day of the week?</label>
+        <select id="last">
+          <option selected value="fasting">Fasting</option>          
+          <option selected value="normal">Eat normally</option>
+          <option value="i16">16:8 intermittent</option>
+          <option value="omad">One meal a day</option>
+        </select>
+        <i>keyboard_arrow_down</i>
+      </fh-select>      
+    </div>
+  </article>
+
+  <section>
+    <article>
+      <header>
+        <h1>About Alternate Day Fasting</h1>
+      </header>      
+    </article>
+  </section>
+
+  <article class="blog">
     <p>In the ever-evolving world of health and wellness, fasting has taken center stage &mdash; and one approach that is gaining popularity is <strong>Alternate Day Fasting (ADF)</strong>. It is exactly what it sounds like: you fast one day, eat normally the next, and repeat. But while the concept is simple, the benefits can be profound. Whether you are looking to shed weight, improve metabolic health, or just shake up your routine, ADF might be worth a closer look.</p>
     
     <h5>What Is Alternate Day Fasting?</h5>
@@ -163,7 +159,13 @@
   </article>
 
   <footer>
-    <p class="version"><a href="/changelog.html">Version 1 (April 20)</a></p>
+    <article>
+      <p><strong>Fasting Hours</strong> &copy; 2025</p>
+      <ul>
+        <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/history.html">Version 1 (April 22)</a></li>
+      </ul>
+    </article>
   </footer>
 
   <template id="fasting-day">
@@ -177,6 +179,7 @@
   </template>
 
   <script src="/script/fasting-hours.js" type="module"></script>
+  <script src="/script/main.js"></script>
 
 </body>
 </html> 

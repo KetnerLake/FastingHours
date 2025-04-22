@@ -4,23 +4,65 @@ customElements.define( 'fh-fasting-week', class extends HTMLElement {
 
     // Elements
     this.$week = this.querySelector( 'ul' );
+    this.build();
+  }
+  
+  build() {
+    while( this.$week.children.length > 0 ) {
+      this.$week.removeChild( this.$week.firstElementChild );
+    }
 
-    // Setup
+    const last = window.localStorage.getItem( 'fasting_hours_last' ) || 'normal';
+    const start = window.localStorage.getItem( 'fasting_hours_start' ) === null ? 1 : parseInt( window.localStorage.getItem( 'fasting_hours_start' ) );    
     const locale = navigator.language || 'en-US';        
     const day = new Intl.DateTimeFormat( locale, {weekday: 'long'} );
     const date = new Intl.DateTimeFormat( locale, {month: 'short', day: 'numeric'} );
     const calendar = new Date();
+    calendar.setDate( calendar.getDate() - calendar.getDay() );
     const today = new Date();
 
-    for( let d = 0; d < 7; d++ ) {
-      const day_of_year = this.dayOfYear( calendar );
+    let index = 0;
+
+    while( this.$week.children.length < 7 ) {
+      if( calendar.getDay() < today.getDay() ) { 
+        calendar.setDate( calendar.getDate() + 1 );
+        index = index + 1;
+        continue;
+      }
+
       const template = document.querySelector( '#fasting-day' );
       const clone = template.content.cloneNode( true );      
 
       const content = clone.querySelectorAll( 'p' );
       content[0].textContent = day.format( calendar );
       content[1].textContent = date.format( calendar );    
-      content[2].innerHTML = day_of_year % 2 === 0 ? 'Eat normally' : '24-hour fast <span>or</span> Eat less than<br>500 calories';
+
+      if( ( index + start ) % 2 === 1 ) {
+        content[2].className = 'normal'
+        content[2].innerHTML = 'Eat normally';        
+      } else {
+        content[2].className = 'fasting';
+        content[2].innerHTML = '24-hour fast <span>(&lt; 500 calories)</span>';
+      }
+
+      if( calendar.getDay() === 6 ) {
+        content[2].className = last;
+
+        switch( last ) {
+          case 'omad':
+            content[2].innerHTML = 'One meal <span>(end by 8PM)</span>';        
+            break;
+          case 'fasting':
+            content[2].innerHTML = '24-hour fast <span>(&lt; 500 calories)</span>';
+            break;
+          case 'normal':
+            content[2].innerHTML = 'Eat normally';        
+            break;
+          case 'i16':
+            content[2].innerHTML = '16-hour fast <span>(eat 12PM - 8PM)</span>';        
+            break;
+        } 
+      }
 
       if( calendar.getFullYear() === today.getFullYear() &&
           calendar.getMonth() === today.getMonth() &&
@@ -32,14 +74,8 @@ customElements.define( 'fh-fasting-week', class extends HTMLElement {
 
       this.$week.appendChild( clone ); 
       
+      index = index + 1;      
       calendar.setDate( calendar.getDate() + 1 );
-    }
+    }    
   }
-
-  dayOfYear( now = new Date() ) {
-    const start = new Date( now.getFullYear(), 0, 0 );
-    const diff = now - start + ( start.getTimezoneOffset() - now.getTimezoneOffset() ) * 60 * 1000;
-    const day = 1000 * 60 * 60 * 24;
-    return Math.floor( diff / day );
-  } 
 } );

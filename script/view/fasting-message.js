@@ -4,21 +4,37 @@ customElements.define( 'fh-fasting-message', class extends HTMLElement {
 
     // Elements
     this.$message = this.querySelector( 'h3' );
-
-    // Setup
-    const day = this.dayOfYear();    
-    if( ( day % 2 ) === 0 ) {
-      this.$message.innerHTML = '<span>Eat</span> normally today.';      
-    } else {
-      this.$message.innerHTML = 'Today is a <span>fasting</span> day.';      
-    }
+    this.build();
   }
 
-  dayOfYear() {
-    const now = new Date();
-    const start = new Date( now.getFullYear(), 0, 0 );
-    const diff = now - start + ( start.getTimezoneOffset() - now.getTimezoneOffset() ) * 60 * 1000;
-    const day = 1000 * 60 * 60 * 24;
-    return Math.floor( diff / day );
+  build() {
+    const last = window.localStorage.getItem( 'fasting_hours_last' ) || 'normal';
+    const start = window.localStorage.getItem( 'fasting_hours_start' ) === null ? 1 : parseInt( window.localStorage.getItem( 'fasting_hours_start' ) );    
+    
+    const calendar = new Date();
+    calendar.setDate( calendar.getDate() - calendar.getDay() );
+
+    if( start % 2 === 1 ) {
+      this.$message.innerHTML = '<span>Eat</span> normally today.';        
+    } else {
+      this.$message.innerHTML = 'Today is a <span>fasting</span> day.';
+    }
+
+    if( calendar.getDay() === 6 ) {
+      switch( last ) {
+        case 'omad':
+          this.$message.innerHTML = 'Eat <span>one meal</span> today.';        
+          break;
+        case 'fasting':
+          this.$message.innerHTML = 'Today is a <span>fasting</span> day.';
+          break;
+        case 'normal':
+          this.$message.innerHTML = '<span>Eat</span> normally today.';        
+          break;
+        case 'i16':
+          this.$message.innerHTML = 'Eat between <span>12PM and 8PM.</span>';        
+          break;
+      } 
+    }
   }
 } );

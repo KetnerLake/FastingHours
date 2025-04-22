@@ -1,27 +1,6 @@
 @import url( './fasting-message.css' );
 @import url( './fasting-week.css' );
-
-@keyframes down {
-  from {
-    max-height: 0;
-    opacity: 0;
-  }
-  to {
-    max-height: 1000px;
-    opacity: 1;
-  }
-}
-
-@keyframes up {
-  from {
-    max-height: 1000px;
-    opacity: 1;
-  }
-  to {
-    max-height: 0;
-    opacity: 0;
-  }
-}
+@import url( './select.css' );
 
 html, 
 body {
@@ -34,8 +13,15 @@ body {
 
 article.blog {
   margin: 0 auto;
-  padding: 32px 0 0 0;
+  padding: 0;
   width: 80%;
+}
+
+article.blog > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px 0 16px 0;
 }
 
 article.blog h3 {
@@ -61,70 +47,6 @@ article.blog li span {
   font-weight: 600;
 }
 
-details {
-  border-bottom: solid 1px transparent;  
-}
-
-details[open] {
-  border-bottom: solid 1px #e0e0e0;
-}
-
-details article {
-  margin: 0 auto;
-  width: 80%;
-}
-
-details[open] article {
-  animation: down 0.30s ease-in-out;
-}
-
-details:not( [open] ) article {
-  animation: up 0.30s ease-in-out;
-}
-
-details summary {
-  align-items: center;
-  background: #f4f4f4;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-  padding: 16px 0 16px 0;
-}
-
-details summary i {
-  transition: rotate 0.3s;
-}
-
-details[open] summary i {
-  rotate: 180deg;
-}
-
-details summary div {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  margin: 0 auto;
-  width: 80%;
-}
-
-details summary h3 {
-  flex-basis: 0;
-  flex-grow: 1;
-  font-size: 24px;
-  line-height: 24px;
-  margin: 0;
-  padding: 0;
-}
-
-details summary h3 span {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  opacity: 0.60;
-}
-
 i {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -140,13 +62,40 @@ i {
 }
 
 footer {
-  background: #f4f4f4;;
+  background: #f4f4f4;
   margin: 32px 0 0 0;
+  padding: 0;
+  width: 100%;
+}
+
+footer a {
+  color: #0284c7;
+}
+
+footer article {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  
+  margin: 0 auto;
+  padding: 16px 0 16px 0;
+  width: 80%;
 }
 
 footer p {
   margin: 0;
   padding: 0;
+}
+
+footer ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+footer ul li {
+  padding: 4px 0 4px 0;
+  margin: 0;
 }
 
 p.disclaimer {
@@ -213,6 +162,10 @@ section header p {
 
 section article {
   margin: 0 auto;      
+  padding: 16px 0 16px 0;
+  width: 80%;  
+}
+
+section:first-of-type article {
   padding: 48px 16px 98px 16px;
-  width: 80%;
 }

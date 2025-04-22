@@ -1,0 +1,96 @@
+html, 
+body {
+  align-items: center;
+  background-color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #0284c7;
+}
+
+button {
+  appearance: none;
+  background: none;
+  border: none;
+  border: solid 1px #d4d4d8;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #161616;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 40px;
+  height: 40px;
+  margin: 0 0 0 auto;
+  outline: none;
+  padding: 0 16px 0 16px;
+}
+
+button:hover {
+  background: #f0f9ff;
+  border-color: #0ea5e9;
+  color: #0284c7;  
+}
+
+footer {
+  background: #f4f4f4;
+  margin: 48px 0 0 0;
+  padding: 0;
+  width: 100%;
+}
+
+footer article {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  
+  margin: 0 auto;
+  padding: 16px 0 16px 0;
+  width: 80%;
+}
+
+footer p {
+  margin: 0;
+  padding: 0;
+}
+
+footer p:last-of-type {
+  justify-self: end;
+}
+
+section {
+  background: #f4f4f4;
+  width: 100%;
+}
+
+section header {
+  display: flex;
+  flex-direction: row;
+}
+
+section header div {
+  display: flex;
+  flex-basis: 0;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+section header h1 {
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+}    
+
+section header p {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.60;
+  padding: 0;
+}    
+
+section article {
+  margin: 0 auto;      
+  padding: 16px 0 16px 0;
+  width: 80%;  
+}

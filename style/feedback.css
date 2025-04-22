@@ -1,0 +1,152 @@
+@import url( './input.css' );
+@import url( './select.css' );
+
+html, 
+body {
+  align-items: center;
+  background-color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #0284c7;
+}
+
+button {
+  appearance: none;
+  background: none;
+  border: none;
+  border: solid 1px #d4d4d8;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #161616;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 40px;
+  height: 40px;
+  margin: 0 0 0 auto;
+  outline: none;
+  padding: 0 16px 0 16px;
+}
+
+button:hover {
+  background: #f0f9ff;
+  border-color: #0ea5e9;
+  color: #0284c7;  
+}
+
+button.primary {
+  background: #0284c7;
+  border: solid 1px #0284c7;
+  color: #ffffff;
+}
+
+button.primary:hover {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+}
+
+footer {
+  background: #f4f4f4;
+  margin: 48px 0 0 0;
+  padding: 0;
+  width: 100%;
+}
+
+footer article {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  
+  margin: 0 auto;
+  padding: 16px 0 16px 0;
+  width: 80%;
+}
+
+footer p {
+  margin: 0;
+  padding: 0;
+}
+
+footer p:last-of-type {
+  justify-self: end;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 32px auto 16px auto;
+  width: 50%;
+}
+
+i {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 24px;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;  
+}
+
+section {
+  background: #f4f4f4;
+  width: 100%;
+}
+
+section header {
+  display: flex;
+  flex-direction: row;
+}
+
+section header div {
+  display: flex;
+  flex-basis: 0;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+section header h1 {
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+}    
+
+section header p {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.60;
+  padding: 0;
+}    
+
+section article {
+  margin: 0 auto;      
+  padding: 16px 0 16px 0;
+  width: 80%;  
+}
+
+textarea {
+  appearance: none;
+  background: none;
+  border: none;
+  border: solid 1px #d4d4d8;
+  border-radius: 6px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  height: 150px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  padding: 8px 16px;
+}
+
+textarea:focus {
+  border-color: #0379c0;
+  box-shadow: 0 0 0 3px #0379c07f;  
+}

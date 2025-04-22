@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Custom schedules for your diet plan.">
+  <meta name="keywords" content="fasting, diet, health, intermittent fasting, alternate day fasting, diet plan">
+
+  <title>Feedback - Fasting Hours</title>
+
+  <link rel="icon" href="/img/timer.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style/feedback.css" type="text/css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_arrow_down,settings" />  
+
+</head>
+<body>
+
+  <section>
+    <article>
+      <header>
+        <div>
+          <h1>Fasting Hours</h1>
+          <p>Custom schedules for your diet plan.</p>
+        </div>
+        <button id="home" type="button">Home</button>        
+      </header>
+    </article>
+  </section>
+
+  <form>
+
+    <p>Your feedback is important. Every effort is made to respond to constructive comments.</p>
+
+    <fh-input>
+      <label>Name</label>
+      <input id="name" placeholder="Name" type="text">
+    </fh-input>
+
+    <fh-input>
+      <label>Email address</label>
+      <input id="email" placeholder="Email address" type="text">
+    </fh-input>
+
+    <fh-select>
+      <label>Message type</label>
+      <select id="message-type">
+        <option value="question">Question</option>
+        <option value="thanks">Gratitude/Thanks</option>
+        <option value="fix">Issue, bug, or typo</option>
+        <option value="request">Feature request</option>
+        <option value="other">Other</option>        
+      </select>
+      <i>keyboard_arrow_down</i>      
+    </fh-select>
+
+    <textarea id="message" placeholder="Message content"></textarea>
+
+    <button class="primary" id="send" type="button">Send</button>
+
+  </form>
+
+  <footer>
+    <article>
+      <p><strong>Fasting Hours</strong> &copy; 2025</p>
+      <p><a href="/history.html">Latest Changes</a></p>
+    </article>
+  </footer>
+
+  <script src="/script/feedback.js"></script>
+
+</body>
+</html> 

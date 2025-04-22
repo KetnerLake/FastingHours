@@ -1,0 +1,27 @@
+fh-input {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+}
+
+fh-input input {
+  appearance: none;
+  background: none;
+  border: solid 1px #d4d4d8;
+  border-radius: 6px;
+  box-sizing: border-box;
+  cursor: text;
+  font-size: 16px;
+  font-weight: 400;
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  outline: none;
+  padding: 0 16px 0 16px;
+}
+
+fh-input input:focus {
+  border-color: #0379c0;
+  box-shadow: 0 0 0 3px #0379c07f;  
+}

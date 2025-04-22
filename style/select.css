@@ -1,0 +1,52 @@
+fh-select {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+}
+
+fh-select p {
+  color: #161616;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+fh-select select {
+  appearance: none;
+  background: none;
+  border: solid 1px #d4d4d8;
+  border-radius: 6px;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  outline: none;
+  padding: 0 16px 0 16px;
+}
+
+fh-select select:focus {
+  border-color: #0379c0;
+  box-shadow: 0 0 0 3px #0379c07f;  
+}
+
+fh-select i {
+  color: #161616;
+  cursor: pointer;
+  font-size: 28px;
+  font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 40;
+  height: 40px;
+  line-height: 40px;
+  opacity: 0.60;
+  pointer-events: none;
+  position: absolute;
+  right: 6px;
+  text-align: center;
+  top: 21px;
+  width: 40px;
+}
