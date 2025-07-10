@@ -1,22 +1,25 @@
 {
-  "name": "fastinghours",
-  "version": "1.0.0",
-  "description": "Custom diet schedules.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/KetnerLake/FastingHours.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/KetnerLake/FastingHours/issues"
-  },
-  "homepage": "https://github.com/KetnerLake/FastingHours#readme",
-  "dependencies": {
-    "resend": "^4.4.0"
-  }
+	"name": "fast-svelte",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''"
+	},
+	"devDependencies": {
+		"@iconify/svelte": "^5.0.0",
+		"@sveltejs/adapter-auto": "^6.0.0",
+		"@sveltejs/adapter-static": "^3.0.8",
+		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"svelte": "^5.0.0",
+		"vite": "^6.2.6"
+	},
+	"dependencies": {
+		"@fontsource-variable/roboto": "^5.2.6",
+		"dexie": "^4.0.11"
+	}
 }
