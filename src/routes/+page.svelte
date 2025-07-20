@@ -228,6 +228,7 @@
     justify-content: center;
     margin: 0;
     padding: 0 16px 0 16px;
+    padding-bottom: max( 0, env( safe-area-inset-bottom ) );
     width: 100%;
   }
 
