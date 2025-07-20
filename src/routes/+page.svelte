@@ -224,11 +224,9 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    height: 48px;
     justify-content: center;
     margin: 0;
     padding: 0 16px 0 16px;
-    padding-bottom: max( 0, env( safe-area-inset-bottom ) );
     width: 100%;
   }
 
@@ -346,5 +344,10 @@
   div p:nth-of-type( 2 ),
   div p:nth-of-type( 4 ) {
     padding: 0 8px 0 8px;
+  }
+
+  footer p {
+    padding: 12px 16px 12px 16px;
+    padding-bottom: max( 12px, env( safe-area-inset-bottom ) );    
   }
 </style>
