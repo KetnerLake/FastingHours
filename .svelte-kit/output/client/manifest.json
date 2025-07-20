@@ -1,0 +1,28 @@
+{
+  "theme_color": "#f8f8f8",
+  "background_color": "#f8f8f8",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "/icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "/icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "en-US",
+  "name": "Fasting Hours",
+  "short_name": "Fasting",
+  "start_url": "https://fastinghours.com",
+  "scope": "https://fastinghours.com",
+  "description": "Track your fasting hours.",
+  "id": "https://fasting.com"
+}
