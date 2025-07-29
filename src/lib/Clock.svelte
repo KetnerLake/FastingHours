@@ -142,6 +142,10 @@
     width: 96px;
   }
 
+  button {
+    touch-action: manipulation;
+  }
+
   div.dial button {
     align-items: center;
     appearance: none;
