@@ -182,18 +182,24 @@ function render(component, options = {}) {
     payload.out += BLOCK_CLOSE;
     for (const cleanup of on_destroy) cleanup();
     on_destroy = prev_on_destroy;
-    let head = payload.head.out + payload.head.title;
+    let head2 = payload.head.out + payload.head.title;
     for (const { hash, code } of payload.css) {
-      head += `<style id="${hash}">${code}</style>`;
+      head2 += `<style id="${hash}">${code}</style>`;
     }
     return {
-      head,
+      head: head2,
       html: payload.out,
       body: payload.out
     };
   } finally {
     abort();
   }
+}
+function head(payload, fn) {
+  const head_payload = payload.head;
+  head_payload.out += BLOCK_OPEN;
+  fn(head_payload);
+  head_payload.out += BLOCK_CLOSE;
 }
 function attr_class(value, hash, directives) {
   var result = to_class(value, hash, directives);
@@ -220,7 +226,8 @@ export {
   CLEAN as C,
   DERIVED as D,
   EFFECT_RAN as E,
-  attr_class as F,
+  head as F,
+  attr_class as G,
   HYDRATION_ERROR as H,
   INSPECT_EFFECT as I,
   LEGACY_PROPS as L,

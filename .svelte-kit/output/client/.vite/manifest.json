@@ -1,14 +1,14 @@
 {
   ".svelte-kit/generated/client-optimized/app.js": {
-    "file": "_app/immutable/entry/app.Oo73vmZV.js",
+    "file": "_app/immutable/entry/app.BVYoWUZJ.js",
     "name": "entry/app",
     "src": ".svelte-kit/generated/client-optimized/app.js",
     "isEntry": true,
     "imports": [
-      "_DmV08jv2.js",
-      "_BABE4o77.js",
+      "_JrvXgJed.js",
+      "_BBZTakrf.js",
       "_CWj6FrbW.js",
-      "_Dwp_Tzt4.js"
+      "_BpwAfYwA.js"
     ],
     "dynamicImports": [
       ".svelte-kit/generated/client-optimized/nodes/0.js",
@@ -17,40 +17,42 @@
     ]
   },
   ".svelte-kit/generated/client-optimized/nodes/0.js": {
-    "file": "_app/immutable/nodes/0.CIAymA1e.js",
+    "file": "_app/immutable/nodes/0.C1B_FuDk.js",
     "name": "nodes/0",
     "src": ".svelte-kit/generated/client-optimized/nodes/0.js",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_CWj6FrbW.js",
-      "_DmV08jv2.js"
+      "_JrvXgJed.js"
     ]
   },
   ".svelte-kit/generated/client-optimized/nodes/1.js": {
-    "file": "_app/immutable/nodes/1.Dvr0bult.js",
+    "file": "_app/immutable/nodes/1.DHcuksLI.js",
     "name": "nodes/1",
     "src": ".svelte-kit/generated/client-optimized/nodes/1.js",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_CWj6FrbW.js",
-      "_DmV08jv2.js",
-      "_BABE4o77.js",
-      "_DWHX3qmY.js"
+      "_DrWP1jWg.js",
+      "_JrvXgJed.js",
+      "_BBZTakrf.js",
+      "_CRJlOGBX.js"
     ]
   },
   ".svelte-kit/generated/client-optimized/nodes/2.js": {
-    "file": "_app/immutable/nodes/2.U4bL_MLM.js",
+    "file": "_app/immutable/nodes/2.DKnIzBk1.js",
     "name": "nodes/2",
     "src": ".svelte-kit/generated/client-optimized/nodes/2.js",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_CWj6FrbW.js",
-      "_DmV08jv2.js",
-      "_BABE4o77.js",
-      "_Dwp_Tzt4.js"
+      "_JrvXgJed.js",
+      "_BBZTakrf.js",
+      "_BpwAfYwA.js",
+      "_DrWP1jWg.js"
     ],
     "css": [
       "_app/immutable/assets/2.DkZ3QLQj.css"
@@ -67,35 +69,42 @@
       "_app/immutable/assets/roboto-latin-wght-normal.CHnqiQTt.woff2"
     ]
   },
-  "_BABE4o77.js": {
-    "file": "_app/immutable/chunks/BABE4o77.js",
+  "_BBZTakrf.js": {
+    "file": "_app/immutable/chunks/BBZTakrf.js",
     "name": "index-client",
     "imports": [
-      "_DmV08jv2.js"
+      "_JrvXgJed.js"
+    ]
+  },
+  "_BpwAfYwA.js": {
+    "file": "_app/immutable/chunks/BpwAfYwA.js",
+    "name": "props",
+    "imports": [
+      "_JrvXgJed.js"
+    ]
+  },
+  "_CRJlOGBX.js": {
+    "file": "_app/immutable/chunks/CRJlOGBX.js",
+    "name": "entry",
+    "imports": [
+      "_BBZTakrf.js",
+      "_JrvXgJed.js"
     ]
   },
   "_CWj6FrbW.js": {
     "file": "_app/immutable/chunks/CWj6FrbW.js",
     "name": "disclose-version"
   },
-  "_DWHX3qmY.js": {
-    "file": "_app/immutable/chunks/DWHX3qmY.js",
-    "name": "entry",
+  "_DrWP1jWg.js": {
+    "file": "_app/immutable/chunks/DrWP1jWg.js",
+    "name": "legacy",
     "imports": [
-      "_BABE4o77.js",
-      "_DmV08jv2.js"
+      "_JrvXgJed.js"
     ]
   },
-  "_DmV08jv2.js": {
-    "file": "_app/immutable/chunks/DmV08jv2.js",
+  "_JrvXgJed.js": {
+    "file": "_app/immutable/chunks/JrvXgJed.js",
     "name": "snippet"
-  },
-  "_Dwp_Tzt4.js": {
-    "file": "_app/immutable/chunks/Dwp_Tzt4.js",
-    "name": "props",
-    "imports": [
-      "_DmV08jv2.js"
-    ]
   },
   "node_modules/@fontsource-variable/roboto/files/roboto-cyrillic-ext-wght-normal.woff2": {
     "file": "_app/immutable/assets/roboto-cyrillic-ext-wght-normal.mFIB_JhL.woff2",
@@ -134,12 +143,12 @@
     "src": "node_modules/@fontsource-variable/roboto/files/roboto-vietnamese-wght-normal.woff2"
   },
   "node_modules/@sveltejs/kit/src/runtime/client/entry.js": {
-    "file": "_app/immutable/entry/start.CDS52JkO.js",
+    "file": "_app/immutable/entry/start.CbgkuFb6.js",
     "name": "entry/start",
     "src": "node_modules/@sveltejs/kit/src/runtime/client/entry.js",
     "isEntry": true,
     "imports": [
-      "_DWHX3qmY.js"
+      "_CRJlOGBX.js"
     ]
   }
 }

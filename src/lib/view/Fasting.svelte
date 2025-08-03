@@ -6,6 +6,7 @@
   import {onMount} from "svelte";
   import Timer from "$lib/Timer.svelte";
   import WaterEditor from "$lib/WaterEditor.svelte";
+    import Adsense from "$lib/Adsense.svelte";
 
   let {levels = []} = $props();
 
@@ -140,6 +141,8 @@
     </button>
 
   </article>
+
+  <Adsense />
 
   <footer>
     <button class="hunger secondary" onclick={onHungerClick} type="button">
