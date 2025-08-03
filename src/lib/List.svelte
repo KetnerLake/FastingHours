@@ -148,6 +148,7 @@
     background: none;
     border: none;
     box-sizing: border-box;
+    color: #161616;
     cursor: pointer;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -155,6 +156,7 @@
     outline: none;
     padding: 5px 16px 5px 16px;
     width: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
   li button p {
