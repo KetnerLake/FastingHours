@@ -8,31 +8,6 @@
       "_internal.js"
     ]
   },
-  "_Icon.js": {
-    "file": "chunks/Icon.js",
-    "name": "Icon",
-    "imports": [
-      "_index.js"
-    ],
-    "css": [
-      "_app/immutable/assets/Icon.v_grKKC6.css"
-    ],
-    "assets": [
-      "_app/immutable/assets/roboto-cyrillic-ext-wght-normal.mFIB_JhL.woff2",
-      "_app/immutable/assets/roboto-cyrillic-wght-normal.B1tIhOr4.woff2",
-      "_app/immutable/assets/roboto-greek-ext-wght-normal.DnPa8eh0.woff2",
-      "_app/immutable/assets/roboto-greek-wght-normal.DAIrzMIp.woff2",
-      "_app/immutable/assets/roboto-math-wght-normal.SopRAUEK.woff2",
-      "_app/immutable/assets/roboto-symbols-wght-normal.Bm5C9Z0M.woff2",
-      "_app/immutable/assets/roboto-vietnamese-wght-normal.CaxB3VTI.woff2",
-      "_app/immutable/assets/roboto-latin-ext-wght-normal.Dqr_DJ6L.woff2",
-      "_app/immutable/assets/roboto-latin-wght-normal.CHnqiQTt.woff2"
-    ]
-  },
-  "_Icon.v_grKKC6.css": {
-    "file": "_app/immutable/assets/Icon.v_grKKC6.css",
-    "src": "_Icon.v_grKKC6.css"
-  },
   "_equality.js": {
     "file": "chunks/equality.js",
     "name": "equality"
@@ -126,24 +101,21 @@
     "src": "src/routes/+page.svelte",
     "isEntry": true,
     "imports": [
-      "_index.js",
-      "_Icon.js"
+      "_index.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.BFVpuRqH.css"
-    ]
-  },
-  "src/routes/history/+page.svelte": {
-    "file": "entries/pages/history/_page.svelte.js",
-    "name": "entries/pages/history/_page.svelte",
-    "src": "src/routes/history/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js",
-      "_Icon.js"
+      "_app/immutable/assets/_page.Coi0Uc2w.css"
     ],
-    "css": [
-      "_app/immutable/assets/_page.Cdos43Pg.css"
+    "assets": [
+      "_app/immutable/assets/roboto-cyrillic-ext-wght-normal.mFIB_JhL.woff2",
+      "_app/immutable/assets/roboto-cyrillic-wght-normal.B1tIhOr4.woff2",
+      "_app/immutable/assets/roboto-greek-ext-wght-normal.DnPa8eh0.woff2",
+      "_app/immutable/assets/roboto-greek-wght-normal.DAIrzMIp.woff2",
+      "_app/immutable/assets/roboto-math-wght-normal.SopRAUEK.woff2",
+      "_app/immutable/assets/roboto-symbols-wght-normal.Bm5C9Z0M.woff2",
+      "_app/immutable/assets/roboto-vietnamese-wght-normal.CaxB3VTI.woff2",
+      "_app/immutable/assets/roboto-latin-ext-wght-normal.Dqr_DJ6L.woff2",
+      "_app/immutable/assets/roboto-latin-wght-normal.CHnqiQTt.woff2"
     ]
   }
 }

@@ -4,23 +4,23 @@
 
   let {label, onchange, value = new Date()} = $props();
 
-  let open = $state( false );
-  let view = $state( null );
+  let view = $state( 'calendar' );
 
-  let date = $derived.by( () => {
+  function formatDate( value ) {
     const formatter = new Intl.DateTimeFormat( navigator.language, {
       month: 'short',
       day: 'numeric'
     } );
     return formatter.format( value );
-  } );
-  let time = $derived.by( () => {
+  }
+
+  function formatTime( value ) {
     const formatter = new Intl.DateTimeFormat( navigator.language, {
       hour: 'numeric',
       minute: '2-digit'
     } );
     return formatter.format( value );
-  } );
+  }
 
   function onCalendarChange( selected ) {
     selected.setHours( value.getHours() );
@@ -32,8 +32,7 @@
   }
 
   function onCalendarClick() {
-    open = view === 'calendar' ? false : true;    
-    view = open ? 'calendar' : null;
+    view = 'calendar';    
   }
 
   function onClockChange( selected ) {
@@ -46,82 +45,87 @@
   }
 
   function onClockClick() {
-    open = view === 'clock' ? false : true;
-    view = open ? 'clock' : null;
+    view = 'clock';
   }
 </script>
 
-<details bind:open>
-  <summary>
-    <p>{label}</p>
-    <button onclick={onCalendarClick} type="button">{date}</button>
-    <button onclick={onClockClick} type="button">{time}</button>
-  </summary>
+<article>
+  <header>
+    <button class:selected={view === 'calendar' ? true : false} onclick={onCalendarClick} type="button">
+      <p>{label}</p>
+      <p>{formatDate( value )}</p>
+    </button>
+    <button class:selected={view === 'clock' ? true : false} onclick={onClockClick} type="button">
+      <p>{formatTime( value )}</p>
+    </button>
+  </header>
   {#if view === null || view === 'calendar'}
     <Calendar onchange={onCalendarChange} {value} />
   {:else}
     <Clock onchange={onClockChange} {value} />
   {/if}
-</details>
+</article>
 
 <style>
-  details {
-    height: 48px;
-    transition: height 300ms ease-in-out;
+  article {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 0 0 4px 0;
   }
 
-  details[open] {
-    height: 348px;
-  }
-
-  summary {
+  header {
     align-items: center;
+    border-bottom: solid 1px #00000010;    
     cursor: pointer;
     display: flex;
     flex-direction: row;
     gap: 8px;
-    height: 48px;
+    height: 40px;
     list-style: none;
-    margin: 0;
+    margin: 0 0 4px 0;
     outline: none;
     padding: 0;
-    -webkit-tap-highlight-color: transparent;
   }
 
-  summary::-webkit-details-marker,
-  summary::marker {
-    display: none;
-  }
-
-  summary button {
+  header button {
     align-items: center;
     appearance: none;
-    background: #f4f4f4;
+    background: none;
     border: none;
-    border-radius: 4px;
     box-sizing: border-box;
     color: #161616;
     cursor: pointer;
     display: flex;
     flex-direction: row;
     font-family: 'Roboto Variable';
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 400;
     height: 40px;
     letter-spacing: 0.10px;
-    line-height: 24px;    
+    line-height: 28px;    
     margin: 0;
     outline: none;
-    padding: 0 16px 0 16px;
+    padding: 0;
+    transition: 
+      color 0.15s ease-in-out
+      background 0.15s ease-in-out;
     -webkit-tap-highlight-color: transparent;    
   }
 
-  summary p {
+  header button:first-of-type {
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 0 0 0 12px;
+  }
+
+  header button:last-of-type {  
+    padding: 0 5px 0 0;
+  }
+
+  header p {
     box-sizing: border-box;
     color: #161616;
     cursor: pointer;
-    flex-basis: 0;
-    flex-grow: 1;
     font-family: 'Roboto Variable';
     font-size: 16px;
     font-weight: 400;
@@ -129,5 +133,30 @@
     line-height: 24px;
     margin: 0;
     padding: 0;
+  }
+
+  header button p:first-of-type {
+    flex-basis: 0;
+    flex-grow: 1;    
+    text-align: left;
+  }
+
+  header button p:last-of-type {
+    background: transparent;    
+    border: solid 1px #00000040;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 28px;
+    padding: 0 12px 0 12px;
+    transition: 
+      background 0.30s ease-in-out,
+      border 0.30s ease-in-out,
+      color 0.30s ease-in-out;    
+  }
+
+  header button.selected p:last-of-type {
+    color: #0284c7;
+    background: #00000010;
+    border: solid 1px #0284c7;
   }
 </style>

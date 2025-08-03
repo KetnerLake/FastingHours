@@ -4,14 +4,13 @@
   let data = $derived.by( () => {
     const copy = [... value];
     return copy.sort( ( a, b ) => {
-      if( a.start.getTime() > b.start.getTime() ) return -1;
-      if( a.start.getTime() < b.start.getTime() ) return 1;
+      if( a.started.getTime() > b.started.getTime() ) return -1;
+      if( a.started.getTime() < b.started.getTime() ) return 1;
       return 0;      
     } );
   } );
 
-  function onRowClick( evt ) {
-    const id = evt.currentTarget.getAttribute( 'data-id' );
+  function onRowClick( id ) {
     if( onchange ) onchange( id );
   }
 
@@ -34,14 +33,14 @@
   <ul>
     {#each data as item}
     <li>
-      {#if item.end} 
-        <button data-id={item.id} onclick={onRowClick} type="button">
-          <p>{formatLabel( item.start )}</p>
-          <p>{item.end === null ? '-' : formatLabel( item.end )}</p>      
+      {#if item.ended} 
+        <button onclick={() => onRowClick( item.id )} type="button">
+          <p>{formatLabel( item.started )}</p>
+          <p>{item.ended === null ? '-' : formatLabel( item.ended )}</p>      
         </button>      
       {:else}
-        <p>{formatLabel( item.start )}</p>
-        <p>{item.end === null ? '-' : formatLabel( item.end )}</p>
+        <p>{formatLabel( item.started )}</p>
+        <p>{item.ended === null ? '-' : formatLabel( item.ended )}</p>
       {/if}
     </li>
     {/each}

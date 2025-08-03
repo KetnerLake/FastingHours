@@ -1,6 +1,6 @@
 <script>
-  import { onMount } from "svelte";  
-  import Icon from "@iconify/svelte";
+  import Icon from "@iconify/svelte";  
+  import {onMount} from "svelte";  
 
   let {display = new Date(), onchange, value = new Date()} = $props();
 
@@ -11,6 +11,7 @@
     } );
     return formatter.format( display );
   } );
+
   let days = $derived.by( () => {
     const dates = [];
     const today = new Date();  
@@ -34,8 +35,8 @@
       };
 
       if(
-        calendar.getUTCFullYear() === display.getUTCFullYear() &&
-        calendar.getUTCMonth() === display.getUTCMonth()
+        calendar.getFullYear() === display.getFullYear() &&
+        calendar.getMonth() === display.getMonth()
       ) {
         item.outside = false;
       }
@@ -47,17 +48,17 @@
       }
 
       if(
-        calendar.getUTCFullYear() === today.getUTCFullYear() &&
-        calendar.getUTCMonth() === today.getUTCMonth() &&
-        calendar.getUTCDate() === today.getUTCDate()
+        calendar.getFullYear() === today.getFullYear() &&
+        calendar.getMonth() === today.getMonth() &&
+        calendar.getDate() === today.getDate()
       ) {
         item.today = true;
       }
 
       if(
-        calendar.getUTCFullYear() === value.getUTCFullYear() &&
-        calendar.getUTCMonth() === value.getUTCMonth() &&
-        calendar.getUTCDate() === value.getUTCDate()
+        calendar.getFullYear() === value.getFullYear() &&
+        calendar.getMonth() === value.getMonth() &&
+        calendar.getDate() === value.getDate()
       ) {
         item.selected = true;
       }
@@ -155,6 +156,7 @@
   article {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 0 8px 0 8px;
   }
 
   button {
@@ -177,30 +179,33 @@
     margin: 0;
     padding: 0;
     text-align: center;
+    transition:
+      background 0.15s ease-in-out,
+      border 0.15s ease-in-out,
+      color 0.15s ease-in-out;
     width: 40px;
     -webkit-tap-highlight-color: transparent;        
   }
 
   button.outside {
-    opacity: 0.40;
+    color: #00000040;
   }
 
   button.today {
-    color: #0082ff;
+    color: #0284c7;
   }
 
   button.selected {
-    background: #0082ff40;
-    color: #0082ff;
+    background: #0284c740;
+    color: #0284c7;
     font-weight: 600;
   }
 
   button[disabled] {
     background: #ffffff;
-    color: #161616;
+    color: #00000040;
     cursor: not-allowed;
     font-weight: 400;
-    opacity: 0.40;
   }
 
   header {
@@ -209,11 +214,11 @@
     flex-direction: row;
     height: 40px;
     margin: 0;
-    padding: 0;
+    padding: 0 4px 0 12px;
   }
 
   header button {
-    color: #0082ff;
+    color: #0284c7;
     height: 40px;
   }
 
@@ -222,7 +227,7 @@
     cursor: default;
     flex-basis: 0;
     flex-grow: 1;
-    font-family: 'Roboto Variable';
+    font-family: 'Roboto Variable', sans-serif;
     font-size: 16px;
     font-weight: 500;
     letter-spacing: 0.10px;
@@ -234,16 +239,16 @@
   p {
     box-sizing: border-box;
     cursor: default;
-    color: #161616;
+    color: #00000040;
     font-family: 'Roboto Variable';
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 0.50px;
     line-height: 20px;
     margin: 0;
-    opacity: 0.40;
-    padding: 0;
+    padding: 10px 0 10px 0;
     text-align: center;
+    text-transform: uppercase;
     width: 40px;
   }
 </style>

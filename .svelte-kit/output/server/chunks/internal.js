@@ -1629,7 +1629,7 @@ const options = {
   root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		<meta name="description" content="Fasting Hours" />\n		<title>Fasting Hours</title>\n  	<link rel="manifest" href="/manifest.json" />						\n		<link rel="icon" href="/fh.svg" />				\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		<meta name="description" content="Fasting Hours" />\n		<meta name="google-adsense-account" content="ca-pub-2072070125150717" />		\n		<title>Fasting Hours</title>\n  	<link rel="manifest" href="/manifest.json" />						\n		<link rel="icon" href="/fh.svg" />				\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -1701,7 +1701,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1cuvv96"
+  version_hash: "1hu24ts"
 };
 async function get_hooks() {
   let handle;

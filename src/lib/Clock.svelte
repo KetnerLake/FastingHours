@@ -131,7 +131,7 @@
     align-items: center;
     box-sizing: border-box;
     display: flex;
-    height: 300px;
+    height: 320px;
     justify-content: center;
   }
 
@@ -152,7 +152,7 @@
     background: none;
     border: none;
     box-sizing: border-box;
-    color: #0082ff;
+    color: #0284c7;
     cursor: pointer;
     display: flex;
     height: 40px;
@@ -165,23 +165,23 @@
   }
 
   div.dial button:first-of-type {
-    border-left: solid 1px #d5d5d5;
-    border-right: solid 1px #d5d5d5;    
-    border-top: solid 1px #d5d5d5;    
+    border-left: solid 1px #00000040;
+    border-right: solid 1px #00000040;    
+    border-top: solid 1px #00000040;    
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;    
   }
 
   div.dial button:last-of-type {
-    border-bottom: solid 1px #d5d5d5;        
-    border-left: solid 1px #d5d5d5;
-    border-right: solid 1px #d5d5d5;    
+    border-bottom: solid 1px #00000040;        
+    border-left: solid 1px #00000040;
+    border-right: solid 1px #00000040;    
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;    
   }
 
   div.dial > p {
-    border: solid 1px #d5d5d5;
+    border: solid 1px #00000040;
     box-sizing: border-box;
     color: #161616;
     cursor: default;
@@ -222,26 +222,30 @@
     margin: 0;
     outline: none;
     padding: 0;
+    transition:
+      background 0.15s ease-in-out,
+      color 0.15s ease-in-out;
     width: 52px;
     -webkit-tap-highlight-color: transparent;
   }
 
   div.meridian button:first-of-type {
-    border-left: solid 1px #d5d5d5;
-    border-right: solid 1px #d5d5d5;    
-    border-top: solid 1px #d5d5d5;    
+    border-left: solid 1px #00000040;
+    border-right: solid 1px #00000040;    
+    border-top: solid 1px #00000040;    
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }
 
   div.meridian button:last-of-type {
-    border: solid 1px #d5d5d5;
+    border: solid 1px #00000040;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
   }  
 
   div.meridian button.selected {
-    background: #f4f4f4;
+    background: #00000010;
+    color: #0284c7;
   }
 
   div.time {
