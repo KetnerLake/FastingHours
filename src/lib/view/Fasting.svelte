@@ -142,7 +142,7 @@
 
   </article>
 
-  <Adsense />
+  <!-- <Adsense /> -->
 
   <footer>
     <button class="hunger secondary" onclick={onHungerClick} type="button">

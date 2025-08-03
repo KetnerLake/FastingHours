@@ -1,5 +1,5 @@
 import "clsx";
-import { y as current_component, v as pop, t as push, z as bind_props, A as ensure_array_like, x as escape_html, F as head, G as attr_class } from "../../chunks/index.js";
+import { y as current_component, v as pop, t as push, z as bind_props, A as ensure_array_like, x as escape_html, F as attr_class } from "../../chunks/index.js";
 import Dexie from "dexie";
 function onDestroy(fn) {
   var context = (
@@ -806,14 +806,6 @@ function WaterEditor($$payload, $$props) {
   bind_props($$props, { close, showModal });
   pop();
 }
-function Adsense($$payload) {
-  head($$payload, ($$payload2) => {
-    $$payload2.out += `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2072070125150717" crossorigin="anonymous"><\/script><!---->`;
-  });
-  $$payload.out += `<div class="ad-container"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2072070125150717" data-ad-slot="2497729229" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>
-    ( adsbygoogle = window.adsbygoogle || [] ).push({});
-  <\/script></div>`;
-}
 function Fasting($$payload, $$props) {
   push();
   let { levels = [] } = $$props;
@@ -848,9 +840,7 @@ function Fasting($$payload, $$props) {
     $$payload.out += "<!--[-->";
     $$payload.out += `<p class="svelte-motaez">You are not fasting.</p>`;
   }
-  $$payload.out += `<!--]--> <button class="primary svelte-motaez" type="button">${escape_html("Start")} fasting</button></article> `;
-  Adsense($$payload);
-  $$payload.out += `<!----> <footer class="svelte-motaez"><button class="hunger secondary svelte-motaez" type="button">`;
+  $$payload.out += `<!--]--> <button class="primary svelte-motaez" type="button">${escape_html("Start")} fasting</button></article> <footer class="svelte-motaez"><button class="hunger secondary svelte-motaez" type="button">`;
   Icon($$payload, {
     height: "20",
     icon: "material-symbols:fork-spoon-rounded",
