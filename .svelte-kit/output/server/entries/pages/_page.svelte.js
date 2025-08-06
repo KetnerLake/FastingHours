@@ -1334,6 +1334,10 @@ function _page($$payload, $$props) {
     });
   }
   function onHistoryDelete(id) {
+    if (history_item.started.getTime() === started.getTime()) {
+      started = null;
+      now = null;
+    }
     db.deleteHistory(id).then(() => {
       history_editor.close();
       history_item = null;

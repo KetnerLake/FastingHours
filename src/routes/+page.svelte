@@ -323,6 +323,12 @@
   }
 
   function onHistoryDelete( id ) {
+    // If deletion is actively running fast
+    if( history_item.started.getTime() === started.getTime() ) {
+      started = null;
+      now = null;
+    }
+
     db.deleteHistory( id )
     .then( () => {
       history_editor.close();
