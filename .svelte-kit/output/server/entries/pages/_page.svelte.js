@@ -711,6 +711,7 @@ function ActivityGraph($$payload, $$props) {
   push();
   let { average = [], daily = null, days = 10 } = $$props;
   let sunrise = null;
+  let sunset = null;
   let icon = /* @__PURE__ */ (() => {
     return null;
   })();
@@ -767,8 +768,8 @@ function ActivityGraph($$payload, $$props) {
   if (icon !== null) {
     $$payload.out += "<!--[-->";
     $$payload.out += `<div class="daynight svelte-efxz8w">`;
-    Icon($$payload, { height: "16", icon, width: "16" });
-    $$payload.out += `<!----> <p class="daynight svelte-efxz8w"><a href="https://sunrise-sunset.org" target="_blank" class="svelte-efxz8w">${escape_html(formatTime(sunrise))}</a></p></div>`;
+    Icon($$payload, { color: "#0284c7", height: "16", icon, width: "16" });
+    $$payload.out += `<!----> <p class="svelte-efxz8w"><a href="https://sunrise-sunset.org" target="_blank" class="svelte-efxz8w">${escape_html(formatTime(Date.now() > sunrise.getTime() ? sunset : sunrise))}</a></p></div>`;
   } else {
     $$payload.out += "<!--[!-->";
   }

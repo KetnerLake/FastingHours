@@ -18,26 +18,31 @@
   } );
 
   onMount( () => {
+    setInterval( () => loadTheSun(), 3600000 );
+    loadTheSun();
+  } );
+
+  function loadTheSun() {
     navigator.geolocation.getCurrentPosition( ( position ) => {
       fetch( `https://api.sunrise-sunset.org/json?lat=${position.latitude}&lng=${position.longitude}&date=today` )
       .then( ( response ) => response.json() )
       .then( ( data ) => {
-        sunrise = parseTime( data.results.sunrise );
-        sunset = parseTime( data.results.sunset );        
+        sunrise = new Date( parseTime( data.results.sunrise ).getTime() );
+        sunset = new Date( parseTime( data.results.sunset ).getTime() );        
 
         if( Date.now() > sunset.getTime() ) {
           fetch( `https://api.sunrise-sunset.org/json?lat=${position.latitude}&lng=${position.longitude}&date=tomorrow` )          
           .then( ( response ) => response.json() )
           .then( ( data ) => {
-            sunrise = parseTime( data.results.sunrise );
-            sunset = parseTime( data.results.sunset );        
+            sunrise = new Date( parseTime( data.results.sunrise ).getTime() );
+            sunset = new Date( parseTime( data.results.sunset ).getTime() );        
           } );
         }
       } );
     }, ( err ) => {
       console.log( err );
     } );
-  } );
+  }
 
   function parseTime( value ) {
     const parts = value.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
@@ -130,12 +135,11 @@
 
   <legend>
     {#if icon !== null}
-      <div class="daynight">
-        <Icon height="16" icon={icon} width="16" />
-        <p class="daynight">
-          <a href="https://sunrise-sunset.org" target="_blank">{formatTime( sunrise )}</a>
-        </p>
-      </div>
+      <div class="daynight">        
+        <Icon color="#0284c7" height="16" icon={icon} width="16" />
+        <!-- TODO: I do not feel like this catches the "after sunset" scenario (VERIFY) -->
+        <p><a href="https://sunrise-sunset.org" target="_blank">{formatTime( Date.now() > sunrise.getTime() ? sunset : sunrise )}</a></p>            
+     </div>
     {/if}   
     <div class="color"></div>
     <p>Fasting</p>
