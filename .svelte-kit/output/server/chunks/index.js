@@ -1,3 +1,4 @@
+import { t as to_class, e as escape_html, b as to_style } from "./attributes.js";
 import "clsx";
 const BROWSER = false;
 const DERIVED = 1 << 1;
@@ -35,45 +36,6 @@ function lifecycle_outside_component(name) {
   {
     throw new Error(`https://svelte.dev/e/lifecycle_outside_component`);
   }
-}
-const ATTR_REGEX = /[&"<]/g;
-const CONTENT_REGEX = /[&<]/g;
-function escape_html(value, is_attr) {
-  const str = String(value ?? "");
-  const pattern = is_attr ? ATTR_REGEX : CONTENT_REGEX;
-  pattern.lastIndex = 0;
-  let escaped = "";
-  let last = 0;
-  while (pattern.test(str)) {
-    const i = pattern.lastIndex - 1;
-    const ch = str[i];
-    escaped += str.substring(last, i) + (ch === "&" ? "&amp;" : ch === '"' ? "&quot;" : "&lt;");
-    last = i + 1;
-  }
-  return escaped + str.substring(last);
-}
-const whitespace = [..." 	\n\r\f \v\uFEFF"];
-function to_class(value, hash, directives) {
-  var classname = value == null ? "" : "" + value;
-  if (directives) {
-    for (var key in directives) {
-      if (directives[key]) {
-        classname = classname ? classname + " " + key : key;
-      } else if (classname.length) {
-        var len = key.length;
-        var a = 0;
-        while ((a = classname.indexOf(key, a)) >= 0) {
-          var b = a + len;
-          if ((a === 0 || whitespace.includes(classname[a - 1])) && (b === classname.length || whitespace.includes(classname[b]))) {
-            classname = (a === 0 ? "" : classname.substring(0, a)) + classname.substring(b + 1);
-          } else {
-            a = b;
-          }
-        }
-      }
-    }
-  }
-  return classname === "" ? null : classname;
 }
 var current_component = null;
 function getContext(key) {
@@ -182,12 +144,12 @@ function render(component, options = {}) {
     payload.out += BLOCK_CLOSE;
     for (const cleanup of on_destroy) cleanup();
     on_destroy = prev_on_destroy;
-    let head2 = payload.head.out + payload.head.title;
+    let head = payload.head.out + payload.head.title;
     for (const { hash, code } of payload.css) {
-      head2 += `<style id="${hash}">${code}</style>`;
+      head += `<style id="${hash}">${code}</style>`;
     }
     return {
-      head: head2,
+      head,
       html: payload.out,
       body: payload.out
     };
@@ -195,15 +157,13 @@ function render(component, options = {}) {
     abort();
   }
 }
-function head(payload, fn) {
-  const head_payload = payload.head;
-  head_payload.out += BLOCK_OPEN;
-  fn(head_payload);
-  head_payload.out += BLOCK_CLOSE;
-}
 function attr_class(value, hash, directives) {
   var result = to_class(value, hash, directives);
   return result ? ` class="${escape_html(result, true)}"` : "";
+}
+function attr_style(value, directives) {
+  var result = to_style(value, directives);
+  return result ? ` style="${escape_html(result, true)}"` : "";
 }
 function bind_props(props_parent, props_now) {
   for (const key in props_now) {
@@ -221,13 +181,12 @@ function ensure_array_like(array_like_or_iterator) {
   return [];
 }
 export {
-  ensure_array_like as A,
+  attr_class as A,
   BROWSER as B,
   CLEAN as C,
   DERIVED as D,
   EFFECT_RAN as E,
-  head as F,
-  attr_class as G,
+  bind_props as F,
   HYDRATION_ERROR as H,
   INSPECT_EFFECT as I,
   LEGACY_PROPS as L,
@@ -258,7 +217,7 @@ export {
   setContext as u,
   pop as v,
   getContext as w,
-  escape_html as x,
-  current_component as y,
-  bind_props as z
+  current_component as x,
+  ensure_array_like as y,
+  attr_style as z
 };

@@ -1,5 +1,6 @@
+import { e as escape_html, a as attr } from "../../chunks/attributes.js";
+import { x as current_component, y as ensure_array_like, z as attr_style, v as pop, t as push, A as attr_class, F as bind_props } from "../../chunks/index.js";
 import "clsx";
-import { y as current_component, v as pop, t as push, z as bind_props, A as ensure_array_like, x as escape_html, F as head, G as attr_class } from "../../chunks/index.js";
 import Dexie from "dexie";
 function onDestroy(fn) {
   var context = (
@@ -7,6 +8,171 @@ function onDestroy(fn) {
     current_component
   );
   (context.d ??= []).push(fn);
+}
+class Database {
+  constructor() {
+    this._db = new Dexie("FastingHours");
+    this._db.version(20).stores({
+      history: "id, started",
+      hunger: "id, created",
+      water: "id, created"
+    });
+  }
+  browseHistory() {
+    return this._db.history.toArray();
+  }
+  browseHistoryByEnd() {
+    return this._db.history.toArray().then((data) => {
+      const empties = data.filter((value) => value.ended === null ? true : false);
+      return empties[0];
+    });
+  }
+  readHistory(id) {
+    return this._db.history.get({ id });
+  }
+  editHistory(item) {
+    const clone = item;
+    clone.updated = /* @__PURE__ */ new Date();
+    return this._db.history.put(clone).then(() => this._db.history.get({ id: item.id }));
+  }
+  addHistory() {
+    const item = {
+      id: crypto.randomUUID(),
+      type: "history",
+      created: /* @__PURE__ */ new Date(),
+      updated: /* @__PURE__ */ new Date(),
+      started: /* @__PURE__ */ new Date(),
+      ended: null,
+      notes: null
+    };
+    return this._db.history.add(item).then(() => this._db.history.get({ id: item.id }));
+  }
+  deleteHistory(id) {
+    return this._db.history.delete(id);
+  }
+  browseHunger(recent = false) {
+    return this._db.hunger.toArray().then((data) => {
+      if (recent) {
+        data.sort((a, b) => {
+          if (a.created.getTime() < b.created.getTime()) return 1;
+          if (a.created.getTime() > b.created.getTime()) return -1;
+          return 0;
+        });
+        return data.length === 0 ? null : data[0];
+      }
+      return data;
+    });
+  }
+  readHunger(id) {
+    return this._db.hunger.get({ id });
+  }
+  editHunger(item) {
+    const clone = item;
+    clone.updated = /* @__PURE__ */ new Date();
+    return this._db.hunger.put(clone).then(() => this._db.hunger.get({ id: item.id }));
+  }
+  addHunger(level = 5) {
+    const item = {
+      id: crypto.randomUUID(),
+      type: "hunger",
+      created: /* @__PURE__ */ new Date(),
+      updated: /* @__PURE__ */ new Date(),
+      level
+    };
+    return this._db.hunger.add(item).then(() => this._db.hunger.get({ id: item.id }));
+  }
+  deleteHunger(id) {
+    return this._db.hunger.delete(id);
+  }
+  browseWater(filter = false) {
+    return this._db.water.toArray().then((data) => {
+      if (filter) {
+        const start = /* @__PURE__ */ new Date();
+        start.setHours(0);
+        start.setMinutes(0);
+        start.setSeconds(0);
+        start.setMilliseconds(0);
+        const end = new Date(start.getTime());
+        end.setDate(end.getDate() + 1);
+        return data.filter((value) => value.created.getTime() > start.getTime() && value.created.getTime() < end.getTime() ? true : false);
+      } else {
+        return data;
+      }
+    });
+  }
+  readWater(id) {
+    return this._db.water.get({ id });
+  }
+  editWater(item) {
+    const clone = item;
+    clone.updated = /* @__PURE__ */ new Date();
+    return this._db.water.put(clone).then(() => this._db.water.get({ id: item.id }));
+  }
+  addWater(volume) {
+    const item = {
+      id: crypto.randomUUID(),
+      type: "water",
+      created: /* @__PURE__ */ new Date(),
+      updated: /* @__PURE__ */ new Date(),
+      volume
+    };
+    crypto.randomUUID();
+    return this._db.water.add(item).then(() => this._db.water.get({ id: item.id }));
+  }
+  deleteWater(id) {
+    return this._db.water.delete(id);
+  }
+}
+function ActivityGraph($$payload, $$props) {
+  push();
+  let { average = [], daily = null, days = 10 } = $$props;
+  function formatLabel(value) {
+    value = /* @__PURE__ */ new Date(value + "T00:00:00");
+    const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric" });
+    return formatter.format(value);
+  }
+  function offset(hour, status) {
+    if (hour === 0 || status[hour - 1] === 0) {
+      return (1 - status[hour]) * 100 + "%";
+    }
+    return 0;
+  }
+  const each_array_2 = ensure_array_like({ length: 24 });
+  $$payload.out += `<figure class="svelte-1079twi"><div class="labels svelte-1079twi"><p class="date svelte-1079twi">Date</p> <p class="hour svelte-1079twi">0</p> <p class="hour svelte-1079twi">12</p> <p class="hour svelte-1079twi">24</p></div> <div class="grid svelte-1079twi">`;
+  if (daily !== null) {
+    $$payload.out += "<!--[-->";
+    const each_array = ensure_array_like(Object.keys(daily));
+    $$payload.out += `<!--[-->`;
+    for (let $$index_1 = 0, $$length = each_array.length; $$index_1 < $$length; $$index_1++) {
+      let day = each_array[$$index_1];
+      const status = daily[day];
+      const each_array_1 = ensure_array_like({ length: 24 });
+      $$payload.out += `<p class="day svelte-1079twi">${escape_html(formatLabel(day))}</p> <!--[-->`;
+      for (let hour = 0, $$length2 = each_array_1.length; hour < $$length2; hour++) {
+        $$payload.out += `<div class="day svelte-1079twi">`;
+        if (status[hour] !== 0) {
+          $$payload.out += "<!--[-->";
+          $$payload.out += `<div class="hour svelte-1079twi"${attr_style("", {
+            "margin-left": offset(hour, status),
+            width: 100 * status[hour] + "%"
+          })}></div>`;
+        } else {
+          $$payload.out += "<!--[!-->";
+        }
+        $$payload.out += `<!--]--></div>`;
+      }
+      $$payload.out += `<!--]-->`;
+    }
+    $$payload.out += `<!--]-->`;
+  } else {
+    $$payload.out += "<!--[!-->";
+  }
+  $$payload.out += `<!--]--></div> <div class="average grid svelte-1079twi"><p class="day svelte-1079twi">Avg</p> <!--[-->`;
+  for (let hour = 0, $$length = each_array_2.length; hour < $$length; hour++) {
+    $$payload.out += `<div class="day svelte-1079twi"><div class="hour svelte-1079twi"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
+  }
+  $$payload.out += `<!--]--></div> <legend class="svelte-1079twi"><div class="svelte-1079twi"></div> <p class="svelte-1079twi">Fasting</p></legend></figure>`;
+  pop();
 }
 const stringToIcon = (value, validate, allowSimpleName, provider = "") => {
   const colonSeparated = value.split(":");
@@ -592,7 +758,180 @@ function Icon($$payload, $$props) {
   $$payload.out += `<!--]-->`;
   pop();
 }
-function About($$payload, $$props) {
+function Timer($$payload, $$props) {
+  push();
+  let { now = null, started = null } = $$props;
+  let duration = (() => {
+    if (started === null) {
+      return { hours: 0, minutes: "00", seconds: "00" };
+    }
+    const difference = Math.floor((now - started.getTime()) / 1e3);
+    return {
+      hours: Math.floor(difference / 3600).toString(10).padStart(2, "0"),
+      minutes: Math.floor(difference % 3600 / 60).toString(10).padStart(2, "0"),
+      seconds: (difference % 60).toString(10).padStart(2, "0")
+    };
+  })();
+  $$payload.out += `<article class="svelte-10tx4k0"><p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(duration.hours)}</span> <span class="units svelte-10tx4k0">hrs</span></p> <p class="colon svelte-10tx4k0">:</p> <p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(duration.minutes)}</span> <span class="units svelte-10tx4k0">min</span></p> <p class="colon svelte-10tx4k0">:</p> <p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(duration.seconds)}</span> <span class="units svelte-10tx4k0">sec</span></p></article>`;
+  pop();
+}
+function Fasting($$payload, $$props) {
+  push();
+  let {
+    activity = null,
+    hunger = 5,
+    levels = [],
+    now = null,
+    started = null,
+    water = 0
+  } = $$props;
+  function formatHunger(value) {
+    const item = levels.find((current) => current.value === value ? true : false);
+    return item.label;
+  }
+  function formatStarted(value) {
+    if (value === null) return null;
+    const formatter = new Intl.DateTimeFormat(navigator.language, {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+    return formatter.format(value);
+  }
+  $$payload.out += `<section class="svelte-81vq7f"><header class="svelte-81vq7f"><h3 class="svelte-81vq7f">Fasting</h3> <button type="button" class="svelte-81vq7f">`;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:settings-outline",
+    width: "20"
+  });
+  $$payload.out += `<!----></button></header> <article class="svelte-81vq7f">`;
+  if (started === null) {
+    $$payload.out += "<!--[-->";
+    $$payload.out += `<p class="svelte-81vq7f">You are not fasting.</p>`;
+  } else {
+    $$payload.out += "<!--[!-->";
+    $$payload.out += `<p class="svelte-81vq7f">You are fasting.</p> `;
+    Timer($$payload, { now, started });
+    $$payload.out += `<!----> <p class="started svelte-81vq7f">Started ${escape_html(formatStarted(started))}</p>`;
+  }
+  $$payload.out += `<!--]--> <button class="primary svelte-81vq7f" type="button">${escape_html(started === null ? "Start" : "Stop")} fasting</button></article> <article class="svelte-81vq7f">`;
+  ActivityGraph($$payload, {
+    average: activity === null ? [] : activity.average,
+    daily: activity === null ? null : activity.daily,
+    days: 7
+  });
+  $$payload.out += `<!----></article> <footer class="svelte-81vq7f"><button class="hunger secondary svelte-81vq7f" type="button">`;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:fork-spoon-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----> <span>${escape_html(formatHunger(hunger))}</span></button> <button class="water secondary svelte-81vq7f" type="button">`;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:water-drop-outline-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----> <span>${escape_html(water)} oz</span></button></footer></section>`;
+  pop();
+}
+function Calendar($$payload, $$props) {
+  push();
+  let { display = /* @__PURE__ */ new Date(), value = /* @__PURE__ */ new Date() } = $$props;
+  let month = (() => {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { month: "long", year: "numeric" });
+    return formatter.format(display);
+  })();
+  let days = (() => {
+    const dates = [];
+    const today = /* @__PURE__ */ new Date();
+    const calendar = new Date(display.getFullYear(), display.getMonth(), 1);
+    calendar.setDate(calendar.getDate() - calendar.getDay());
+    for (let d = 0; d < 42; d++) {
+      const item = {
+        date: calendar.getDate(),
+        month: calendar.getMonth(),
+        year: calendar.getFullYear(),
+        outside: true,
+        today: false,
+        selected: false,
+        after: false
+      };
+      if (calendar.getFullYear() === display.getFullYear() && calendar.getMonth() === display.getMonth()) {
+        item.outside = false;
+      }
+      if (calendar.getTime() > Date.now()) {
+        item.after = true;
+      }
+      if (calendar.getFullYear() === today.getFullYear() && calendar.getMonth() === today.getMonth() && calendar.getDate() === today.getDate()) {
+        item.today = true;
+      }
+      if (calendar.getFullYear() === value.getFullYear() && calendar.getMonth() === value.getMonth() && calendar.getDate() === value.getDate()) {
+        item.selected = true;
+      }
+      calendar.setDate(calendar.getDate() + 1);
+      dates.push(item);
+    }
+    return dates;
+  })();
+  const each_array = ensure_array_like(days);
+  $$payload.out += `<section><header class="svelte-1ll096s"><h3 class="svelte-1ll096s">${escape_html(month)}</h3> <button type="button" class="svelte-1ll096s">`;
+  Icon($$payload, {
+    height: "24",
+    icon: "material-symbols:navigate-before",
+    width: "24"
+  });
+  $$payload.out += `<!----></button> <button type="button" class="svelte-1ll096s">`;
+  Icon($$payload, {
+    height: "24",
+    icon: "material-symbols:navigate-next",
+    width: "24"
+  });
+  $$payload.out += `<!----></button></header> <article class="svelte-1ll096s"><p class="svelte-1ll096s">Sun</p> <p class="svelte-1ll096s">Mon</p> <p class="svelte-1ll096s">Tue</p> <p class="svelte-1ll096s">Wed</p> <p class="svelte-1ll096s">Thu</p> <p class="svelte-1ll096s">Fri</p> <p class="svelte-1ll096s">Sat</p></article> <article class="svelte-1ll096s"><!--[-->`;
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    let day = each_array[$$index];
+    $$payload.out += `<button${attr("data-year", day.year)}${attr("data-month", day.month)}${attr("data-date", day.date)}${attr("disabled", day.after, true)} type="button"${attr_class("svelte-1ll096s", void 0, {
+      "outside": day.outside,
+      "today": day.today,
+      "selected": day.selected
+    })}>${escape_html(day.date)}</button>`;
+  }
+  $$payload.out += `<!--]--></article></section>`;
+  pop();
+}
+function DateTimePicker($$payload, $$props) {
+  push();
+  let { label, value = /* @__PURE__ */ new Date() } = $$props;
+  function formatDate(value2) {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric" });
+    return formatter.format(value2);
+  }
+  function formatTime(value2) {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
+    return formatter.format(value2);
+  }
+  $$payload.out += `<article class="svelte-8yzu2w"><header class="svelte-8yzu2w"><button type="button"${attr_class("svelte-8yzu2w", void 0, { "selected": true })}><p class="svelte-8yzu2w">${escape_html(label)}</p> <p class="svelte-8yzu2w">${escape_html(formatDate(value))}</p></button> <button type="button"${attr_class("svelte-8yzu2w", void 0, { "selected": false })}><p class="svelte-8yzu2w">${escape_html(formatTime(value))}</p></button></header> `;
+  {
+    $$payload.out += "<!--[-->";
+    Calendar($$payload, { value });
+  }
+  $$payload.out += `<!--]--></article>`;
+  pop();
+}
+function HistoryEditor($$payload, $$props) {
+  push();
+  let {
+    field = "started",
+    item = null,
+    label = "Started",
+    oncancel,
+    ondelete,
+    onsave,
+    title = "Edit Fast Start"
+  } = $$props;
   let dialog = void 0;
   function close() {
     dialog.close();
@@ -600,122 +939,95 @@ function About($$payload, $$props) {
   function showModal() {
     dialog.showModal();
   }
-  $$payload.out += `<dialog class="svelte-1v1n4fd"><h3 class="svelte-1v1n4fd">About</h3> <article class="svelte-1v1n4fd"><p>About.</p></article> <footer class="svelte-1v1n4fd"><button type="button" class="svelte-1v1n4fd">Done</button></footer></dialog>`;
+  $$payload.out += `<dialog class="svelte-13glclx"><h3 class="svelte-13glclx">${escape_html(title)}</h3> `;
+  DateTimePicker($$payload, {
+    label,
+    value: item && item.id && item.id !== null ? item[field] : /* @__PURE__ */ new Date()
+  });
+  $$payload.out += `<!----> <textarea placeholder="Notes" class="svelte-13glclx">`;
+  const $$body = escape_html(item && item.id && item.id !== null ? item.notes : "");
+  if ($$body) {
+    $$payload.out += `${$$body}`;
+  }
+  $$payload.out += `</textarea> <footer class="svelte-13glclx"><button class="delete svelte-13glclx" type="button">Delete</button> <button class="cancel svelte-13glclx" type="button">Cancel</button> <button type="button" class="svelte-13glclx">Save</button></footer></dialog>`;
   bind_props($$props, { close, showModal });
+  pop();
 }
-class Database {
-  constructor() {
-    this._db = new Dexie("FastingHours");
-    this._db.version(20).stores({
-      history: "id, started",
-      hunger: "id, created",
-      water: "id, created"
-    });
+function HistoryList($$payload, $$props) {
+  push();
+  let { items = [] } = $$props;
+  function formatDate(value) {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric", year: "numeric" });
+    return formatter.format(value);
   }
-  browseHistory() {
-    return this._db.history.toArray();
+  function formatDuration(start, end) {
+    const difference = end.getTime() - start.getTime();
+    const seconds = Math.floor(difference / 1e3);
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor(seconds % 3600 / 60);
+    const formatter = new Intl.DurationFormat(navigator.language, { style: "short", units: ["hour", "minute"] });
+    return formatter.format({ hours, minutes });
   }
-  browseHistoryByEnd() {
-    return this._db.history.toArray().then((data) => {
-      const empties = data.filter((value) => value.ended === null ? true : false);
-      return empties[0];
-    });
+  function formatHeader(value) {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { weekday: "long", month: "short", day: "numeric" });
+    return formatter.format(value);
   }
-  readHistory(id) {
-    return this._db.history.get({ id });
+  function formatTime(value) {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
+    return formatter.format(value);
   }
-  editHistory(item) {
-    const clone = item;
-    clone.updated = /* @__PURE__ */ new Date();
-    return this._db.history.put(clone).then(() => this._db.history.get({ id: item.id }));
-  }
-  addHistory() {
-    const item = {
-      id: crypto.randomUUID(),
-      type: "history",
-      created: /* @__PURE__ */ new Date(),
-      updated: /* @__PURE__ */ new Date(),
-      started: /* @__PURE__ */ new Date(),
-      ended: null,
-      notes: null
-    };
-    return this._db.history.add(item).then(() => this._db.history.get({ id: item.id }));
-  }
-  deleteHistory(id) {
-    return this._db.history.delete(id);
-  }
-  browseHunger(recent = false) {
-    return this._db.hunger.toArray().then((data) => {
-      if (recent) {
-        data.sort((a, b) => {
-          if (a.created.getTime() < b.created.getTime()) return 1;
-          if (a.created.getTime() > b.created.getTime()) return -1;
-          return 0;
-        });
-        return data.length === 0 ? null : data[0];
-      }
-      return data;
-    });
-  }
-  readHunger(id) {
-    return this._db.hunger.get({ id });
-  }
-  editHunger(item) {
-    const clone = item;
-    clone.updated = /* @__PURE__ */ new Date();
-    return this._db.hunger.put(clone).then(() => this._db.hunger.get({ id: item.id }));
-  }
-  addHunger(level = 5) {
-    const item = {
-      id: crypto.randomUUID(),
-      type: "hunger",
-      created: /* @__PURE__ */ new Date(),
-      updated: /* @__PURE__ */ new Date(),
-      level
-    };
-    return this._db.hunger.add(item).then(() => this._db.hunger.get({ id: item.id }));
-  }
-  deleteHunger(id) {
-    return this._db.hunger.delete(id);
-  }
-  browseWater(filter = false) {
-    return this._db.water.toArray().then((data) => {
-      if (filter) {
-        const start = /* @__PURE__ */ new Date();
-        start.setHours(0);
-        start.setMinutes(0);
-        start.setSeconds(0);
-        start.setMilliseconds(0);
-        const end = new Date(start.getTime());
-        end.setDate(end.getDate() + 1);
-        return data.filter((value) => value.created.getTime() > start.getTime() && value.created.getTime() < end.getTime() ? true : false);
+  if (items.length === 0) {
+    $$payload.out += "<!--[-->";
+    $$payload.out += `<article class="svelte-o2f930"><p class="svelte-o2f930">Your fasting history<br/>will be displayed here.</p></article>`;
+  } else {
+    $$payload.out += "<!--[!-->";
+    const each_array = ensure_array_like(items);
+    $$payload.out += `<ul class="svelte-o2f930"><!--[-->`;
+    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+      let item = each_array[$$index];
+      if (item.type === "header") {
+        $$payload.out += "<!--[-->";
+        $$payload.out += `<li class="header svelte-o2f930"><p class="svelte-o2f930">${escape_html(formatHeader(item.timed))}</p></li>`;
       } else {
-        return data;
+        $$payload.out += "<!--[!-->";
+        $$payload.out += `<li class="svelte-o2f930"><button type="button" class="svelte-o2f930">`;
+        if (item.type === "start") {
+          $$payload.out += "<!--[-->";
+          $$payload.out += `<p class="svelte-o2f930">Started Fast</p> <p class="svelte-o2f930"></p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+        } else if (item.type === "water") {
+          $$payload.out += "<!--[1-->";
+          $$payload.out += `<p class="svelte-o2f930">Water</p> <p class="svelte-o2f930">${escape_html(item.volume)} oz</p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+        } else if (item.type === "hunger") {
+          $$payload.out += "<!--[2-->";
+          $$payload.out += `<p class="svelte-o2f930">${escape_html(item.level)}</p> <p class="svelte-o2f930"></p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+        } else if (item.type === "end") {
+          $$payload.out += "<!--[3-->";
+          $$payload.out += `<p class="svelte-o2f930">Ended Fast</p> <p class="svelte-o2f930">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+        } else {
+          $$payload.out += "<!--[!-->";
+        }
+        $$payload.out += `<!--]--></button></li>`;
       }
-    });
+      $$payload.out += `<!--]-->`;
+    }
+    $$payload.out += `<!--]--></ul>`;
   }
-  readWater(id) {
-    return this._db.water.get({ id });
-  }
-  editWater(item) {
-    const clone = item;
-    clone.updated = /* @__PURE__ */ new Date();
-    return this._db.water.put(clone).then(() => this._db.water.get({ id: item.id }));
-  }
-  addWater(volume) {
-    const item = {
-      id: crypto.randomUUID(),
-      type: "water",
-      created: /* @__PURE__ */ new Date(),
-      updated: /* @__PURE__ */ new Date(),
-      volume
-    };
-    crypto.randomUUID();
-    return this._db.water.add(item).then(() => this._db.water.get({ id: item.id }));
-  }
-  deleteWater(id) {
-    return this._db.water.delete(id);
-  }
+  $$payload.out += `<!--]-->`;
+  pop();
+}
+function Hours($$payload, $$props) {
+  push();
+  let { activity = null, history = [] } = $$props;
+  $$payload.out += `<section class="svelte-jsa4zq"><header class="svelte-jsa4zq"><h3 class="svelte-jsa4zq">Hours</h3></header> <article class="svelte-jsa4zq">`;
+  ActivityGraph($$payload, {
+    average: activity === null ? [] : activity.average,
+    daily: activity === null ? null : activity.daily,
+    days: 7
+  });
+  $$payload.out += `<!----></article> <article class="svelte-jsa4zq">`;
+  HistoryList($$payload, { items: history });
+  $$payload.out += `<!----></article></section>`;
+  pop();
 }
 function HungerEditor($$payload, $$props) {
   push();
@@ -759,6 +1071,23 @@ function HungerEditor($$payload, $$props) {
   $$payload.out += `<!--]--> <button class="cancel svelte-1gyfgoj" type="button">Cancel</button> <button type="button" class="svelte-1gyfgoj">Save</button></footer></dialog>`;
   bind_props($$props, { close, showModal });
   pop();
+}
+function RadioGroup($$payload, $$props) {
+  push();
+  let { selected = 0 } = $$props;
+  $$payload.out += `<ul class="svelte-tu3q0a"><li><button${attr_class("fasting svelte-tu3q0a", void 0, { "selected": selected === 0 ? true : false })} type="button">Fasting</button></li> <li><button${attr_class("hours svelte-tu3q0a", void 0, { "selected": selected === 1 ? true : false })} type="button">Hours</button></li></ul>`;
+  pop();
+}
+function Settings($$payload, $$props) {
+  let dialog = void 0;
+  function close() {
+    dialog.close();
+  }
+  function showModal() {
+    dialog.showModal();
+  }
+  $$payload.out += `<dialog class="svelte-msa23r"><h3 class="svelte-msa23r">Settings</h3> <article class="svelte-msa23r"><p class="svelte-msa23r">Settings.</p></article> <footer class="svelte-msa23r"><button type="button" class="svelte-msa23r">Done</button></footer></dialog>`;
+  bind_props($$props, { close, showModal });
 }
 function WaterEditor($$payload, $$props) {
   push();
@@ -806,76 +1135,19 @@ function WaterEditor($$payload, $$props) {
   bind_props($$props, { close, showModal });
   pop();
 }
-function Adsense($$payload) {
-  head($$payload, ($$payload2) => {
-    $$payload2.out += `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2072070125150717" crossorigin="anonymous"><\/script><!---->`;
-  });
-  $$payload.out += `<div class="ad-container"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2072070125150717" data-ad-slot="2497729229" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>
-    ( adsbygoogle = window.adsbygoogle || [] ).push({});
-  <\/script></div>`;
-}
-function Fasting($$payload, $$props) {
+function _page($$payload, $$props) {
   push();
-  let { levels = [] } = $$props;
   const db = new Database();
-  let heditor = void 0;
-  let level = 5;
-  let water = 0;
-  let weditor = void 0;
-  let hunger = (() => {
-    const item = levels.find((current) => current.value === level ? true : false);
-    return item.label;
-  })();
-  function onHungerSave(value) {
-    console.log(value);
-    heditor.close();
-    db.addHunger(value.level).then((item) => level = item.level);
-  }
-  function onWaterSave(value) {
-    weditor.close();
-    db.addWater(value.volume).then((item) => db.browseWater(true)).then((data) => {
-      const total = data.reduce(
-        (previous, current) => {
-          return previous + current.volume;
-        },
-        0
-      );
-      water = total;
-    });
-  }
-  $$payload.out += `<section class="svelte-motaez"><article class="svelte-motaez">`;
-  {
-    $$payload.out += "<!--[-->";
-    $$payload.out += `<p class="svelte-motaez">You are not fasting.</p>`;
-  }
-  $$payload.out += `<!--]--> <button class="primary svelte-motaez" type="button">${escape_html("Start")} fasting</button></article> `;
-  Adsense($$payload);
-  $$payload.out += `<!----> <footer class="svelte-motaez"><button class="hunger secondary svelte-motaez" type="button">`;
-  Icon($$payload, {
-    height: "20",
-    icon: "material-symbols:fork-spoon-rounded",
-    width: "20"
-  });
-  $$payload.out += `<!----> <span>${escape_html(hunger)}</span></button> <button class="water secondary svelte-motaez" type="button">`;
-  Icon($$payload, {
-    height: "20",
-    icon: "material-symbols:water-drop-outline-rounded",
-    width: "20"
-  });
-  $$payload.out += `<!----> <span>${escape_html(water)} oz</span></button></footer> `;
-  HungerEditor($$payload, { levels, level, onsave: onHungerSave });
-  $$payload.out += `<!----> `;
-  WaterEditor($$payload, { onsave: onWaterSave });
-  $$payload.out += `<!----></section>`;
-  pop();
-}
-function RadioGroup($$payload, $$props) {
-  push();
-  let { selected = 0 } = $$props;
-  $$payload.out += `<ul class="svelte-tu3q0a"><li><button${attr_class("fasting svelte-tu3q0a", void 0, { "selected": selected === 0 ? true : false })} type="button">Fasting</button></li> <li><button${attr_class("hours svelte-tu3q0a", void 0, { "selected": selected === 1 ? true : false })} type="button">Hours</button></li></ul>`;
-  pop();
-}
-function _page($$payload) {
+  let activity = [];
+  let history = [];
+  let history_editor = void 0;
+  let history_field = "started";
+  let history_item = null;
+  let history_label = "Started";
+  let history_title = "Edit Fast Started";
+  let hunger_editor = void 0;
+  let hunger_item = null;
+  let hunger = 5;
   let levels = [
     { value: 1, label: "Starving" },
     { value: 2, label: "Very hungry" },
@@ -888,23 +1160,290 @@ function _page($$payload) {
     { value: 9, label: "Stomach aches" },
     { value: 10, label: "Sick" }
   ];
-  let selected = 0;
-  $$payload.out += `<main class="svelte-zgf5uf"><header class="svelte-zgf5uf"><span></span> `;
-  RadioGroup($$payload, { selected });
-  $$payload.out += `<!----> <button type="button" class="svelte-zgf5uf">`;
+  let now = null;
+  let screen = 0;
+  let started = null;
+  let water = 0;
+  let water_editor = void 0;
+  let water_item = null;
+  function formatLocalDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+  function loadActivity(days = 7) {
+    db.browseHistory().then((data) => {
+      const tempResult = {};
+      const now_date = /* @__PURE__ */ new Date();
+      const endDate = new Date(now_date.getFullYear(), now_date.getMonth(), now_date.getDate());
+      const startLimitDate = new Date(endDate);
+      startLimitDate.setDate(endDate.getDate() - (days - 1));
+      if (!Array.isArray(data) || data.length === 0) {
+        const date = new Date(startLimitDate);
+        while (date <= endDate) {
+          const key = formatLocalDate(date);
+          tempResult[key] = Array(24).fill(0);
+          date.setDate(date.getDate() + 1);
+        }
+      } else {
+        for (const action of data) {
+          const start = new Date(action.started);
+          const end = action.ended ? new Date(action.ended) : /* @__PURE__ */ new Date();
+          const startTime = new Date(start.getTime());
+          startTime.setSeconds(0, 0);
+          const endTime = new Date(end.getTime());
+          endTime.setSeconds(0, 0);
+          let current = new Date(startTime);
+          while (current < endTime) {
+            const dateKey = formatLocalDate(current);
+            const dateOnly = new Date(current.getFullYear(), current.getMonth(), current.getDate());
+            if (dateOnly >= startLimitDate && dateOnly <= endDate) {
+              const hour = current.getHours();
+              if (!tempResult[dateKey]) {
+                tempResult[dateKey] = Array(24).fill(0);
+              }
+              tempResult[dateKey][hour] += 1;
+            }
+            current.setMinutes(current.getMinutes() + 1);
+          }
+        }
+        for (const date in tempResult) {
+          tempResult[date] = tempResult[date].map((mins) => +(Math.min(mins, 60) / 60).toFixed(6));
+        }
+        const fillDate = new Date(startLimitDate);
+        while (fillDate <= endDate) {
+          const key = formatLocalDate(fillDate);
+          if (!tempResult[key]) {
+            tempResult[key] = Array(24).fill(0);
+          }
+          fillDate.setDate(fillDate.getDate() + 1);
+        }
+      }
+      const sortedKeys = Object.keys(tempResult).sort((a, b) => b.localeCompare(a));
+      const dailyActivity = {};
+      for (const key of sortedKeys) {
+        dailyActivity[key] = tempResult[key];
+      }
+      const hourTotals = Array(24).fill(0);
+      for (const hour of Array(24).keys()) {
+        for (const date of sortedKeys) {
+          hourTotals[hour] += dailyActivity[date][hour];
+        }
+      }
+      const averageHourlyActivity = hourTotals.map((total) => +(total / 10).toFixed(6));
+      activity = { daily: dailyActivity, average: averageHourlyActivity };
+    });
+  }
+  function loadHistory() {
+    db.browseHistory().then((data) => {
+      let chronos = null;
+      let start = structuredClone(data);
+      start.forEach((value) => {
+        value.type = "start";
+        value.timed = new Date(value.started.getTime());
+      });
+      let end = structuredClone(data);
+      end = end.filter((value) => value.ended === null ? false : true);
+      end.forEach((value) => {
+        value.type = "end";
+        value.timed = new Date(value.ended.getTime());
+      });
+      start = start.concat(end);
+      chronos = [...start];
+      db.browseHunger().then((data2) => {
+        data2 = data2.map((value) => {
+          const hunger2 = levels.find((current) => current.value === value.level);
+          value.level = hunger2.label;
+          value.timed = new Date(value.created.getTime());
+          return value;
+        });
+        chronos = chronos.concat(data2);
+        return db.browseWater();
+      }).then((data2) => {
+        data2 = data2.map((value) => {
+          value.timed = new Date(value.created.getTime());
+          return value;
+        });
+        chronos = chronos.concat(data2);
+        chronos.sort((a, b) => {
+          if (a.timed.getTime() < b.timed.getTime()) return 1;
+          if (a.timed.getTime() > b.timed.getTime()) return -1;
+          return 0;
+        });
+        const dates = [];
+        for (let c = 0; c < chronos.length; c++) {
+          const zeroed = new Date(chronos[c].timed.getTime());
+          zeroed.setHours(23);
+          zeroed.setMinutes(59);
+          zeroed.setSeconds(59);
+          zeroed.setMilliseconds(999);
+          if (dates.length === 0) {
+            dates.push({ type: "header", timed: zeroed });
+          } else {
+            if (dates[dates.length - 1].timed.getDate() !== chronos[c].timed.getDate() || dates[dates.length - 1].timed.getMonth() !== chronos[c].timed.getMonth() || dates[dates.length - 1].timed.getFullYear() !== chronos[c].timed.getFullYear()) {
+              dates.push({ type: "header", timed: zeroed });
+            }
+          }
+        }
+        chronos = chronos.concat(dates);
+        chronos.sort((a, b) => {
+          if (a.timed.getTime() < b.timed.getTime()) return 1;
+          if (a.timed.getTime() > b.timed.getTime()) return -1;
+          return 0;
+        });
+        history = [...chronos];
+      });
+    });
+  }
+  function loadHunger() {
+    db.browseHunger(true).then((item) => {
+      if (item === null) {
+        hunger = 5;
+      } else {
+        hunger = item.level;
+      }
+    });
+  }
+  function loadStart() {
+    db.browseHistory().then((data) => {
+      if (data.length === 0) {
+        started = null;
+        now = null;
+      }
+      data.sort((a, b) => {
+        if (a.started.getTime() > b.started.getTime()) return -1;
+        if (a.started.getTime() < b.started.getTime()) return 1;
+        return 0;
+      });
+      if (data[0].ended === null) {
+        started = new Date(data[0].started.getTime());
+        now = Date.now();
+      }
+    });
+  }
+  function loadWater() {
+    db.browseWater(true).then((data) => {
+      const total = data.reduce(
+        (previous, current) => {
+          return previous + current.volume;
+        },
+        0
+      );
+      water = total;
+    });
+  }
+  function onHistoryDelete(id) {
+    db.deleteHistory(id).then(() => {
+      history_editor.close();
+      history_item = null;
+      loadStart();
+      loadActivity();
+      loadHistory();
+    });
+  }
+  function onHistorySave(item) {
+    db.editHistory(item).then(() => {
+      history_editor.close();
+      history_item = null;
+      loadStart();
+      loadActivity();
+      loadHistory();
+    });
+  }
+  function onHungerDelete(id) {
+    db.deleteHunger(id).then(() => {
+      hunger_editor.close();
+      hunger_item = null;
+      loadHunger();
+      loadHistory();
+    });
+  }
+  function onHungerSave(value) {
+    if (hunger_item === null) {
+      db.addHunger(value.level).then((item) => {
+        hunger_editor.close();
+        loadHunger();
+        loadHistory();
+      });
+    } else {
+      db.editHunger(value).then((data) => {
+        hunger_editor.close();
+        hunger_item = null;
+        loadHunger();
+        loadHistory();
+      });
+    }
+  }
+  function onWaterDelete(id) {
+    db.deleteWater(id).then(() => {
+      water_editor.close();
+      water_item = null;
+      loadWater();
+      loadHistory();
+    });
+  }
+  function onWaterSave(value) {
+    if (water_item === null) {
+      db.addWater(value.volume).then((item) => {
+        water_editor.close();
+        loadWater();
+        loadHistory();
+      });
+    } else {
+      db.editWater(value).then((data) => {
+        water_editor.close();
+        water_item = null;
+        loadWater();
+        loadHistory();
+      });
+    }
+  }
+  $$payload.out += `<main class="svelte-1p6a8xw"><header class="svelte-1p6a8xw"><span></span> `;
+  RadioGroup($$payload, { selected: screen });
+  $$payload.out += `<!----> <button type="button" class="svelte-1p6a8xw">`;
   Icon($$payload, {
     height: "20",
-    icon: "material-symbols:question-mark-rounded",
+    icon: "material-symbols:settings-outline",
     width: "20"
   });
-  $$payload.out += `<!----></button></header> `;
-  {
-    $$payload.out += "<!--[-->";
-    Fasting($$payload, { levels });
-  }
-  $$payload.out += `<!--]--></main> `;
-  About($$payload, {});
+  $$payload.out += `<!----></button></header> <section${attr("data-screen", "fasting")} class="svelte-1p6a8xw"><article class="svelte-1p6a8xw">`;
+  Fasting($$payload, {
+    activity,
+    hunger,
+    levels,
+    now,
+    started,
+    water
+  });
+  $$payload.out += `<!----></article> <article class="svelte-1p6a8xw">`;
+  Hours($$payload, { activity, history });
+  $$payload.out += `<!----></article></section></main> `;
+  HistoryEditor($$payload, {
+    field: history_field,
+    item: history_item,
+    label: history_label,
+    ondelete: onHistoryDelete,
+    onsave: onHistorySave,
+    title: history_title
+  });
+  $$payload.out += `<!----> `;
+  HungerEditor($$payload, {
+    item: hunger_item,
+    levels,
+    ondelete: onHungerDelete,
+    onsave: onHungerSave
+  });
+  $$payload.out += `<!----> `;
+  WaterEditor($$payload, {
+    item: water_item,
+    ondelete: onWaterDelete,
+    onsave: onWaterSave
+  });
+  $$payload.out += `<!----> `;
+  Settings($$payload, {});
   $$payload.out += `<!---->`;
+  pop();
 }
 export {
   _page as default

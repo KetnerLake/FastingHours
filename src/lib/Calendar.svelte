@@ -1,6 +1,5 @@
 <script>
   import Icon from "@iconify/svelte";  
-  import {onMount} from "svelte";  
 
   let {display = new Date(), onchange, value = new Date()} = $props();
 

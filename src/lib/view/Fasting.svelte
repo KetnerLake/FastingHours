@@ -1,28 +1,29 @@
 <script>
-  import "@fontsource-variable/roboto"; 
-  import {Database} from "$lib/Database.svelte";     
-  import HungerEditor from "$lib/HungerEditor.svelte";
+  import ActivityGraph from "$lib/ActivityGraph.svelte";    
   import Icon from "@iconify/svelte";
-  import {onMount} from "svelte";
   import Timer from "$lib/Timer.svelte";
-  import WaterEditor from "$lib/WaterEditor.svelte";
-    import Adsense from "$lib/Adsense.svelte";
 
-  let {levels = []} = $props();
+  let {
+    activity = null,
+    hunger = 5, 
+    levels = [],
+    now = null, 
+    onend, 
+    onhunger, 
+    onsettings, 
+    onstart, 
+    onwater, 
+    started = null, 
+    water = 0
+  } = $props();
 
-  const db = new Database();
+  function formatHunger( value ) {
+    const item = levels.find( ( current ) => current.value === value ? true : false );
+    return item.label;
+  }
 
-  let interval = null;
-
-  let heditor = $state();
-  let level = $state( 5 );
-  let now = $state( null );
-  let started = $state( null );
-  let water = $state( 0 );
-  let weditor = $state();
-
-  let formatted = $derived.by( () => {
-    if( started === null ) return null;
+  function formatStarted( value ) {
+    if( value === null ) return null;
 
     const formatter = new Intl.DateTimeFormat( navigator.language, {
       weekday: 'long',
@@ -33,126 +34,56 @@
       minute: '2-digit'
     } );
 
-    return formatter.format( started );
-  } );  
-
-  let hunger = $derived.by( () => {
-    const item = levels.find( ( current ) => current.value === level ? true : false );
-    return item.label;
-  } );
-
-  onMount( () => {
-    const begin = window.localStorage.getItem( 'fh_started' );
-    started = begin === null ? null : new Date( parseInt( begin ) );
-
-    if( started !== null ) {
-      now = Date.now();
-
-      interval = setInterval( () => {
-        now = Date.now();
-      }, 1000 );      
-    }
-
-    db.browseHunger( true ).then( ( item ) => {
-      if( item !== null ) {
-        level = item.level;
-      }
-
-      return db.browseWater( true );
-    } ).then( ( data ) => {
-      const total = data.reduce( ( previous, current ) => {
-        return previous + current.volume;
-      }, 0 );
-      water = total;
-    } );    
-  } );
+    return formatter.format( value );
+  }
 
   function onFastingClick() {
     if( started === null ) {
-      now = Date.now();
-      started = new Date();
-      window.localStorage.setItem( 'fh_started', started.getTime() );
-      db.addHistory();
-
-      interval = setInterval( () => {
-        now = Date.now();
-      }, 1000 );
+      if( onstart ) onstart();
     } else {
-      clearInterval( interval );
-      interval = null;
-
-      now = null;
-      started = null;
-      
-      window.localStorage.removeItem( 'fh_started' );
-
-      db.browseHistoryByEnd().then( ( data ) => {
-        data.ended = new Date();
-        return db.editHistory( data );
-      } );
-    }    
-  }
-
-  function onHungerClick() {
-    heditor.showModal();
-  }
-
-  function onHungerSave( value ) {
-    console.log( value );
-
-    heditor.close();
-
-    db.addHunger( value.level )
-    .then( ( item ) => level = item.level );        
-  }
-
-  function onWaterClick() {
-    weditor.showModal();
-  }
-
-  function onWaterSave( value ) {
-    weditor.close();
-
-    db.addWater( value.volume )
-    .then( ( item ) => db.browseWater( true ) )
-    .then( ( data ) => {
-      const total = data.reduce( ( previous, current ) => {
-        return previous + current.volume;
-      }, 0 );
-      water = total;
-    } );    
+      if( onend ) onend();
+    }
   }
 </script>
 
 <section>
 
-  <article>
+  <header>
+    <h3>Fasting</h3>
+    <button onclick={onsettings} type="button">
+      <Icon height="20" icon="material-symbols:settings-outline" width="20" />      
+    </button>
+  </header>
 
+  <article>
     {#if started === null}
       <p>You are not fasting.</p>  
     {:else}
       <p>You are fasting.</p>    
       <Timer {now} {started} />    
-      <p class="started">Started {formatted}</p>
+      <p class="started">Started {formatStarted( started )}</p>
     {/if}
-
     <button class="primary" onclick={onFastingClick} type="button">
       {started === null ? 'Start' : 'Stop'} fasting
     </button>
-
   </article>
 
-  <Adsense />
+  <article>
+    <ActivityGraph 
+      average={activity === null ? [] : activity.average} 
+      daily={activity === null ? null : activity.daily} 
+      days={7} />
+  </article>
 
   <footer>
-    <button class="hunger secondary" onclick={onHungerClick} type="button">
+    <button class="hunger secondary" onclick={onhunger} type="button">
       <Icon 
         height="20" 
         icon="material-symbols:fork-spoon-rounded" 
         width="20" />
-      <span>{hunger}</span>
+      <span>{formatHunger( hunger )}</span>
     </button>  
-    <button class="water secondary" onclick={onWaterClick} type="button">
+    <button class="water secondary" onclick={onwater} type="button">
       <Icon 
         height="20" 
         icon="material-symbols:water-drop-outline-rounded" 
@@ -160,9 +91,6 @@
       <span>{water} oz</span>    
     </button>    
   </footer>
-
-  <HungerEditor bind:this={heditor} {levels} {level} onsave={onHungerSave} />
-  <WaterEditor bind:this={weditor} onsave={onWaterSave} />
 
 </section>
 
@@ -231,6 +159,46 @@
     padding: 12px;
   }
 
+  header {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding: 16px 16px 0 16px    
+  }
+
+  header button {
+    align-items: center;
+    appearance: none;
+    background: none;
+    border: solid 1px #00000040;
+    border-radius: 40px;
+    box-sizing: border-box;
+    color: #161616;
+    cursor: pointer;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    justify-self: end;
+    margin: 0;
+    outline: none;
+    padding: 0;
+    width: 40px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  header h3 {
+    color: #161616;
+    cursor: default;
+    flex-basis: 0;
+    flex-grow: 1;
+    font-family: 'Roboto Variable', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 36px;
+    margin: 0;
+    padding: 0;
+  }
+
   p {
     color: #161616;
     cursor: default;
@@ -256,6 +224,7 @@
   }
 
   section {
+    border-right: solid 1px #00000040;
     display: flex;
     flex-basis: 0;
     flex-direction: column;
@@ -273,4 +242,14 @@
     justify-content: center;
     width: 100%;
   }  
+
+  @media( max-width: 780px ) {  
+    article:last-of-type {
+      display: none;
+    }
+
+    header {
+      display: none;
+    }
+  }
 </style>

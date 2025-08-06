@@ -1,10 +1,8 @@
 <script>
-  import {onMount} from "svelte";
-
   let {now = null, started = null} = $props();
 
   let duration = $derived.by( () => {
-    if( now === null || started === null ) {
+    if( started === null ) {
       return {
         hours: 0,
         minutes: '00',
