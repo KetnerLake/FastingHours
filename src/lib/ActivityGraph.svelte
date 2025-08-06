@@ -1,9 +1,63 @@
 <script>
+  import Icon from "@iconify/svelte";
+  import { onMount } from "svelte";
+
   let {average = [], daily = null, days = 10} = $props(); 
 
-  // TODO: Add sunrise and sunset for Ramadan?
-  // https://api.sunrise-sunset.org/json?lat=39.497222&lng=-104.765833&date=today
-  // let sunset = new Date( Date.UTC( 2025, 7, 5, 2, 8, 34 ) );
+  let sunrise = $state( null );
+  let sunset = $state( null );
+
+  let icon = $derived.by( () => {
+    if( sunset === null ) return null;
+
+    if( sunset.getTime() < Date.now() ) {
+      return 'material-symbols:moon-stars-outline-rounded';
+    } else {
+      return 'material-symbols:wb-sunny-outline-rounded';      
+    }
+  } );
+
+  onMount( () => {
+    navigator.geolocation.getCurrentPosition( ( position ) => {
+      fetch( `https://api.sunrise-sunset.org/json?lat=${position.latitude}&lng=${position.longitude}&date=today` )
+      .then( ( response ) => response.json() )
+      .then( ( data ) => {
+        sunrise = parseTime( data.results.sunrise );
+        sunset = parseTime( data.results.sunset );        
+
+        if( Date.now() > sunset.getTime() ) {
+          fetch( `https://api.sunrise-sunset.org/json?lat=${position.latitude}&lng=${position.longitude}&date=tomorrow` )          
+          .then( ( response ) => response.json() )
+          .then( ( data ) => {
+            sunrise = parseTime( data.results.sunrise );
+            sunset = parseTime( data.results.sunset );        
+          } );
+        }
+      } );
+    }, ( err ) => {
+      console.log( err );
+    } );
+  } );
+
+  function parseTime( value ) {
+    const parts = value.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
+
+    let hours = parseInt( parts[1], 10 );
+    const minutes = parseInt( parts[2], 10 );
+    const seconds = parseInt( parts[3], 10 );    
+    const ampm = parts[4].toUpperCase();
+
+    if( ampm === 'PM' && hours !== 12 ) {
+      hours += 12;
+    } else if( ampm === 'AM' && hours === 12 ) {
+      hours = 0;
+    }
+
+    const date = new Date();
+    date.setHours( hours, minutes, seconds, 0 );
+
+    return date;
+  }
 
   function formatLabel( value ) {
     value = new Date( value + 'T00:00:00' );
@@ -13,6 +67,14 @@
       day: 'numeric'
     } );    
     return formatter.format( value );
+  }
+
+  function formatTime( value ) {
+    const formatter = new Intl.DateTimeFormat( navigator.language, {
+      hour: 'numeric',
+      minute: '2-digit'
+    } );    
+    return formatter.format( value );    
   }
 
   function offset( hour, status ) {
@@ -67,19 +129,28 @@
   </div>
 
   <legend>
-    <!--
-    <Icon height="16" icon="material-symbols:wb-sunny-outline-rounded" width="16" />
-    <p>Aug 5 @ 12:34 PM</p>
-    <Icon height="16" icon="material-symbols:moon-stars-outline-rounded" width="16" />    
-    <p>Aug 5 @ 12:34 PM</p>    
-    -->    
-    <div></div>
+    {#if icon !== null}
+      <div class="daynight">
+        <Icon height="16" icon={icon} width="16" />
+        <p class="daynight">
+          <a href="https://sunrise-sunset.org" target="_blank">{formatTime( sunrise )}</a>
+        </p>
+      </div>
+    {/if}   
+    <div class="color"></div>
     <p>Fasting</p>
   </legend>
 
 </figure>
 
 <style>
+  a {
+    color: #0284c7;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
   div.day {
     background: #00000010;
     border-radius: 3px;
@@ -151,7 +222,7 @@
     padding: 0;
   }
 
-  legend div {
+  legend div.color {
     background: #52525b;
     border-radius: 3px;
     box-sizing: border-box;
@@ -159,6 +230,16 @@
     min-height: 16px;
     min-width: 16px;
   }
+
+  legend div.daynight {
+    align-items: center;
+    display: flex;
+    flex-basis: 0;
+    flex-direction: row;
+    flex-grow: 1;
+    gap: 6px;
+    padding: 0 0 0 66px;
+  }  
 
   p.day {
     box-sizing: border-box;
