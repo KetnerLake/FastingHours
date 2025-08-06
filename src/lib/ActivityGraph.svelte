@@ -1,47 +1,64 @@
 <script>
+  import daylight from "suncalc";  
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
 
   let {average = [], daily = null, days = 10} = $props(); 
 
-  let sunrise = $state( null );
-  let sunset = $state( null );
+  const SunCalc = daylight;
 
-  let icon = $derived.by( () => {
-    if( sunset === null ) return null;
+  let icon = $state( null );
+  let the_sun = $state( null );
 
-    if( sunset.getTime() < Date.now() ) {
-      return 'material-symbols:moon-stars-outline-rounded';
+  onMount( () => {
+    setInterval( () => {
+      const latitude = window.localStorage.getItem( 'fh_latitude' );
+
+      if( latitude !== null ) {
+        loadTheSun();
+      }
+    }, 60000 );
+
+    const latitude = window.localStorage.getItem( 'fh_latitude' );
+
+    if( latitude === null ) {
+      const response = confirm( 'Sunrise/set (important for religious observations) needs to know your location? Enable location detection (once only)?' );
+      
+      if( response ) {
+        navigator.geolocation.getCurrentPosition( ( position ) => {
+          window.localStorage.setItem( 'fh_latitude', position.coords.latitude );
+          window.localStorage.setItem( 'fh_longitude', position.coords.longitude );
+          loadTheSun();
+        }, ( err ) => {
+          console.log( err );
+        } );
+      }
     } else {
-      return 'material-symbols:wb-sunny-outline-rounded';      
+      loadTheSun();
     }
   } );
 
-  onMount( () => {
-    setInterval( () => loadTheSun(), 3600000 );
-    loadTheSun();
-  } );
-
   function loadTheSun() {
-    navigator.geolocation.getCurrentPosition( ( position ) => {
-      fetch( `https://api.sunrise-sunset.org/json?lat=${position.latitude}&lng=${position.longitude}&date=today` )
-      .then( ( response ) => response.json() )
-      .then( ( data ) => {
-        sunrise = new Date( parseTime( data.results.sunrise ).getTime() );
-        sunset = new Date( parseTime( data.results.sunset ).getTime() );        
+    const latitude = parseFloat( window.localStorage.getItem( 'fh_latitude' ) );
+    const longitude = parseFloat( window.localStorage.getItem( 'fh_longitude' ) );
+    const today = new Date();
 
-        if( Date.now() > sunset.getTime() ) {
-          fetch( `https://api.sunrise-sunset.org/json?lat=${position.latitude}&lng=${position.longitude}&date=tomorrow` )          
-          .then( ( response ) => response.json() )
-          .then( ( data ) => {
-            sunrise = new Date( parseTime( data.results.sunrise ).getTime() );
-            sunset = new Date( parseTime( data.results.sunset ).getTime() );        
-          } );
-        }
-      } );
-    }, ( err ) => {
-      console.log( err );
-    } );
+    let times = SunCalc.getTimes( today, latitude, longitude );
+
+    if( Date.now() < times.sunrise.getTime() ) {
+      the_sun = new Date( times.sunrise.getTime() );
+      icon = 'material-symbols:wb-sunny-outline-rounded';
+    } else if( Date.now() > times.sunrise.getTime() && Date.now() < times.sunset.getTime() ) {
+      the_sun = new Date( times.sunset.getTime() );
+      icon = 'material-symbols:moon-stars-outline-rounded';          
+    } else {
+      const tomorrow = new Date();
+      tomorrow.setDate( today.getDate() + 1 );
+
+      times = SunCalc.getTimes( tomorrow, latitude, longitude );
+      the_sun = new Date( times.sunrise.getTime() );
+      icon = 'material-symbols:wb-sunny-outline-rounded';
+    }
   }
 
   function parseTime( value ) {
@@ -136,9 +153,8 @@
   <legend>
     {#if icon !== null}
       <div class="daynight">        
-        <Icon color="#0284c7" height="16" icon={icon} width="16" />
-        <!-- TODO: I do not feel like this catches the "after sunset" scenario (VERIFY) -->
-        <p><a href="https://sunrise-sunset.org" target="_blank">{formatTime( Date.now() > sunrise.getTime() ? sunset : sunrise )}</a></p>            
+        <Icon color="#161616" height="16" icon={icon} width="16" />
+        <p>{formatTime( the_sun )}</p>            
      </div>
     {/if}   
     <div class="color"></div>
@@ -147,14 +163,7 @@
 
 </figure>
 
-<style>
-  a {
-    color: #0284c7;
-    cursor: pointer;
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
+<style>  
   div.day {
     background: #00000010;
     border-radius: 3px;

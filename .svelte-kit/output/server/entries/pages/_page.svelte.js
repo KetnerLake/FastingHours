@@ -2,6 +2,7 @@ import { e as escape_html, a as attr } from "../../chunks/attributes.js";
 import { x as current_component, v as pop, t as push, y as ensure_array_like, z as attr_style, A as attr_class, F as bind_props } from "../../chunks/index.js";
 import "clsx";
 import Dexie from "dexie";
+import "suncalc";
 function onDestroy(fn) {
   var context = (
     /** @type {Component} */
@@ -710,18 +711,9 @@ function Icon($$payload, $$props) {
 function ActivityGraph($$payload, $$props) {
   push();
   let { average = [], daily = null, days = 10 } = $$props;
-  let sunrise = null;
-  let sunset = null;
-  let icon = /* @__PURE__ */ (() => {
-    return null;
-  })();
   function formatLabel(value) {
     value = /* @__PURE__ */ new Date(value + "T00:00:00");
     const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric" });
-    return formatter.format(value);
-  }
-  function formatTime(value) {
-    const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
     return formatter.format(value);
   }
   function offset(hour, status) {
@@ -731,7 +723,7 @@ function ActivityGraph($$payload, $$props) {
     return 0;
   }
   const each_array_2 = ensure_array_like({ length: 24 });
-  $$payload.out += `<figure class="svelte-efxz8w"><div class="labels svelte-efxz8w"><p class="date svelte-efxz8w">Date</p> <p class="hour svelte-efxz8w">0</p> <p class="hour svelte-efxz8w">12</p> <p class="hour svelte-efxz8w">24</p></div> <div class="grid svelte-efxz8w">`;
+  $$payload.out += `<figure class="svelte-1ab00h4"><div class="labels svelte-1ab00h4"><p class="date svelte-1ab00h4">Date</p> <p class="hour svelte-1ab00h4">0</p> <p class="hour svelte-1ab00h4">12</p> <p class="hour svelte-1ab00h4">24</p></div> <div class="grid svelte-1ab00h4">`;
   if (daily !== null) {
     $$payload.out += "<!--[-->";
     const each_array = ensure_array_like(Object.keys(daily));
@@ -740,12 +732,12 @@ function ActivityGraph($$payload, $$props) {
       let day = each_array[$$index_1];
       const status = daily[day];
       const each_array_1 = ensure_array_like({ length: 24 });
-      $$payload.out += `<p class="day svelte-efxz8w">${escape_html(formatLabel(day))}</p> <!--[-->`;
+      $$payload.out += `<p class="day svelte-1ab00h4">${escape_html(formatLabel(day))}</p> <!--[-->`;
       for (let hour = 0, $$length2 = each_array_1.length; hour < $$length2; hour++) {
-        $$payload.out += `<div class="day svelte-efxz8w">`;
+        $$payload.out += `<div class="day svelte-1ab00h4">`;
         if (status[hour] !== 0) {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<div class="hour svelte-efxz8w"${attr_style("", {
+          $$payload.out += `<div class="hour svelte-1ab00h4"${attr_style("", {
             "margin-left": offset(hour, status),
             width: 100 * status[hour] + "%"
           })}></div>`;
@@ -760,20 +752,15 @@ function ActivityGraph($$payload, $$props) {
   } else {
     $$payload.out += "<!--[!-->";
   }
-  $$payload.out += `<!--]--></div> <div class="average grid svelte-efxz8w"><p class="day svelte-efxz8w">Avg</p> <!--[-->`;
+  $$payload.out += `<!--]--></div> <div class="average grid svelte-1ab00h4"><p class="day svelte-1ab00h4">Avg</p> <!--[-->`;
   for (let hour = 0, $$length = each_array_2.length; hour < $$length; hour++) {
-    $$payload.out += `<div class="day svelte-efxz8w"><div class="hour svelte-efxz8w"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
+    $$payload.out += `<div class="day svelte-1ab00h4"><div class="hour svelte-1ab00h4"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
   }
-  $$payload.out += `<!--]--></div> <legend class="svelte-efxz8w">`;
-  if (icon !== null) {
-    $$payload.out += "<!--[-->";
-    $$payload.out += `<div class="daynight svelte-efxz8w">`;
-    Icon($$payload, { color: "#0284c7", height: "16", icon, width: "16" });
-    $$payload.out += `<!----> <p class="svelte-efxz8w"><a href="https://sunrise-sunset.org" target="_blank" class="svelte-efxz8w">${escape_html(formatTime(Date.now() > sunrise.getTime() ? sunset : sunrise))}</a></p></div>`;
-  } else {
+  $$payload.out += `<!--]--></div> <legend class="svelte-1ab00h4">`;
+  {
     $$payload.out += "<!--[!-->";
   }
-  $$payload.out += `<!--]--> <div class="color svelte-efxz8w"></div> <p class="svelte-efxz8w">Fasting</p></legend></figure>`;
+  $$payload.out += `<!--]--> <div class="color svelte-1ab00h4"></div> <p class="svelte-1ab00h4">Fasting</p></legend></figure>`;
   pop();
 }
 function Timer($$payload, $$props) {
