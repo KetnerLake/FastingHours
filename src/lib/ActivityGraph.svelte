@@ -225,7 +225,7 @@
   legend p {
     box-sizing: border-box;
     color: #161616;
-    cursor: defaut;
+    cursor: default;
     font-family: 'Roboto Variable', sans-serif;
     font-size: 14px;
     font-weight: 400;

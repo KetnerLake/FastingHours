@@ -1,5 +1,4 @@
-import { e as escape_html, a as attr } from "../../chunks/attributes.js";
-import { x as current_component, v as pop, t as push, y as ensure_array_like, z as attr_style, A as attr_class, F as bind_props } from "../../chunks/index.js";
+import { y as current_component, v as pop, t as push, z as ensure_array_like, x as escape_html, A as attr_style, F as attr, G as attr_class, J as bind_props } from "../../chunks/index.js";
 import "clsx";
 import Dexie from "dexie";
 import "suncalc";
@@ -723,7 +722,7 @@ function ActivityGraph($$payload, $$props) {
     return 0;
   }
   const each_array_2 = ensure_array_like({ length: 24 });
-  $$payload.out += `<figure class="svelte-1ab00h4"><div class="labels svelte-1ab00h4"><p class="date svelte-1ab00h4">Date</p> <p class="hour svelte-1ab00h4">0</p> <p class="hour svelte-1ab00h4">12</p> <p class="hour svelte-1ab00h4">24</p></div> <div class="grid svelte-1ab00h4">`;
+  $$payload.out += `<figure class="svelte-121ng2g"><div class="labels svelte-121ng2g"><p class="date svelte-121ng2g">Date</p> <p class="hour svelte-121ng2g">0</p> <p class="hour svelte-121ng2g">12</p> <p class="hour svelte-121ng2g">24</p></div> <div class="grid svelte-121ng2g">`;
   if (daily !== null) {
     $$payload.out += "<!--[-->";
     const each_array = ensure_array_like(Object.keys(daily));
@@ -732,12 +731,12 @@ function ActivityGraph($$payload, $$props) {
       let day = each_array[$$index_1];
       const status = daily[day];
       const each_array_1 = ensure_array_like({ length: 24 });
-      $$payload.out += `<p class="day svelte-1ab00h4">${escape_html(formatLabel(day))}</p> <!--[-->`;
+      $$payload.out += `<p class="day svelte-121ng2g">${escape_html(formatLabel(day))}</p> <!--[-->`;
       for (let hour = 0, $$length2 = each_array_1.length; hour < $$length2; hour++) {
-        $$payload.out += `<div class="day svelte-1ab00h4">`;
+        $$payload.out += `<div class="day svelte-121ng2g">`;
         if (status[hour] !== 0) {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<div class="hour svelte-1ab00h4"${attr_style("", {
+          $$payload.out += `<div class="hour svelte-121ng2g"${attr_style("", {
             "margin-left": offset(hour, status),
             width: 100 * status[hour] + "%"
           })}></div>`;
@@ -752,15 +751,15 @@ function ActivityGraph($$payload, $$props) {
   } else {
     $$payload.out += "<!--[!-->";
   }
-  $$payload.out += `<!--]--></div> <div class="average grid svelte-1ab00h4"><p class="day svelte-1ab00h4">Avg</p> <!--[-->`;
+  $$payload.out += `<!--]--></div> <div class="average grid svelte-121ng2g"><p class="day svelte-121ng2g">Avg</p> <!--[-->`;
   for (let hour = 0, $$length = each_array_2.length; hour < $$length; hour++) {
-    $$payload.out += `<div class="day svelte-1ab00h4"><div class="hour svelte-1ab00h4"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
+    $$payload.out += `<div class="day svelte-121ng2g"><div class="hour svelte-121ng2g"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
   }
-  $$payload.out += `<!--]--></div> <legend class="svelte-1ab00h4">`;
+  $$payload.out += `<!--]--></div> <legend class="svelte-121ng2g">`;
   {
     $$payload.out += "<!--[!-->";
   }
-  $$payload.out += `<!--]--> <div class="color svelte-1ab00h4"></div> <p class="svelte-1ab00h4">Fasting</p></legend></figure>`;
+  $$payload.out += `<!--]--> <div class="color svelte-121ng2g"></div> <p class="svelte-121ng2g">Fasting</p></legend></figure>`;
   pop();
 }
 function Timer($$payload, $$props) {
@@ -780,7 +779,7 @@ function Timer($$payload, $$props) {
   $$payload.out += `<article class="svelte-10tx4k0"><p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(duration.hours)}</span> <span class="units svelte-10tx4k0">hrs</span></p> <p class="colon svelte-10tx4k0">:</p> <p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(duration.minutes)}</span> <span class="units svelte-10tx4k0">min</span></p> <p class="colon svelte-10tx4k0">:</p> <p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(duration.seconds)}</span> <span class="units svelte-10tx4k0">sec</span></p></article>`;
   pop();
 }
-function Fasting($$payload, $$props) {
+function FastingView($$payload, $$props) {
   push();
   let {
     activity = null,
@@ -1020,7 +1019,7 @@ function HistoryList($$payload, $$props) {
   $$payload.out += `<!--]-->`;
   pop();
 }
-function Hours($$payload, $$props) {
+function HoursView($$payload, $$props) {
   push();
   let { activity = null, history = [] } = $$props;
   $$payload.out += `<section class="svelte-jsa4zq"><header class="svelte-jsa4zq"><h3 class="svelte-jsa4zq">Hours</h3></header> <article class="svelte-jsa4zq">`;
@@ -1417,7 +1416,7 @@ function _page($$payload, $$props) {
     width: "20"
   });
   $$payload.out += `<!----></button></header> <section${attr("data-screen", "fasting")} class="svelte-1p6a8xw"><article class="svelte-1p6a8xw">`;
-  Fasting($$payload, {
+  FastingView($$payload, {
     activity,
     hunger,
     levels,
@@ -1426,7 +1425,7 @@ function _page($$payload, $$props) {
     water
   });
   $$payload.out += `<!----></article> <article class="svelte-1p6a8xw">`;
-  Hours($$payload, { activity, history });
+  HoursView($$payload, { activity, history });
   $$payload.out += `<!----></article></section></main> `;
   HistoryEditor($$payload, {
     field: history_field,

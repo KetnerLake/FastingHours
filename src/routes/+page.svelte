@@ -1,14 +1,14 @@
 <script>
   import "@fontsource-variable/roboto";   
   import { Database } from "$lib/Database.svelte";  
-  import Fasting from "$lib/view/Fasting.svelte";
+  import FastingView from "$lib/FastingView.svelte";
   import HistoryEditor from "$lib/HistoryEditor.svelte";    
-  import Hours from "$lib/view/Hours.svelte";
+  import HoursView from "$lib/HoursView.svelte";
   import HungerEditor from "$lib/HungerEditor.svelte";
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";  
-  import RadioGroup from "$lib/control/RadioGroup.svelte";
-  import Settings from "$lib/view/Settings.svelte";  
+  import RadioGroup from "$lib/RadioGroup.svelte";
+  import Settings from "$lib/Settings.svelte";  
   import WaterEditor from "$lib/WaterEditor.svelte";
 
   const db = new Database();
@@ -470,7 +470,7 @@
 
   <section data-screen={screen === 0 ? 'fasting' : 'hours'}>
     <article>
-      <Fasting 
+      <FastingView 
         {activity} 
         {hunger} 
         {levels} 
@@ -484,7 +484,7 @@
         {water} />
     </article>
     <article>
-      <Hours 
+      <HoursView 
         {activity} 
         {history} 
         {levels} 

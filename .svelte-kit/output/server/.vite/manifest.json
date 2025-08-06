@@ -8,10 +8,6 @@
       "_internal.js"
     ]
   },
-  "_attributes.js": {
-    "file": "chunks/attributes.js",
-    "name": "attributes"
-  },
   "_equality.js": {
     "file": "chunks/equality.js",
     "name": "equality"
@@ -25,10 +21,7 @@
   },
   "_index.js": {
     "file": "chunks/index.js",
-    "name": "index",
-    "imports": [
-      "_attributes.js"
-    ]
+    "name": "index"
   },
   "_internal.js": {
     "file": "chunks/internal.js",
@@ -80,7 +73,6 @@
     "src": "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte",
     "isEntry": true,
     "imports": [
-      "_attributes.js",
       "_index.js",
       "_equality.js",
       "_exports.js"
@@ -109,11 +101,10 @@
     "src": "src/routes/+page.svelte",
     "isEntry": true,
     "imports": [
-      "_attributes.js",
       "_index.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.DXZMxMIb.css"
+      "_app/immutable/assets/_page.z6O___Po.css"
     ],
     "assets": [
       "_app/immutable/assets/roboto-cyrillic-ext-wght-normal.mFIB_JhL.woff2",
@@ -125,18 +116,6 @@
       "_app/immutable/assets/roboto-vietnamese-wght-normal.CaxB3VTI.woff2",
       "_app/immutable/assets/roboto-latin-ext-wght-normal.Dqr_DJ6L.woff2",
       "_app/immutable/assets/roboto-latin-wght-normal.CHnqiQTt.woff2"
-    ]
-  },
-  "src/routes/single/+page.svelte": {
-    "file": "entries/pages/single/_page.svelte.js",
-    "name": "entries/pages/single/_page.svelte",
-    "src": "src/routes/single/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_attributes.js"
-    ],
-    "css": [
-      "_app/immutable/assets/_page.CH9iC10e.css"
     ]
   }
 }
