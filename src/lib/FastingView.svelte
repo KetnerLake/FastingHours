@@ -14,6 +14,7 @@
     onstart, 
     onwater, 
     started = null, 
+    sun = null,
     water = 0
   } = $props();
 
@@ -72,7 +73,8 @@
     <ActivityGraph 
       average={activity === null ? [] : activity.average} 
       daily={activity === null ? null : activity.daily} 
-      days={7} />
+      days={7}
+      {sun} />
   </article>
 
   <footer>

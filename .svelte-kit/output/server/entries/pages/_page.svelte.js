@@ -709,10 +709,14 @@ function Icon($$payload, $$props) {
 }
 function ActivityGraph($$payload, $$props) {
   push();
-  let { average = [], daily = null, days = 10 } = $$props;
+  let { average = [], daily = null, days = 10, sun } = $$props;
   function formatLabel(value) {
     value = /* @__PURE__ */ new Date(value + "T00:00:00");
     const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric" });
+    return formatter.format(value);
+  }
+  function formatTime(value) {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
     return formatter.format(value);
   }
   function offset(hour, status) {
@@ -756,7 +760,12 @@ function ActivityGraph($$payload, $$props) {
     $$payload.out += `<div class="day svelte-121ng2g"><div class="hour svelte-121ng2g"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
   }
   $$payload.out += `<!--]--></div> <legend class="svelte-121ng2g">`;
-  {
+  if (sun !== null) {
+    $$payload.out += "<!--[-->";
+    $$payload.out += `<div class="daynight svelte-121ng2g">`;
+    Icon($$payload, { color: "#161616", height: "16", icon: sun.icon, width: "16" });
+    $$payload.out += `<!----> <p class="svelte-121ng2g">${escape_html(formatTime(sun.timing))}</p></div>`;
+  } else {
     $$payload.out += "<!--[!-->";
   }
   $$payload.out += `<!--]--> <div class="color svelte-121ng2g"></div> <p class="svelte-121ng2g">Fasting</p></legend></figure>`;
@@ -787,6 +796,7 @@ function FastingView($$payload, $$props) {
     levels = [],
     now = null,
     started = null,
+    sun = null,
     water = 0
   } = $$props;
   function formatHunger(value) {
@@ -825,7 +835,8 @@ function FastingView($$payload, $$props) {
   ActivityGraph($$payload, {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
-    days: 7
+    days: 7,
+    sun
   });
   $$payload.out += `<!----></article> <footer class="svelte-81vq7f"><button class="hunger secondary svelte-81vq7f" type="button">`;
   Icon($$payload, {
@@ -1021,12 +1032,17 @@ function HistoryList($$payload, $$props) {
 }
 function HoursView($$payload, $$props) {
   push();
-  let { activity = null, history = [] } = $$props;
+  let {
+    activity = null,
+    history = [],
+    sun = null
+  } = $$props;
   $$payload.out += `<section class="svelte-jsa4zq"><header class="svelte-jsa4zq"><h3 class="svelte-jsa4zq">Hours</h3></header> <article class="svelte-jsa4zq">`;
   ActivityGraph($$payload, {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
-    days: 7
+    days: 7,
+    sun
   });
   $$payload.out += `<!----></article> <article class="svelte-jsa4zq">`;
   HistoryList($$payload, { items: history });
@@ -1167,6 +1183,7 @@ function _page($$payload, $$props) {
   let now = null;
   let screen = 0;
   let started = null;
+  let sun = null;
   let water = 0;
   let water_editor = void 0;
   let water_item = null;
@@ -1422,10 +1439,11 @@ function _page($$payload, $$props) {
     levels,
     now,
     started,
+    sun,
     water
   });
   $$payload.out += `<!----></article> <article class="svelte-1p6a8xw">`;
-  HoursView($$payload, { activity, history });
+  HoursView($$payload, { activity, history, sun });
   $$payload.out += `<!----></article></section></main> `;
   HistoryEditor($$payload, {
     field: history_field,

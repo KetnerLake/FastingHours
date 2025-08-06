@@ -2,7 +2,13 @@
   import ActivityGraph from "$lib/ActivityGraph.svelte";
   import HistoryList from "$lib/HistoryList.svelte";
 
-  let {activity = null, history = [], levels = [], onchange} = $props();
+  let {
+    activity = null, 
+    history = [], 
+    levels = [], 
+    onchange, 
+    sun = null
+  } = $props();
 </script>
 
 <section>
@@ -15,7 +21,8 @@
     <ActivityGraph 
       average={activity === null ? [] : activity.average} 
       daily={activity === null ? null : activity.daily} 
-      days={7} />
+      days={7}
+      {sun} />
   </article>
 
   <article>

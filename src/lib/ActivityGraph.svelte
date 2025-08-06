@@ -1,65 +1,8 @@
 <script>
-  import daylight from "suncalc";  
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
 
-  let {average = [], daily = null, days = 10} = $props(); 
-
-  const SunCalc = daylight;
-
-  let icon = $state( null );
-  let the_sun = $state( null );
-
-  onMount( () => {
-    setInterval( () => {
-      const latitude = window.localStorage.getItem( 'fh_latitude' );
-
-      if( latitude !== null ) {
-        loadTheSun();
-      }
-    }, 60000 );
-
-    const latitude = window.localStorage.getItem( 'fh_latitude' );
-
-    if( latitude === null ) {
-      const response = confirm( 'Sunrise/set (important for religious observations) needs to know your location? Enable location detection (once only)?' );
-      
-      if( response ) {
-        navigator.geolocation.getCurrentPosition( ( position ) => {
-          window.localStorage.setItem( 'fh_latitude', position.coords.latitude );
-          window.localStorage.setItem( 'fh_longitude', position.coords.longitude );
-          loadTheSun();
-        }, ( err ) => {
-          console.log( err );
-        } );
-      }
-    } else {
-      loadTheSun();
-    }
-  } );
-
-  function loadTheSun() {
-    const latitude = parseFloat( window.localStorage.getItem( 'fh_latitude' ) );
-    const longitude = parseFloat( window.localStorage.getItem( 'fh_longitude' ) );
-    const today = new Date();
-
-    let times = SunCalc.getTimes( today, latitude, longitude );
-
-    if( Date.now() < times.sunrise.getTime() ) {
-      the_sun = new Date( times.sunrise.getTime() );
-      icon = 'material-symbols:wb-sunny-outline-rounded';
-    } else if( Date.now() > times.sunrise.getTime() && Date.now() < times.sunset.getTime() ) {
-      the_sun = new Date( times.sunset.getTime() );
-      icon = 'material-symbols:moon-stars-outline-rounded';          
-    } else {
-      const tomorrow = new Date();
-      tomorrow.setDate( today.getDate() + 1 );
-
-      times = SunCalc.getTimes( tomorrow, latitude, longitude );
-      the_sun = new Date( times.sunrise.getTime() );
-      icon = 'material-symbols:wb-sunny-outline-rounded';
-    }
-  }
+  let {average = [], daily = null, days = 10, sun} = $props(); 
 
   function parseTime( value ) {
     const parts = value.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
@@ -151,10 +94,10 @@
   </div>
 
   <legend>
-    {#if icon !== null}
+    {#if sun !== null}
       <div class="daynight">        
-        <Icon color="#161616" height="16" icon={icon} width="16" />
-        <p>{formatTime( the_sun )}</p>            
+        <Icon color="#161616" height="16" icon={sun.icon} width="16" />
+        <p>{formatTime( sun.timing )}</p>            
      </div>
     {/if}   
     <div class="color"></div>

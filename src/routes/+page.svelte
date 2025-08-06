@@ -1,6 +1,7 @@
 <script>
   import "@fontsource-variable/roboto";   
   import { Database } from "$lib/Database.svelte";  
+  import daylight from "suncalc";      
   import FastingView from "$lib/FastingView.svelte";
   import HistoryEditor from "$lib/HistoryEditor.svelte";    
   import HoursView from "$lib/HoursView.svelte";
@@ -12,6 +13,7 @@
   import WaterEditor from "$lib/WaterEditor.svelte";
 
   const db = new Database();
+  const SunCalc = daylight;  
 
   let seconds = 0;
 
@@ -41,17 +43,46 @@
   let screen = $state( 0 );    
   let settings = $state();  
   let started = $state( null );
+  let sun = $state( null );
   let water = $state( 0 );
   let water_editor = $state();
   let water_item = $state( null );
 
   onMount( () => {
+    // Last screen viewed
+    // Pick up where left off
     let index = window.localStorage.getItem( 'fh_screen' );
     screen = index === null ? 0 : parseInt( index );
 
+    // Location
+    const latitude = window.localStorage.getItem( 'fh_latitude' );
+
+    if( latitude === null ) {
+      const response = confirm( 'Sunrise/set (important for religious observations) needs to know your location? Enable location detection (once only)?' );
+      
+      if( response ) {
+        navigator.geolocation.getCurrentPosition( ( position ) => {
+          window.localStorage.setItem( 'fh_latitude', position.coords.latitude );
+          window.localStorage.setItem( 'fh_longitude', position.coords.longitude );
+          loadSun();
+        } );
+      } else {
+        window.localStorage.setItem( 'fh_latitude', 'DENIED' );
+      }    
+    } else if( latitude !== 'DENIED' ) {
+      loadSun();
+    }
+
+    // Updates while on page
     setInterval( () => {
       if( seconds === 60 ) {
         loadActivity();
+
+        const latitude = window.localStorage.getItem( 'fh_latitude' );
+        if( latitude !== null && latitude !== 'DENIED' ) {
+          loadSun();
+        }
+
         seconds = 0;
       } else {
         seconds = seconds + 1;
@@ -62,8 +93,10 @@
       }
     }, 1000 );
 
+    // Core data
     loadStart();
     loadActivity();
+    loadSun();
     loadHunger();
     loadWater();
     loadHistory();
@@ -279,6 +312,36 @@
     } );
   }
 
+  function loadSun() {
+    const latitude = parseFloat( window.localStorage.getItem( 'fh_latitude' ) );
+    const longitude = parseFloat( window.localStorage.getItem( 'fh_longitude' ) );
+    const today = new Date();
+
+    let icon = null;    
+    let times = SunCalc.getTimes( today, latitude, longitude );
+    let timing = null;
+
+    if( Date.now() < times.sunrise.getTime() ) {
+      timing = new Date( times.sunrise.getTime() );
+      icon = 'material-symbols:wb-sunny-outline-rounded';
+    } else if( Date.now() > times.sunrise.getTime() && Date.now() < times.sunset.getTime() ) {
+      timing = new Date( times.sunset.getTime() );
+      icon = 'material-symbols:moon-stars-outline-rounded';          
+    } else {
+      const tomorrow = new Date();
+      tomorrow.setDate( today.getDate() + 1 );
+
+      times = SunCalc.getTimes( tomorrow, latitude, longitude );
+      timing = new Date( times.sunrise.getTime() );
+      icon = 'material-symbols:wb-sunny-outline-rounded';
+    }    
+
+    sun = {
+      icon,
+      timing
+    };
+  }
+
   function loadWater() {
     db.browseWater( true )
     .then( ( data ) => {
@@ -481,6 +544,7 @@
         onstart={onFastingStart}
         onwater={onFastingWater}
         {started}
+        {sun}
         {water} />
     </article>
     <article>
@@ -488,7 +552,8 @@
         {activity} 
         {history} 
         {levels} 
-        onchange={onHoursChange} />
+        onchange={onHoursChange} 
+        {sun} />
     </article>
   </section>
 
