@@ -96,7 +96,6 @@
     // Core data
     loadStart();
     loadActivity();
-    loadSun();
     loadHunger();
     loadWater();
     loadHistory();
