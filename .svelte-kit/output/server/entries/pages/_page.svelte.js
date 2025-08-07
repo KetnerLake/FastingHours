@@ -1,7 +1,7 @@
 import { y as current_component, v as pop, t as push, z as ensure_array_like, x as escape_html, A as attr_style, F as attr, G as attr_class, J as bind_props } from "../../chunks/index.js";
 import "clsx";
 import Dexie from "dexie";
-import "suncalc";
+import daylight from "suncalc";
 function onDestroy(fn) {
   var context = (
     /** @type {Component} */
@@ -709,7 +709,7 @@ function Icon($$payload, $$props) {
 }
 function ActivityGraph($$payload, $$props) {
   push();
-  let { average = [], daily = null, days = 10, sun } = $$props;
+  let { average = [], daily = null, days = 10, onsun, sun } = $$props;
   function formatLabel(value) {
     value = /* @__PURE__ */ new Date(value + "T00:00:00");
     const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric" });
@@ -726,7 +726,7 @@ function ActivityGraph($$payload, $$props) {
     return 0;
   }
   const each_array_2 = ensure_array_like({ length: 24 });
-  $$payload.out += `<figure class="svelte-121ng2g"><div class="labels svelte-121ng2g"><p class="date svelte-121ng2g">Date</p> <p class="hour svelte-121ng2g">0</p> <p class="hour svelte-121ng2g">12</p> <p class="hour svelte-121ng2g">24</p></div> <div class="grid svelte-121ng2g">`;
+  $$payload.out += `<figure class="svelte-1ypt1ot"><div class="labels svelte-1ypt1ot"><p class="date svelte-1ypt1ot">Date</p> <p class="hour svelte-1ypt1ot">0</p> <p class="hour svelte-1ypt1ot">12</p> <p class="hour svelte-1ypt1ot">24</p></div> <div class="grid svelte-1ypt1ot">`;
   if (daily !== null) {
     $$payload.out += "<!--[-->";
     const each_array = ensure_array_like(Object.keys(daily));
@@ -735,12 +735,12 @@ function ActivityGraph($$payload, $$props) {
       let day = each_array[$$index_1];
       const status = daily[day];
       const each_array_1 = ensure_array_like({ length: 24 });
-      $$payload.out += `<p class="day svelte-121ng2g">${escape_html(formatLabel(day))}</p> <!--[-->`;
+      $$payload.out += `<p class="day svelte-1ypt1ot">${escape_html(formatLabel(day))}</p> <!--[-->`;
       for (let hour = 0, $$length2 = each_array_1.length; hour < $$length2; hour++) {
-        $$payload.out += `<div class="day svelte-121ng2g">`;
+        $$payload.out += `<div class="day svelte-1ypt1ot">`;
         if (status[hour] !== 0) {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<div class="hour svelte-121ng2g"${attr_style("", {
+          $$payload.out += `<div class="hour svelte-1ypt1ot"${attr_style("", {
             "margin-left": offset(hour, status),
             width: 100 * status[hour] + "%"
           })}></div>`;
@@ -755,20 +755,20 @@ function ActivityGraph($$payload, $$props) {
   } else {
     $$payload.out += "<!--[!-->";
   }
-  $$payload.out += `<!--]--></div> <div class="average grid svelte-121ng2g"><p class="day svelte-121ng2g">Avg</p> <!--[-->`;
+  $$payload.out += `<!--]--></div> <div class="average grid svelte-1ypt1ot"><p class="day svelte-1ypt1ot">Avg</p> <!--[-->`;
   for (let hour = 0, $$length = each_array_2.length; hour < $$length; hour++) {
-    $$payload.out += `<div class="day svelte-121ng2g"><div class="hour svelte-121ng2g"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
+    $$payload.out += `<div class="day svelte-1ypt1ot"><div class="hour svelte-1ypt1ot"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
   }
-  $$payload.out += `<!--]--></div> <legend class="svelte-121ng2g">`;
-  if (sun !== null) {
+  $$payload.out += `<!--]--></div> <legend class="svelte-1ypt1ot"><div class="daynight svelte-1ypt1ot">`;
+  if (sun === null) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<div class="daynight svelte-121ng2g">`;
-    Icon($$payload, { color: "#161616", height: "16", icon: sun.icon, width: "16" });
-    $$payload.out += `<!----> <p class="svelte-121ng2g">${escape_html(formatTime(sun.timing))}</p></div>`;
+    $$payload.out += `<button class="sun svelte-1ypt1ot" type="button">Sunrise/sunset</button>`;
   } else {
     $$payload.out += "<!--[!-->";
+    Icon($$payload, { height: "16", icon: sun.icon, width: "16" });
+    $$payload.out += `<!----> <p class="svelte-1ypt1ot">${escape_html(formatTime(sun.timing))}</p>`;
   }
-  $$payload.out += `<!--]--> <div class="color svelte-121ng2g"></div> <p class="svelte-121ng2g">Fasting</p></legend></figure>`;
+  $$payload.out += `<!--]--></div> <div class="color svelte-1ypt1ot"></div> <p class="svelte-1ypt1ot">Fasting</p></legend></figure>`;
   pop();
 }
 function Timer($$payload, $$props) {
@@ -795,6 +795,7 @@ function FastingView($$payload, $$props) {
     hunger = 5,
     levels = [],
     now = null,
+    onsun,
     started = null,
     sun = null,
     water = 0
@@ -836,6 +837,7 @@ function FastingView($$payload, $$props) {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
     days: 7,
+    onsun,
     sun
   });
   $$payload.out += `<!----></article> <footer class="svelte-81vq7f"><button class="hunger secondary svelte-81vq7f" type="button">`;
@@ -993,31 +995,31 @@ function HistoryList($$payload, $$props) {
   }
   if (items.length === 0) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<article class="svelte-o2f930"><p class="svelte-o2f930">Your fasting history<br/>will be displayed here.</p></article>`;
+    $$payload.out += `<article class="svelte-uczyum"><p class="svelte-uczyum">Your fasting history<br/>will be displayed here.</p></article>`;
   } else {
     $$payload.out += "<!--[!-->";
     const each_array = ensure_array_like(items);
-    $$payload.out += `<ul class="svelte-o2f930"><!--[-->`;
+    $$payload.out += `<ul class="svelte-uczyum"><!--[-->`;
     for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
       let item = each_array[$$index];
       if (item.type === "header") {
         $$payload.out += "<!--[-->";
-        $$payload.out += `<li class="header svelte-o2f930"><p class="svelte-o2f930">${escape_html(formatHeader(item.timed))}</p></li>`;
+        $$payload.out += `<li class="header svelte-uczyum"><p class="svelte-uczyum">${escape_html(formatHeader(item.timed))}</p></li>`;
       } else {
         $$payload.out += "<!--[!-->";
-        $$payload.out += `<li class="svelte-o2f930"><button type="button" class="svelte-o2f930">`;
+        $$payload.out += `<li class="svelte-uczyum"><button type="button" class="svelte-uczyum">`;
         if (item.type === "start") {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<p class="svelte-o2f930">Started Fast</p> <p class="svelte-o2f930"></p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-uczyum">Started Fast</p> <p class="svelte-uczyum"></p> <p class="svelte-uczyum">${escape_html(formatDate(item.timed))}</p> <p class="svelte-uczyum">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "water") {
           $$payload.out += "<!--[1-->";
-          $$payload.out += `<p class="svelte-o2f930">Water</p> <p class="svelte-o2f930">${escape_html(item.volume)} oz</p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-uczyum">Water</p> <p class="svelte-uczyum">${escape_html(item.volume)} oz</p> <p class="svelte-uczyum">${escape_html(formatDate(item.timed))}</p> <p class="svelte-uczyum">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "hunger") {
           $$payload.out += "<!--[2-->";
-          $$payload.out += `<p class="svelte-o2f930">${escape_html(item.level)}</p> <p class="svelte-o2f930"></p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-uczyum">${escape_html(item.level)}</p> <p class="svelte-uczyum"></p> <p class="svelte-uczyum">${escape_html(formatDate(item.timed))}</p> <p class="svelte-uczyum">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "end") {
           $$payload.out += "<!--[3-->";
-          $$payload.out += `<p class="svelte-o2f930">Ended Fast</p> <p class="svelte-o2f930">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-o2f930">${escape_html(formatDate(item.timed))}</p> <p class="svelte-o2f930">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-uczyum">Ended Fast</p> <p class="svelte-uczyum">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-uczyum">${escape_html(formatDate(item.timed))}</p> <p class="svelte-uczyum">${escape_html(formatTime(item.timed))}</p>`;
         } else {
           $$payload.out += "<!--[!-->";
         }
@@ -1035,16 +1037,18 @@ function HoursView($$payload, $$props) {
   let {
     activity = null,
     history = [],
+    onsun,
     sun = null
   } = $$props;
-  $$payload.out += `<section class="svelte-jsa4zq"><header class="svelte-jsa4zq"><h3 class="svelte-jsa4zq">Hours</h3></header> <article class="svelte-jsa4zq">`;
+  $$payload.out += `<section class="svelte-za0fjh"><header class="svelte-za0fjh"><h3 class="svelte-za0fjh">Hours</h3></header> <article class="svelte-za0fjh">`;
   ActivityGraph($$payload, {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
     days: 7,
+    onsun,
     sun
   });
-  $$payload.out += `<!----></article> <article class="svelte-jsa4zq">`;
+  $$payload.out += `<!----></article> <article class="svelte-za0fjh">`;
   HistoryList($$payload, { items: history });
   $$payload.out += `<!----></article></section>`;
   pop();
@@ -1158,6 +1162,7 @@ function WaterEditor($$payload, $$props) {
 function _page($$payload, $$props) {
   push();
   const db = new Database();
+  const SunCalc = daylight;
   let activity = [];
   let history = [];
   let history_editor = void 0;
@@ -1343,6 +1348,28 @@ function _page($$payload, $$props) {
       }
     });
   }
+  function loadSun() {
+    const latitude = parseFloat(window.localStorage.getItem("fh_latitude"));
+    const longitude = parseFloat(window.localStorage.getItem("fh_longitude"));
+    const today = /* @__PURE__ */ new Date();
+    let icon = null;
+    let times = SunCalc.getTimes(today, latitude, longitude);
+    let timing = null;
+    if (Date.now() < times.sunrise.getTime()) {
+      timing = new Date(times.sunrise.getTime());
+      icon = "material-symbols:wb-sunny-outline-rounded";
+    } else if (Date.now() > times.sunrise.getTime() && Date.now() < times.sunset.getTime()) {
+      timing = new Date(times.sunset.getTime());
+      icon = "material-symbols:moon-stars-outline-rounded";
+    } else {
+      const tomorrow = /* @__PURE__ */ new Date();
+      tomorrow.setDate(today.getDate() + 1);
+      times = SunCalc.getTimes(tomorrow, latitude, longitude);
+      timing = new Date(times.sunrise.getTime());
+      icon = "material-symbols:wb-sunny-outline-rounded";
+    }
+    sun = { icon, timing };
+  }
   function loadWater() {
     db.browseWater(true).then((data) => {
       const total = data.reduce(
@@ -1402,6 +1429,18 @@ function _page($$payload, $$props) {
       });
     }
   }
+  function onSunEnable() {
+    const response = confirm("Sunrise/set (important for religious observations) needs to know your location? Enable location detection?");
+    if (response) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        window.localStorage.setItem("fh_latitude", position.coords.latitude);
+        window.localStorage.setItem("fh_longitude", position.coords.longitude);
+        loadSun();
+      });
+    } else {
+      window.localStorage.setItem("fh_latitude", "DENIED");
+    }
+  }
   function onWaterDelete(id) {
     db.deleteWater(id).then(() => {
       water_editor.close();
@@ -1440,12 +1479,18 @@ function _page($$payload, $$props) {
     hunger,
     levels,
     now,
+    onsun: onSunEnable,
     started,
     sun,
     water
   });
   $$payload.out += `<!----></article> <article class="svelte-1p6a8xw">`;
-  HoursView($$payload, { activity, history, sun });
+  HoursView($$payload, {
+    activity,
+    history,
+    onsun: onSunEnable,
+    sun
+  });
   $$payload.out += `<!----></article></section></main> `;
   HistoryEditor($$payload, {
     field: history_field,

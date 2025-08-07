@@ -7,6 +7,7 @@
     history = [], 
     levels = [], 
     onchange, 
+    onsun,
     sun = null
   } = $props();
 </script>
@@ -22,6 +23,7 @@
       average={activity === null ? [] : activity.average} 
       daily={activity === null ? null : activity.daily} 
       days={7}
+      {onsun}
       {sun} />
   </article>
 
@@ -51,7 +53,7 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    padding: 16px 0 16px 16px
+    padding: 16px 0 16px 16px;
   }
 
   h3 {

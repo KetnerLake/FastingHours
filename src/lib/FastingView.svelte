@@ -12,6 +12,7 @@
     onhunger, 
     onsettings, 
     onstart, 
+    onsun,
     onwater, 
     started = null, 
     sun = null,
@@ -74,6 +75,7 @@
       average={activity === null ? [] : activity.average} 
       daily={activity === null ? null : activity.daily} 
       days={7}
+      {onsun}
       {sun} />
   </article>
 

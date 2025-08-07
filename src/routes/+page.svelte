@@ -56,20 +56,7 @@
 
     // Location
     const latitude = window.localStorage.getItem( 'fh_latitude' );
-
-    if( latitude === null ) {
-      const response = confirm( 'Sunrise/set (important for religious observations) needs to know your location? Enable location detection (once only)?' );
-      
-      if( response ) {
-        navigator.geolocation.getCurrentPosition( ( position ) => {
-          window.localStorage.setItem( 'fh_latitude', position.coords.latitude );
-          window.localStorage.setItem( 'fh_longitude', position.coords.longitude );
-          loadSun();
-        } );
-      } else {
-        window.localStorage.setItem( 'fh_latitude', 'DENIED' );
-      }    
-    } else if( latitude !== 'DENIED' ) {
+    if( latitude !== null && latitude !== 'DENIED' ) {
       loadSun();
     }
 
@@ -492,6 +479,20 @@
     settings.showModal();
   }
 
+  function onSunEnable() {
+    const response = confirm( 'Sunrise/set (important for religious observations) needs to know your location? Enable location detection?' );
+    
+    if( response ) {
+      navigator.geolocation.getCurrentPosition( ( position ) => {
+        window.localStorage.setItem( 'fh_latitude', position.coords.latitude );
+        window.localStorage.setItem( 'fh_longitude', position.coords.longitude );
+        loadSun();
+      } );
+    } else {
+      window.localStorage.setItem( 'fh_latitude', 'DENIED' );
+    }
+  }  
+
   function onWaterDelete( id ) {
     db.deleteWater( id )
     .then( () => {
@@ -543,6 +544,7 @@
         onhunger={onFastingHunger}
         onsettings={onSettingsClick} 
         onstart={onFastingStart}
+        onsun={onSunEnable}
         onwater={onFastingWater}
         {started}
         {sun}
@@ -554,6 +556,7 @@
         {history} 
         {levels} 
         onchange={onHoursChange} 
+        onsun={onSunEnable}
         {sun} />
     </article>
   </section>

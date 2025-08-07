@@ -113,18 +113,18 @@
     padding: 0;
   }
 
-  li {
-    border-bottom: solid 1px #00000010;
-  }
-
   li.header {
     background: #f4f4f4;
-    border: none;
+    margin: 0 0 0 1px;
     padding: 2px 0 2px 16px;
     position: sticky;
     text-transform: uppercase;
     top: 0;
     z-index: 25;
+  }
+
+  li:not( .header ):not( :has( + li.header ) ) {
+    border-bottom: solid 1px #00000010;
   }
 
   li.header p {
@@ -190,4 +190,10 @@
     line-height: 20px;
     opacity: 0.60;
   }    
+
+  @media( max-width: 780px ) {  
+    li.header {
+      margin: 0;
+    }
+  }  
 </style>

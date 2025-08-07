@@ -2,7 +2,7 @@
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
 
-  let {average = [], daily = null, days = 10, sun} = $props(); 
+  let {average = [], daily = null, days = 10, onsun, sun} = $props(); 
 
   function parseTime( value ) {
     const parts = value.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
@@ -94,12 +94,16 @@
   </div>
 
   <legend>
-    {#if sun !== null}
-      <div class="daynight">        
-        <Icon color="#161616" height="16" icon={sun.icon} width="16" />
-        <p>{formatTime( sun.timing )}</p>            
-     </div>
-    {/if}   
+    <div class="daynight">
+      {#if sun === null}
+        <button class="sun" onclick={onsun} type="button">
+          Sunrise/sunset
+        </button>
+      {:else}
+        <Icon height="16" icon={sun.icon} width="16" />
+        <p>{formatTime( sun.timing )}</p>
+      {/if}   
+    </div>    
     <div class="color"></div>
     <p>Fasting</p>
   </legend>
@@ -107,6 +111,23 @@
 </figure>
 
 <style>  
+  button.sun {
+    appearance: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #0284c7;
+    font-family: 'Roboto Variable', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.10px;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   div.day {
     background: #00000010;
     border-radius: 3px;
