@@ -272,7 +272,18 @@
       if( item === null ) {        
         hunger = 5;
       } else {
-        hunger = item.level;
+        const today = new Date();
+        const created = new Date( item.created );
+        
+        if( 
+          today.getFullYear() === created.getFullYear() &&
+          today.getMonth() === created.getMonth() &&
+          today.getDate() === created.getDate()
+        ) {
+          hunger = item.level;
+        } else {
+          hunger = 5;
+        }
       }
     } ); 
   }
