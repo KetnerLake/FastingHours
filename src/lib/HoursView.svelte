@@ -97,7 +97,6 @@
 
     section {
       max-width: unset;
-      overflow: auto;
     } 
   }
 </style>

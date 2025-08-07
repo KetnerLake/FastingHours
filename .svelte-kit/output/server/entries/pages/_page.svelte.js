@@ -995,31 +995,31 @@ function HistoryList($$payload, $$props) {
   }
   if (items.length === 0) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<article class="svelte-49y3a8"><p class="svelte-49y3a8">Your fasting history<br/>will be displayed here.</p></article>`;
+    $$payload.out += `<article class="svelte-171nltf"><p class="svelte-171nltf">Your fasting history<br/>will be displayed here.</p></article>`;
   } else {
     $$payload.out += "<!--[!-->";
     const each_array = ensure_array_like(items);
-    $$payload.out += `<ul class="svelte-49y3a8"><!--[-->`;
+    $$payload.out += `<ul class="svelte-171nltf"><!--[-->`;
     for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
       let item = each_array[$$index];
       if (item.type === "header") {
         $$payload.out += "<!--[-->";
-        $$payload.out += `<li class="header svelte-49y3a8"><p class="svelte-49y3a8">${escape_html(formatHeader(item.timed))}</p></li>`;
+        $$payload.out += `<li class="header svelte-171nltf"><p class="svelte-171nltf">${escape_html(formatHeader(item.timed))}</p></li>`;
       } else {
         $$payload.out += "<!--[!-->";
-        $$payload.out += `<li class="svelte-49y3a8"><button type="button" class="svelte-49y3a8">`;
+        $$payload.out += `<li class="svelte-171nltf"><button type="button" class="svelte-171nltf">`;
         if (item.type === "start") {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<p class="svelte-49y3a8">Started Fast</p> <p class="svelte-49y3a8"></p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-171nltf">Started Fast</p> <p class="svelte-171nltf"></p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "water") {
           $$payload.out += "<!--[1-->";
-          $$payload.out += `<p class="svelte-49y3a8">Water</p> <p class="svelte-49y3a8">${escape_html(item.volume)} oz</p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-171nltf">Water</p> <p class="svelte-171nltf">${escape_html(item.volume)} oz</p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "hunger") {
           $$payload.out += "<!--[2-->";
-          $$payload.out += `<p class="svelte-49y3a8">${escape_html(item.level)}</p> <p class="svelte-49y3a8"></p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-171nltf">${escape_html(item.level)}</p> <p class="svelte-171nltf"></p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "end") {
           $$payload.out += "<!--[3-->";
-          $$payload.out += `<p class="svelte-49y3a8">Ended Fast</p> <p class="svelte-49y3a8">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-171nltf">Ended Fast</p> <p class="svelte-171nltf">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
         } else {
           $$payload.out += "<!--[!-->";
         }
@@ -1040,7 +1040,7 @@ function HoursView($$payload, $$props) {
     onsun,
     sun = null
   } = $$props;
-  $$payload.out += `<section class="svelte-za0fjh"><header class="svelte-za0fjh"><h3 class="svelte-za0fjh">Hours</h3></header> <article class="svelte-za0fjh">`;
+  $$payload.out += `<section class="svelte-1h1hw53"><header class="svelte-1h1hw53"><h3 class="svelte-1h1hw53">Hours</h3></header> <article class="svelte-1h1hw53">`;
   ActivityGraph($$payload, {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
@@ -1048,7 +1048,7 @@ function HoursView($$payload, $$props) {
     onsun,
     sun
   });
-  $$payload.out += `<!----></article> <article class="svelte-za0fjh">`;
+  $$payload.out += `<!----></article> <article class="svelte-1h1hw53">`;
   HistoryList($$payload, { items: history });
   $$payload.out += `<!----></article></section>`;
   pop();
