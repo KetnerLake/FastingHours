@@ -120,7 +120,6 @@
     position: sticky;
     text-transform: uppercase;
     top: 0;
-    z-index: 25;
   }
 
   li:not( .header ):not( :has( + li.header ) ) {
@@ -175,9 +174,9 @@
   }  
 
   li button p:nth-of-type( 3 ) {
+    color: #16161699;
     font-size: 14px;
     line-height: 20px;
-    opacity: 0.60;
   }  
 
   li button p:nth-of-type( 2 ),
@@ -186,9 +185,9 @@
   }  
 
   li button p:nth-of-type( 4 ) {
+    color: #16161699;
     font-size: 14px;
     line-height: 20px;
-    opacity: 0.60;
   }    
 
   @media( max-width: 780px ) {  
