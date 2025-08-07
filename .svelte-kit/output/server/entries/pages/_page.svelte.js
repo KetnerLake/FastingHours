@@ -1040,7 +1040,7 @@ function HoursView($$payload, $$props) {
     onsun,
     sun = null
   } = $$props;
-  $$payload.out += `<section class="svelte-1h1hw53"><header class="svelte-1h1hw53"><h3 class="svelte-1h1hw53">Hours</h3></header> <article class="svelte-1h1hw53">`;
+  $$payload.out += `<section class="svelte-1exefee"><header class="svelte-1exefee"><h3 class="svelte-1exefee">Hours</h3></header> <article class="svelte-1exefee">`;
   ActivityGraph($$payload, {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
@@ -1048,7 +1048,7 @@ function HoursView($$payload, $$props) {
     onsun,
     sun
   });
-  $$payload.out += `<!----></article> <article class="svelte-1h1hw53">`;
+  $$payload.out += `<!----></article> <article class="svelte-1exefee">`;
   HistoryList($$payload, { items: history });
   $$payload.out += `<!----></article></section>`;
   pop();

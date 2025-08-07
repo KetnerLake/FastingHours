@@ -84,7 +84,7 @@
     }
 
     article:last-of-type {
-      overflow: auto;
+      overflow: hidden;
     }    
 
     h3 {
