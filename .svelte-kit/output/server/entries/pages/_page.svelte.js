@@ -995,31 +995,31 @@ function HistoryList($$payload, $$props) {
   }
   if (items.length === 0) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<article class="svelte-1jhoym5"><p class="svelte-1jhoym5">Your fasting history<br/>will be displayed here.</p></article>`;
+    $$payload.out += `<article class="svelte-49y3a8"><p class="svelte-49y3a8">Your fasting history<br/>will be displayed here.</p></article>`;
   } else {
     $$payload.out += "<!--[!-->";
     const each_array = ensure_array_like(items);
-    $$payload.out += `<ul class="svelte-1jhoym5"><!--[-->`;
+    $$payload.out += `<ul class="svelte-49y3a8"><!--[-->`;
     for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
       let item = each_array[$$index];
       if (item.type === "header") {
         $$payload.out += "<!--[-->";
-        $$payload.out += `<li class="header svelte-1jhoym5"><p class="svelte-1jhoym5">${escape_html(formatHeader(item.timed))}</p></li>`;
+        $$payload.out += `<li class="header svelte-49y3a8"><p class="svelte-49y3a8">${escape_html(formatHeader(item.timed))}</p></li>`;
       } else {
         $$payload.out += "<!--[!-->";
-        $$payload.out += `<li class="svelte-1jhoym5"><button type="button" class="svelte-1jhoym5">`;
+        $$payload.out += `<li class="svelte-49y3a8"><button type="button" class="svelte-49y3a8">`;
         if (item.type === "start") {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<p class="svelte-1jhoym5">Started Fast</p> <p class="svelte-1jhoym5"></p> <p class="svelte-1jhoym5">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1jhoym5">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-49y3a8">Started Fast</p> <p class="svelte-49y3a8"></p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "water") {
           $$payload.out += "<!--[1-->";
-          $$payload.out += `<p class="svelte-1jhoym5">Water</p> <p class="svelte-1jhoym5">${escape_html(item.volume)} oz</p> <p class="svelte-1jhoym5">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1jhoym5">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-49y3a8">Water</p> <p class="svelte-49y3a8">${escape_html(item.volume)} oz</p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "hunger") {
           $$payload.out += "<!--[2-->";
-          $$payload.out += `<p class="svelte-1jhoym5">${escape_html(item.level)}</p> <p class="svelte-1jhoym5"></p> <p class="svelte-1jhoym5">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1jhoym5">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-49y3a8">${escape_html(item.level)}</p> <p class="svelte-49y3a8"></p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "end") {
           $$payload.out += "<!--[3-->";
-          $$payload.out += `<p class="svelte-1jhoym5">Ended Fast</p> <p class="svelte-1jhoym5">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-1jhoym5">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1jhoym5">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-49y3a8">Ended Fast</p> <p class="svelte-49y3a8">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-49y3a8">${escape_html(formatDate(item.timed))}</p> <p class="svelte-49y3a8">${escape_html(formatTime(item.timed))}</p>`;
         } else {
           $$payload.out += "<!--[!-->";
         }

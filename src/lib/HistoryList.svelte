@@ -117,6 +117,7 @@
     background: #f4f4f4;
     margin: 0 0 0 1px;
     padding: 2px 0 2px 16px;
+    position: -webkit-sticky;
     position: sticky;
     text-transform: uppercase;
     top: 0;
