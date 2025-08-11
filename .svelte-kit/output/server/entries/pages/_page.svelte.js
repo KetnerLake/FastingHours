@@ -1420,7 +1420,6 @@ function _page($$payload, $$props) {
         0
       );
       water = total;
-      data.push({ created: new Date(2025, 7, 9), volume: 16 });
       const today = /* @__PURE__ */ new Date();
       today.setHours(0, 0, 0, 0);
       const volumeByDate = {};
