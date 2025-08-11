@@ -1,4 +1,4 @@
-import { y as current_component, v as pop, t as push, z as ensure_array_like, x as escape_html, A as attr_style, F as attr, G as attr_class, J as bind_props } from "../../chunks/index.js";
+import { y as current_component, v as pop, t as push, z as ensure_array_like, x as escape_html, A as attr_style, F as maybe_selected, G as attr, J as attr_class, K as bind_props } from "../../chunks/index.js";
 import "clsx";
 import Dexie from "dexie";
 import daylight from "suncalc";
@@ -709,14 +709,10 @@ function Icon($$payload, $$props) {
 }
 function ActivityGraph($$payload, $$props) {
   push();
-  let { average = [], daily = null, days = 10, onsun, sun } = $$props;
+  let { average = [], daily = null } = $$props;
   function formatLabel(value) {
     value = /* @__PURE__ */ new Date(value + "T00:00:00");
     const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric" });
-    return formatter.format(value);
-  }
-  function formatTime(value) {
-    const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
     return formatter.format(value);
   }
   function offset(hour, status) {
@@ -726,7 +722,7 @@ function ActivityGraph($$payload, $$props) {
     return 0;
   }
   const each_array_2 = ensure_array_like({ length: 24 });
-  $$payload.out += `<figure class="svelte-1ypt1ot"><div class="labels svelte-1ypt1ot"><p class="date svelte-1ypt1ot">Date</p> <p class="hour svelte-1ypt1ot">0</p> <p class="hour svelte-1ypt1ot">12</p> <p class="hour svelte-1ypt1ot">24</p></div> <div class="grid svelte-1ypt1ot">`;
+  $$payload.out += `<figure class="svelte-z94qzf"><div class="labels svelte-z94qzf"><p class="date svelte-z94qzf">Date</p> <p class="hour svelte-z94qzf">0</p> <p class="hour svelte-z94qzf">12</p> <p class="hour svelte-z94qzf">24</p></div> <div class="grid svelte-z94qzf">`;
   if (daily !== null) {
     $$payload.out += "<!--[-->";
     const each_array = ensure_array_like(Object.keys(daily));
@@ -735,12 +731,12 @@ function ActivityGraph($$payload, $$props) {
       let day = each_array[$$index_1];
       const status = daily[day];
       const each_array_1 = ensure_array_like({ length: 24 });
-      $$payload.out += `<p class="day svelte-1ypt1ot">${escape_html(formatLabel(day))}</p> <!--[-->`;
+      $$payload.out += `<p class="day svelte-z94qzf">${escape_html(formatLabel(day))}</p> <!--[-->`;
       for (let hour = 0, $$length2 = each_array_1.length; hour < $$length2; hour++) {
-        $$payload.out += `<div class="day svelte-1ypt1ot">`;
+        $$payload.out += `<div class="day svelte-z94qzf">`;
         if (status[hour] !== 0) {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<div class="hour svelte-1ypt1ot"${attr_style("", {
+          $$payload.out += `<div class="hour svelte-z94qzf"${attr_style("", {
             "margin-left": offset(hour, status),
             width: 100 * status[hour] + "%"
           })}></div>`;
@@ -755,20 +751,74 @@ function ActivityGraph($$payload, $$props) {
   } else {
     $$payload.out += "<!--[!-->";
   }
-  $$payload.out += `<!--]--></div> <div class="average grid svelte-1ypt1ot"><p class="day svelte-1ypt1ot">Avg</p> <!--[-->`;
+  $$payload.out += `<!--]--></div> <div class="average grid svelte-z94qzf"><p class="day svelte-z94qzf">Avg</p> <!--[-->`;
   for (let hour = 0, $$length = each_array_2.length; hour < $$length; hour++) {
-    $$payload.out += `<div class="day svelte-1ypt1ot"><div class="hour svelte-1ypt1ot"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
+    $$payload.out += `<div class="day svelte-z94qzf"><div class="hour svelte-z94qzf"${attr_style("", { opacity: average[hour], width: "100%" })}></div></div>`;
   }
-  $$payload.out += `<!--]--></div> <legend class="svelte-1ypt1ot"><div class="daynight svelte-1ypt1ot">`;
+  $$payload.out += `<!--]--></div></figure>`;
+  pop();
+}
+function Select($$payload, $$props) {
+  push();
+  let { children, icon, label, value = 0 } = $$props;
+  $$payload.out += `<div class="svelte-avz5er">`;
+  Icon($$payload, { color: "#161616", height: "20", icon, width: "20" });
+  $$payload.out += `<!----> <p class="svelte-avz5er">${escape_html(label)}</p> `;
+  Icon($$payload, {
+    color: "#161616",
+    height: "20",
+    icon: "material-symbols:keyboard-arrow-down-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----> <select class="svelte-avz5er">`;
+  $$payload.select_value = value;
+  children?.($$payload);
+  $$payload.out += `<!---->`;
+  $$payload.select_value = void 0;
+  $$payload.out += `</select></div>`;
+  pop();
+}
+function GraphSection($$payload, $$props) {
+  push();
+  let {
+    average = [],
+    daily = null,
+    days = 10,
+    onsun,
+    sun,
+    water = []
+  } = $$props;
+  function formatTime(value) {
+    const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
+    return formatter.format(value);
+  }
+  $$payload.out += `<section class="svelte-bt65q5">`;
+  {
+    $$payload.out += "<!--[-->";
+    ActivityGraph($$payload, { average, daily });
+  }
+  $$payload.out += `<!--]--> <footer class="svelte-bt65q5"><div class="daynight svelte-bt65q5">`;
   if (sun === null) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<button class="sun svelte-1ypt1ot" type="button">Sunrise/sunset</button>`;
+    $$payload.out += `<button class="sun svelte-bt65q5" type="button">Sunrise/sunset</button>`;
   } else {
     $$payload.out += "<!--[!-->";
-    Icon($$payload, { height: "16", icon: sun.icon, width: "16" });
-    $$payload.out += `<!----> <p class="svelte-1ypt1ot">${escape_html(formatTime(sun.timing))}</p>`;
+    Icon($$payload, {
+      height: "16",
+      icon: sun && sun.icon ? sun.icon : null,
+      width: "16"
+    });
+    $$payload.out += `<!----> <p class="svelte-bt65q5">${escape_html(sun && sun.timing ? formatTime(sun.timing) : "")}</p>`;
   }
-  $$payload.out += `<!--]--></div> <div class="color svelte-1ypt1ot"></div> <p class="svelte-1ypt1ot">Fasting</p></legend></figure>`;
+  $$payload.out += `<!--]--></div> `;
+  Select($$payload, {
+    icon: "material-symbols:mode-heat-outline-rounded",
+    label: "Fasting",
+    children: ($$payload2) => {
+      $$payload2.out += `<option data-icon="material-symbols:mode-heat-outline-rounded" selected value="0"${maybe_selected($$payload2, "0")}>Fasting</option> <option data-icon="material-symbols:water-drop-outline-rounded" value="1"${maybe_selected($$payload2, "1")}>Water</option>`;
+    }
+  });
+  $$payload.out += `<!----></footer></section>`;
   pop();
 }
 function Timer($$payload, $$props) {
@@ -798,6 +848,7 @@ function FastingView($$payload, $$props) {
     onsun,
     started = null,
     sun = null,
+    volume = null,
     water = 0
   } = $$props;
   function formatHunger(value) {
@@ -816,37 +867,38 @@ function FastingView($$payload, $$props) {
     });
     return formatter.format(value);
   }
-  $$payload.out += `<section class="svelte-81vq7f"><header class="svelte-81vq7f"><h3 class="svelte-81vq7f">Fasting</h3> <button type="button" class="svelte-81vq7f">`;
+  $$payload.out += `<section class="svelte-1tavlmb"><header class="svelte-1tavlmb"><h3 class="svelte-1tavlmb">Fasting</h3> <button type="button" class="svelte-1tavlmb">`;
   Icon($$payload, {
     height: "20",
-    icon: "material-symbols:settings-outline",
+    icon: "material-symbols:person-outline-rounded",
     width: "20"
   });
-  $$payload.out += `<!----></button></header> <article class="svelte-81vq7f">`;
+  $$payload.out += `<!----></button></header> <article class="svelte-1tavlmb">`;
   if (started === null) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<p class="svelte-81vq7f">You are not fasting.</p>`;
+    $$payload.out += `<p class="svelte-1tavlmb">You are not fasting.</p>`;
   } else {
     $$payload.out += "<!--[!-->";
-    $$payload.out += `<p class="svelte-81vq7f">You are fasting.</p> `;
+    $$payload.out += `<p class="svelte-1tavlmb">You are fasting.</p> `;
     Timer($$payload, { now, started });
-    $$payload.out += `<!----> <p class="started svelte-81vq7f">Started ${escape_html(formatStarted(started))}</p>`;
+    $$payload.out += `<!----> <p class="started svelte-1tavlmb">Started ${escape_html(formatStarted(started))}</p>`;
   }
-  $$payload.out += `<!--]--> <button class="primary svelte-81vq7f" type="button">${escape_html(started === null ? "Start" : "Stop")} fasting</button></article> <article class="svelte-81vq7f">`;
-  ActivityGraph($$payload, {
+  $$payload.out += `<!--]--> <button class="primary svelte-1tavlmb" type="button">${escape_html(started === null ? "Start" : "Stop")} fasting</button></article> <div class="graph svelte-1tavlmb">`;
+  GraphSection($$payload, {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
     days: 7,
     onsun,
-    sun
+    sun,
+    water: volume
   });
-  $$payload.out += `<!----></article> <footer class="svelte-81vq7f"><button class="hunger secondary svelte-81vq7f" type="button">`;
+  $$payload.out += `<!----></div> <footer class="svelte-1tavlmb"><button class="hunger secondary svelte-1tavlmb" type="button">`;
   Icon($$payload, {
     height: "20",
     icon: "material-symbols:fork-spoon-rounded",
     width: "20"
   });
-  $$payload.out += `<!----> <span>${escape_html(formatHunger(hunger))}</span></button> <button class="water secondary svelte-81vq7f" type="button">`;
+  $$payload.out += `<!----> <span>${escape_html(formatHunger(hunger))}</span></button> <button class="water secondary svelte-1tavlmb" type="button">`;
   Icon($$payload, {
     height: "20",
     icon: "material-symbols:water-drop-outline-rounded",
@@ -995,31 +1047,31 @@ function HistoryList($$payload, $$props) {
   }
   if (items.length === 0) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<article class="svelte-171nltf"><p class="svelte-171nltf">Your fasting history<br/>will be displayed here.</p></article>`;
+    $$payload.out += `<article class="svelte-1vxkmhw"><p class="svelte-1vxkmhw">Your fasting history<br/>will be displayed here.</p></article>`;
   } else {
     $$payload.out += "<!--[!-->";
     const each_array = ensure_array_like(items);
-    $$payload.out += `<ul class="svelte-171nltf"><!--[-->`;
+    $$payload.out += `<ul class="svelte-1vxkmhw"><!--[-->`;
     for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
       let item = each_array[$$index];
       if (item.type === "header") {
         $$payload.out += "<!--[-->";
-        $$payload.out += `<li class="header svelte-171nltf"><p class="svelte-171nltf">${escape_html(formatHeader(item.timed))}</p></li>`;
+        $$payload.out += `<li class="header svelte-1vxkmhw"><p class="svelte-1vxkmhw">${escape_html(formatHeader(item.timed))}</p></li>`;
       } else {
         $$payload.out += "<!--[!-->";
-        $$payload.out += `<li class="svelte-171nltf"><button type="button" class="svelte-171nltf">`;
+        $$payload.out += `<li class="svelte-1vxkmhw"><button type="button" class="svelte-1vxkmhw">`;
         if (item.type === "start") {
           $$payload.out += "<!--[-->";
-          $$payload.out += `<p class="svelte-171nltf">Started Fast</p> <p class="svelte-171nltf"></p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-1vxkmhw">Started Fast</p> <p class="svelte-1vxkmhw"></p> <p class="svelte-1vxkmhw">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1vxkmhw">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "water") {
           $$payload.out += "<!--[1-->";
-          $$payload.out += `<p class="svelte-171nltf">Water</p> <p class="svelte-171nltf">${escape_html(item.volume)} oz</p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-1vxkmhw">Water</p> <p class="svelte-1vxkmhw">${escape_html(item.volume)} oz</p> <p class="svelte-1vxkmhw">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1vxkmhw">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "hunger") {
           $$payload.out += "<!--[2-->";
-          $$payload.out += `<p class="svelte-171nltf">${escape_html(item.level)}</p> <p class="svelte-171nltf"></p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-1vxkmhw">${escape_html(item.level)}</p> <p class="svelte-1vxkmhw"></p> <p class="svelte-1vxkmhw">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1vxkmhw">${escape_html(formatTime(item.timed))}</p>`;
         } else if (item.type === "end") {
           $$payload.out += "<!--[3-->";
-          $$payload.out += `<p class="svelte-171nltf">Ended Fast</p> <p class="svelte-171nltf">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-171nltf">${escape_html(formatDate(item.timed))}</p> <p class="svelte-171nltf">${escape_html(formatTime(item.timed))}</p>`;
+          $$payload.out += `<p class="svelte-1vxkmhw">Ended Fast</p> <p class="svelte-1vxkmhw">${escape_html(formatDuration(item.started, item.ended))}</p> <p class="svelte-1vxkmhw">${escape_html(formatDate(item.timed))}</p> <p class="svelte-1vxkmhw">${escape_html(formatTime(item.timed))}</p>`;
         } else {
           $$payload.out += "<!--[!-->";
         }
@@ -1038,17 +1090,19 @@ function HoursView($$payload, $$props) {
     activity = null,
     history = [],
     onsun,
-    sun = null
+    sun = null,
+    volume
   } = $$props;
-  $$payload.out += `<section class="svelte-1exefee"><header class="svelte-1exefee"><h3 class="svelte-1exefee">Hours</h3></header> <article class="svelte-1exefee">`;
-  ActivityGraph($$payload, {
+  $$payload.out += `<section class="svelte-1moll0f"><header class="svelte-1moll0f"><h3 class="svelte-1moll0f">Hours</h3></header> <div class="svelte-1moll0f">`;
+  GraphSection($$payload, {
     average: activity === null ? [] : activity.average,
     daily: activity === null ? null : activity.daily,
     days: 7,
     onsun,
-    sun
+    sun,
+    water: volume
   });
-  $$payload.out += `<!----></article> <article class="svelte-1exefee">`;
+  $$payload.out += `<!----></div> <article class="svelte-1moll0f">`;
   HistoryList($$payload, { items: history });
   $$payload.out += `<!----></article></section>`;
   pop();
@@ -1189,6 +1243,7 @@ function _page($$payload, $$props) {
   let screen = 0;
   let started = null;
   let sun = null;
+  let volume = [];
   let water = 0;
   let water_editor = void 0;
   let water_item = null;
@@ -1257,7 +1312,7 @@ function _page($$payload, $$props) {
           hourTotals[hour] += dailyActivity[date][hour];
         }
       }
-      const averageHourlyActivity = hourTotals.map((total) => +(total / 10).toFixed(6));
+      const averageHourlyActivity = hourTotals.map((total) => +(total / days).toFixed(6));
       activity = { daily: dailyActivity, average: averageHourlyActivity };
     });
   }
@@ -1385,6 +1440,24 @@ function _page($$payload, $$props) {
         0
       );
       water = total;
+      const today = /* @__PURE__ */ new Date();
+      today.setHours(0, 0, 0, 0);
+      const volumeByDate = {};
+      for (const { created, volume: volume2 } of data) {
+        const key = new Date(created).toISOString().slice(0, 10);
+        volumeByDate[key] = (volumeByDate[key] || 0) + volume2;
+      }
+      const result = [];
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const key = date.toISOString().slice(0, 10);
+        result.push({
+          created: new Date(date.getTime()),
+          volume: volumeByDate[key] || 0
+        });
+      }
+      volume = [...result];
     });
   }
   function onHistoryDelete(id) {
@@ -1476,7 +1549,7 @@ function _page($$payload, $$props) {
   $$payload.out += `<!----> <button type="button" class="svelte-1p6a8xw">`;
   Icon($$payload, {
     height: "20",
-    icon: "material-symbols:settings-outline",
+    icon: "material-symbols:person-outline-rounded",
     width: "20"
   });
   $$payload.out += `<!----></button></header> <section${attr("data-screen", "fasting")} class="svelte-1p6a8xw"><article class="svelte-1p6a8xw">`;
@@ -1488,6 +1561,7 @@ function _page($$payload, $$props) {
     onsun: onSunEnable,
     started,
     sun,
+    volume,
     water
   });
   $$payload.out += `<!----></article> <article class="svelte-1p6a8xw">`;
@@ -1495,7 +1569,8 @@ function _page($$payload, $$props) {
     activity,
     history,
     onsun: onSunEnable,
-    sun
+    sun,
+    volume
   });
   $$payload.out += `<!----></article></section></main> `;
   HistoryEditor($$payload, {

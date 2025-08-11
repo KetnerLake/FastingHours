@@ -1,6 +1,6 @@
 <script>
-  import ActivityGraph from "$lib/ActivityGraph.svelte";
   import HistoryList from "$lib/HistoryList.svelte";
+  import GraphSection from "./GraphSection.svelte";
 
   let {
     activity = null, 
@@ -8,7 +8,8 @@
     levels = [], 
     onchange, 
     onsun,
-    sun = null
+    sun = null,
+    volume
   } = $props();
 </script>
 
@@ -18,14 +19,15 @@
     <h3>Hours</h3>
   </header>
 
-  <article>
-    <ActivityGraph 
+  <div>
+    <GraphSection
       average={activity === null ? [] : activity.average} 
       daily={activity === null ? null : activity.daily} 
       days={7}
       {onsun}
-      {sun} />
-  </article>
+      {sun}
+      water={volume} />
+  </div>    
 
   <article>
     <HistoryList items={history} {onchange} />
@@ -39,14 +41,14 @@
     flex-direction: column;
   }
 
-  article:first-of-type {
+  div {
     display: none;
   }
 
   article:last-of-type {
     flex-basis: 0;
     flex-grow: 1;
-    overflow: auto;
+    overflow: hidden;
   }
 
   header {
@@ -74,18 +76,15 @@
     flex-basis: 0;
     flex-direction: column;
     flex-grow: 1;
-    overflow: hidden;
+    overflow: auto;
     width: 100%;
   }
 
   @media( max-width: 780px ) {  
-    article:first-of-type {
+    div {
       display: flex;
+      flex-direction: column;
     }
-
-    article:last-of-type {
-      overflow: hidden;
-    }    
 
     h3 {
       display: none;
@@ -97,6 +96,7 @@
 
     section {
       max-width: unset;
+      overflow: hidden;
     } 
   }
 </style>

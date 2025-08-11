@@ -44,6 +44,7 @@
   let settings = $state();  
   let started = $state( null );
   let sun = $state( null );
+  let volume = $state( [] );  
   let water = $state( 0 );
   let water_editor = $state();
   let water_item = $state( null );
@@ -171,7 +172,7 @@
         }
       }
 
-      const averageHourlyActivity = hourTotals.map(total => +(total / 10).toFixed(6));
+      const averageHourlyActivity = hourTotals.map(total => +(total / days).toFixed(6));
 
       // --- Final result ---
       activity = {
@@ -346,6 +347,27 @@
         return previous + current.volume;
       }, 0 );
       water = total;
+
+      const today = new Date();
+      today.setHours( 0, 0, 0, 0 );
+
+      // Step 1: Pre-group volumes by date (YYYY-MM-DD → sum)
+      const volumeByDate = {};
+      for( const {created, volume} of data ) {
+        const key = new Date( created ).toISOString().slice( 0, 10 );
+        volumeByDate[key] = ( volumeByDate[key] || 0 ) + volume;
+      }
+
+      // Step 2: Build result for the last 7 days (newest first)
+      const result = [];
+      for( let i = 0; i < 7; i++ ) {
+        const date = new Date( today );
+        date.setDate( today.getDate() - i );
+        const key = date.toISOString().slice( 0, 10 );
+        result.push( {created: new Date( date.getTime() ), volume: volumeByDate[key] || 0} );
+      }
+
+      volume = [... result];
     } );    
   }
 
@@ -540,7 +562,7 @@
     <span></span>
     <RadioGroup onchange={onScreenClick} selected={screen} />
     <button onclick={onSettingsClick} type="button">
-      <Icon height="20" icon="material-symbols:settings-outline" width="20" />
+      <Icon height="20" icon="material-symbols:person-outline-rounded" width="20" />
     </button>
   </header>
 
@@ -559,6 +581,7 @@
         onwater={onFastingWater}
         {started}
         {sun}
+        {volume}        
         {water} />
     </article>
     <article>
@@ -568,7 +591,8 @@
         {levels} 
         onchange={onHoursChange} 
         onsun={onSunEnable}
-        {sun} />
+        {sun}
+        {volume} />
     </article>
   </section>
 

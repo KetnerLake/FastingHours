@@ -1,5 +1,5 @@
 <script>
-  import ActivityGraph from "$lib/ActivityGraph.svelte";    
+  import GraphSection from "./GraphSection.svelte";  
   import Icon from "@iconify/svelte";
   import Timer from "$lib/Timer.svelte";
 
@@ -16,6 +16,7 @@
     onwater, 
     started = null, 
     sun = null,
+    volume = null,
     water = 0
   } = $props();
 
@@ -53,7 +54,7 @@
   <header>
     <h3>Fasting</h3>
     <button onclick={onsettings} type="button">
-      <Icon height="20" icon="material-symbols:settings-outline" width="20" />      
+      <Icon height="20" icon="material-symbols:person-outline-rounded" width="20" />      
     </button>
   </header>
 
@@ -70,7 +71,19 @@
     </button>
   </article>
 
+  <div class="graph">
+    <GraphSection
+      average={activity === null ? [] : activity.average} 
+      daily={activity === null ? null : activity.daily} 
+      days={7}
+      {onsun}
+      {sun}
+      water={volume} />
+  </div>
+
+  <!--
   <article>
+    <WaterGraph />
     <ActivityGraph 
       average={activity === null ? [] : activity.average} 
       daily={activity === null ? null : activity.daily} 
@@ -78,6 +91,7 @@
       {onsun}
       {sun} />
   </article>
+  -->  
 
   <footer>
     <button class="hunger secondary" onclick={onhunger} type="button">
@@ -248,7 +262,7 @@
   }  
 
   @media( max-width: 780px ) {  
-    article:last-of-type {
+    div.graph {
       display: none;
     }
 

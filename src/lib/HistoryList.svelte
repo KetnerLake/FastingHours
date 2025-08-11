@@ -110,12 +110,14 @@
   ul {
     list-style: none;
     margin: 0 0 -1px 0;
+    overflow-y: auto;
     padding: 0;
-    overflow: auto;
+    position: relative;
   }
 
   li.header {
     background: #f4f4f4;
+    box-sizing: border-box;
     margin: 0 0 0 1px;
     padding: 2px 0 2px 16px;
     position: sticky;

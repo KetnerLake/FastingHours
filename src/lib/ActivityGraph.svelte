@@ -2,7 +2,7 @@
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
 
-  let {average = [], daily = null, days = 10, onsun, sun} = $props(); 
+  let {average = [], daily = null, days = 10} = $props(); 
 
   function parseTime( value ) {
     const parts = value.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
@@ -32,14 +32,6 @@
       day: 'numeric'
     } );    
     return formatter.format( value );
-  }
-
-  function formatTime( value ) {
-    const formatter = new Intl.DateTimeFormat( navigator.language, {
-      hour: 'numeric',
-      minute: '2-digit'
-    } );    
-    return formatter.format( value );    
   }
 
   function offset( hour, status ) {
@@ -93,41 +85,9 @@
     {/each}      
   </div>
 
-  <legend>
-    <div class="daynight">
-      {#if sun === null}
-        <button class="sun" onclick={onsun} type="button">
-          Sunrise/sunset
-        </button>
-      {:else}
-        <Icon height="16" icon={sun.icon} width="16" />
-        <p>{formatTime( sun.timing )}</p>
-      {/if}   
-    </div>    
-    <div class="color"></div>
-    <p>Fasting</p>
-  </legend>
-
 </figure>
 
 <style>  
-  button.sun {
-    appearance: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #0284c7;
-    font-family: 'Roboto Variable', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.10px;
-    line-height: 20px;
-    margin: 0;
-    outline: none;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
-
   div.day {
     background: #00000010;
     border-radius: 3px;
@@ -165,58 +125,13 @@
   }  
 
   figure {
-    align-self: center;
     box-sizing: border-box;
     margin: 0;
     max-width: 660px;
     min-width: 330px;
-    padding: 16px;
+    padding: 4px;
     width: 100%;
   }
-
-  legend {
-    align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    justify-content: flex-end;
-    margin: 0;
-    padding: 8px 4px 0 0;
-    width: 100%;
-  }
-
-  legend p {
-    box-sizing: border-box;
-    color: #161616;
-    cursor: default;
-    font-family: 'Roboto Variable', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.10px;
-    line-height: 20px;
-    margin: 0;
-    padding: 0;
-  }
-
-  legend div.color {
-    background: #52525b;
-    border-radius: 3px;
-    box-sizing: border-box;
-    display: inline;
-    min-height: 16px;
-    min-width: 16px;
-  }
-
-  legend div.daynight {
-    align-items: center;
-    display: flex;
-    flex-basis: 0;
-    flex-direction: row;
-    flex-grow: 1;
-    gap: 6px;
-    padding: 0 0 0 66px;
-  }  
 
   p.day {
     box-sizing: border-box;
