@@ -4,7 +4,7 @@
   import Select from "./Select.svelte";
   import WaterGraph from "./WaterGraph.svelte";
 
-  let {average = [], daily = null, days = 10, onsun, sun, water = []} = $props();   
+  let {activity = null, days = 10, onsun, sun, water = null} = $props();   
 
   let graph = $state( 0 );
 
@@ -21,12 +21,13 @@
 
   {#if graph === 0}
     <ActivityGraph      
-      {average} 
-      {daily}
+      average={activity && activity.average ? activity.average : []} 
+      daily={activity && activity.daily ? activity.daily : []}     
       {days} />
   {:else if graph === 1}
     <WaterGraph 
-      {water} />  
+      average={water && water.average ? water.average : null}
+      daily={water && water.daily ? water.daily : null} />  
   {/if}
 
   <footer>

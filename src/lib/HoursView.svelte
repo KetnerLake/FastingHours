@@ -21,8 +21,7 @@
 
   <div>
     <GraphSection
-      average={activity === null ? [] : activity.average} 
-      daily={activity === null ? null : activity.daily} 
+      {activity}
       days={7}
       {onsun}
       {sun}

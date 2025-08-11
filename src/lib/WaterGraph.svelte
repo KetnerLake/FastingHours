@@ -1,7 +1,7 @@
 <script>
-  let {water = []} = $props();
+  let {average = 0, daily = []} = $props();
 
-  let maximum = $derived( water.reduce( ( previous, current ) => {
+  let maximum = $derived( daily.reduce( ( previous, current ) => {
     previous = current.volume > previous ? current.volume : previous;
     return previous;
   }, 0 ) );
@@ -39,13 +39,13 @@
   </div>  
   <div class="chart">
     <div class="labels">
-      {#each water as day}
+      {#each daily as day}
         <p>{formatDate( day.created )}</p>
       {/each} 
     </div>
     <div class="columns">
       {#if maximum !== 0}      
-        {#each water as day}
+        {#each daily as day}
           <div class="column" style:width="{( day.volume / Math.floor( maximum + ( maximum * 0.10 ) ) ) * 100}%">
             <p>{day.volume} oz</p>
           </div>
@@ -54,6 +54,9 @@
       {#each {length: 4}, stop}
         <div class="line" data-value={stop} style:left="{25 * ( stop + 1 )}%"></div>
       {/each}
+      {#if average > 0}
+        <div class="average" data-value={average} style:left="{( average / Math.floor( maximum + ( maximum * 0.10 ) ) ) * 100}%"></div>            
+      {/if}
     </div>    
   </div>
 </figure>
@@ -180,6 +183,15 @@
     position: relative;
   }
 
+  div.average {
+    border-right: dashed 1px #0284c7;
+    box-sizing: border-box;
+    height: 100%;
+    position: absolute;
+    width: 1px;
+    z-index: 10;
+  }
+
   div.line {
     border-right: dashed 1px #00000040;
     box-sizing: border-box;
@@ -187,5 +199,5 @@
     position: absolute;
     width: 1px;
     z-index: -10;
-  }
+  }  
 </style>

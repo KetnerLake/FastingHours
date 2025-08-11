@@ -1,6 +1,5 @@
 <script>
   import Icon from "@iconify/svelte";
-  import { onMount } from "svelte";
 
   let {average = [], daily = null, days = 10} = $props(); 
 

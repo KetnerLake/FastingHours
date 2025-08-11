@@ -780,14 +780,7 @@ function Select($$payload, $$props) {
 }
 function GraphSection($$payload, $$props) {
   push();
-  let {
-    average = [],
-    daily = null,
-    days = 10,
-    onsun,
-    sun,
-    water = []
-  } = $$props;
+  let { activity = null, days = 10, onsun, sun, water = null } = $$props;
   function formatTime(value) {
     const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
     return formatter.format(value);
@@ -795,7 +788,10 @@ function GraphSection($$payload, $$props) {
   $$payload.out += `<section class="svelte-bt65q5">`;
   {
     $$payload.out += "<!--[-->";
-    ActivityGraph($$payload, { average, daily });
+    ActivityGraph($$payload, {
+      average: activity && activity.average ? activity.average : [],
+      daily: activity && activity.daily ? activity.daily : []
+    });
   }
   $$payload.out += `<!--]--> <footer class="svelte-bt65q5"><div class="daynight svelte-bt65q5">`;
   if (sun === null) {
@@ -884,14 +880,7 @@ function FastingView($$payload, $$props) {
     $$payload.out += `<!----> <p class="started svelte-1tavlmb">Started ${escape_html(formatStarted(started))}</p>`;
   }
   $$payload.out += `<!--]--> <button class="primary svelte-1tavlmb" type="button">${escape_html(started === null ? "Start" : "Stop")} fasting</button></article> <div class="graph svelte-1tavlmb">`;
-  GraphSection($$payload, {
-    average: activity === null ? [] : activity.average,
-    daily: activity === null ? null : activity.daily,
-    days: 7,
-    onsun,
-    sun,
-    water: volume
-  });
+  GraphSection($$payload, { activity, days: 7, onsun, sun, water: volume });
   $$payload.out += `<!----></div> <footer class="svelte-1tavlmb"><button class="hunger secondary svelte-1tavlmb" type="button">`;
   Icon($$payload, {
     height: "20",
@@ -1085,7 +1074,6 @@ function HistoryList($$payload, $$props) {
   pop();
 }
 function HoursView($$payload, $$props) {
-  push();
   let {
     activity = null,
     history = [],
@@ -1094,18 +1082,10 @@ function HoursView($$payload, $$props) {
     volume
   } = $$props;
   $$payload.out += `<section class="svelte-1moll0f"><header class="svelte-1moll0f"><h3 class="svelte-1moll0f">Hours</h3></header> <div class="svelte-1moll0f">`;
-  GraphSection($$payload, {
-    average: activity === null ? [] : activity.average,
-    daily: activity === null ? null : activity.daily,
-    days: 7,
-    onsun,
-    sun,
-    water: volume
-  });
+  GraphSection($$payload, { activity, days: 7, onsun, sun, water: volume });
   $$payload.out += `<!----></div> <article class="svelte-1moll0f">`;
   HistoryList($$payload, { items: history });
   $$payload.out += `<!----></article></section>`;
-  pop();
 }
 function HungerEditor($$payload, $$props) {
   push();
@@ -1217,7 +1197,7 @@ function _page($$payload, $$props) {
   push();
   const db = new Database();
   const SunCalc = daylight;
-  let activity = [];
+  let activity = null;
   let history = [];
   let history_editor = void 0;
   let history_field = "started";
@@ -1243,7 +1223,7 @@ function _page($$payload, $$props) {
   let screen = 0;
   let started = null;
   let sun = null;
-  let volume = [];
+  let volume = null;
   let water = 0;
   let water_editor = void 0;
   let water_item = null;
@@ -1440,6 +1420,7 @@ function _page($$payload, $$props) {
         0
       );
       water = total;
+      data.push({ created: new Date(2025, 7, 9), volume: 16 });
       const today = /* @__PURE__ */ new Date();
       today.setHours(0, 0, 0, 0);
       const volumeByDate = {};
@@ -1457,7 +1438,9 @@ function _page($$payload, $$props) {
           volume: volumeByDate[key] || 0
         });
       }
-      volume = [...result];
+      const totalVolume = result.reduce((sum, { volume: volume2 }) => sum + volume2, 0);
+      const averageVolume = totalVolume / result.length;
+      volume = { average: averageVolume, daily: [...result] };
     });
   }
   function onHistoryDelete(id) {

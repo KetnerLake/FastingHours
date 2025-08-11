@@ -17,7 +17,7 @@
 
   let seconds = 0;
 
-  let activity = $state( [] );
+  let activity = $state( null );
   let history = $state( [] );
   let history_editor = $state();
   let history_field = $state( 'started' );  
@@ -44,7 +44,7 @@
   let settings = $state();  
   let started = $state( null );
   let sun = $state( null );
-  let volume = $state( [] );  
+  let volume = $state( null );  
   let water = $state( 0 );
   let water_editor = $state();
   let water_item = $state( null );
@@ -348,6 +348,13 @@
       }, 0 );
       water = total;
 
+      // data[0].created.setDate( 9 );
+      // console.log( data );
+      data.push( {
+        created: new Date( 2025, 7, 9 ),
+        volume: 16
+      } );
+
       const today = new Date();
       today.setHours( 0, 0, 0, 0 );
 
@@ -367,7 +374,14 @@
         result.push( {created: new Date( date.getTime() ), volume: volumeByDate[key] || 0} );
       }
 
-      volume = [... result];
+      // Step 3: Compute average
+      const totalVolume = result.reduce( ( sum, {volume} ) => sum + volume, 0 );
+      const averageVolume = totalVolume / result.length;      
+
+      volume = {
+        average: averageVolume,
+        daily: [... result]
+      };
     } );    
   }
 
