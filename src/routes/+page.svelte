@@ -18,6 +18,7 @@
   let seconds = 0;
 
   let activity = $state( null );
+  let duration = $state( 0 );
   let history = $state( [] );
   let history_editor = $state();
   let history_field = $state( 'started' );  
@@ -54,6 +55,11 @@
     // Pick up where left off
     let index = window.localStorage.getItem( 'fh_screen' );
     screen = index === null ? 0 : parseInt( index );
+
+    // Last fasting duration
+    // Pick up where left off
+    let duty = window.localStorage.getItem( 'fh_duration' );
+    duration = duty === null ? 0 : parseInt( duty );
 
     // Location
     const latitude = window.localStorage.getItem( 'fh_latitude' );
@@ -388,6 +394,11 @@
     } );    
   }
 
+  function onFastingDuration( value ) {
+    duration = value;
+    window.localStorage.setItem( 'fh_duration', duration );
+  }
+
   function onFastingEnd() {
     started = null;    
     now = null;
@@ -587,9 +598,11 @@
     <article>
       <FastingView 
         {activity} 
+        {duration}
         {hunger} 
         {levels} 
         {now}
+        onduration={onFastingDuration}
         onend={onFastingEnd}
         onhunger={onFastingHunger}
         onsettings={onSettingsClick} 
@@ -667,7 +680,7 @@
     appearance: none;
     background: none;
     border: solid 1px #00000040;
-    border-radius: 40px;
+    border-radius: 4px;
     box-sizing: border-box;
     color: #161616;
     cursor: pointer;

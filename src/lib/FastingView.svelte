@@ -1,13 +1,16 @@
 <script>
+  import DurationGroup from "./DurationGroup.svelte";  
   import GraphSection from "./GraphSection.svelte";  
   import Icon from "@iconify/svelte";
   import Timer from "$lib/Timer.svelte";
 
   let {
     activity = null,
+    duration = 0,
     hunger = 5, 
     levels = [],
     now = null, 
+    onduration,
     onend, 
     onhunger, 
     onsettings, 
@@ -63,7 +66,8 @@
       <p>You are not fasting.</p>  
     {:else}
       <p>You are fasting.</p>    
-      <Timer {now} {started} />    
+      <Timer {duration} {now} {started} />    
+      <DurationGroup onchange={onduration} value={duration} />
       <p class="started">Started {formatStarted( started )}</p>
     {/if}
     <button class="primary" onclick={onFastingClick} type="button">
@@ -79,18 +83,6 @@
       {sun}
       water={volume} />
   </div>
-
-  <!--
-  <article>
-    <WaterGraph />
-    <ActivityGraph 
-      average={activity === null ? [] : activity.average} 
-      daily={activity === null ? null : activity.daily} 
-      days={7}
-      {onsun}
-      {sun} />
-  </article>
-  -->  
 
   <footer>
     <button class="hunger secondary" onclick={onhunger} type="button">
@@ -173,7 +165,7 @@
   footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 12px;
+    padding: 12px 16px 12px 16px;
   }
 
   header {
@@ -188,7 +180,7 @@
     appearance: none;
     background: none;
     border: solid 1px #00000040;
-    border-radius: 40px;
+    border-radius: 4px;
     box-sizing: border-box;
     color: #161616;
     cursor: pointer;

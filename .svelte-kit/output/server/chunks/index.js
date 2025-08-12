@@ -267,16 +267,16 @@ function maybe_selected(payload, value) {
   return value === payload.select_value ? " selected" : "";
 }
 export {
-  attr_style as A,
+  ensure_array_like as A,
   BROWSER as B,
   CLEAN as C,
   DERIVED as D,
   EFFECT_RAN as E,
-  maybe_selected as F,
-  attr as G,
+  attr_style as F,
+  maybe_selected as G,
   HYDRATION_ERROR as H,
   INSPECT_EFFECT as I,
-  attr_class as J,
+  attr as J,
   bind_props as K,
   LEGACY_PROPS as L,
   MAYBE_DIRTY as M,
@@ -308,5 +308,5 @@ export {
   getContext as w,
   escape_html as x,
   current_component as y,
-  ensure_array_like as z
+  attr_class as z
 };

@@ -1,7 +1,7 @@
 <script>
-  let {now = null, started = null} = $props();
+  let {duration = 0, now = null, started = null} = $props();
 
-  let duration = $derived.by( () => {
+  let tick = $derived.by( () => {
     if( started === null ) {
       return {
         hours: 0,
@@ -10,7 +10,12 @@
       };
     }
 
-    const difference = Math.floor( ( now - started.getTime() ) / 1000 );
+    let difference = Math.floor( ( now - started.getTime() ) / 1000 );
+
+    if( duration !== 0 ) {
+      const future = new Date( started.getTime() + ( duration * 3600000 ) );
+      difference = Math.floor( ( future.getTime() - now ) / 1000 );
+    }
     
     return {
       hours: Math.floor( difference / 3600 ).toString( 10 ).padStart( 2, '0' ),
@@ -22,17 +27,17 @@
 
 <article>
   <p>
-    <span>{duration.hours}</span>
+    <span>{tick.hours}</span>
     <span class="units">hrs</span>
   </p>
   <p class="colon">:</p>
   <p>
-    <span>{duration.minutes}</span>
+    <span>{tick.minutes}</span>
     <span class="units">min</span>
   </p>  
   <p class="colon">:</p>  
   <p>
-    <span>{duration.seconds}</span>
+    <span>{tick.seconds}</span>
     <span class="units">sec</span>
   </p>
 </article>

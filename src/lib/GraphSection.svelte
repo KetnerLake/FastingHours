@@ -109,6 +109,6 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    padding: 12px;
+    padding: 12px 16px 12px 16px;
   }
 </style>
