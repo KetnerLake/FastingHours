@@ -184,7 +184,7 @@
   }
 
   div.average {
-    border-right: dashed 1px #0284c7;
+    border-right: dashed 2px #0284c7;
     box-sizing: border-box;
     height: 100%;
     position: absolute;
