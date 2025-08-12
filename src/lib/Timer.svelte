@@ -1,6 +1,17 @@
 <script>
   let {duration = 0, now = null, started = null} = $props();
 
+  let difference = $derived.by( () => {
+    let distance = Math.floor( ( now - started.getTime() ) / 1000 );
+
+    if( duration !== 0 ) {
+      const future = new Date( started.getTime() + ( duration * 3600000 ) );
+      distance = Math.floor( ( future.getTime() - now ) / 1000 );
+    }
+
+    return distance;
+  } );
+
   let tick = $derived.by( () => {
     if( started === null ) {
       return {
@@ -8,13 +19,6 @@
         minutes: '00',
         seconds: '00'
       };
-    }
-
-    let difference = Math.floor( ( now - started.getTime() ) / 1000 );
-
-    if( duration !== 0 ) {
-      const future = new Date( started.getTime() + ( duration * 3600000 ) );
-      difference = Math.floor( ( future.getTime() - now ) / 1000 );
     }
     
     return {
@@ -25,7 +29,7 @@
   } );
 </script>
 
-<article>
+<article class:complete={difference < 0 ? true : false}>
   <p>
     <span>{tick.hours}</span>
     <span class="units">hrs</span>
@@ -48,8 +52,15 @@
     flex-direction: row;
   }
 
-  p {
+  article p {
     color: #161616;
+  }
+
+  article.complete p {
+    color: #16a34a;    
+  }
+
+  p {
     cursor: default;
     font-family: 'Roboto Variable', sans-serif;
     font-size: 48px;

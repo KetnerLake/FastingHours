@@ -828,14 +828,17 @@ function GraphSection($$payload, $$props) {
 function Timer($$payload, $$props) {
   push();
   let { duration = 0, now = null, started = null } = $$props;
+  let difference = (() => {
+    let distance = Math.floor((now - started.getTime()) / 1e3);
+    if (duration !== 0) {
+      const future = new Date(started.getTime() + duration * 36e5);
+      distance = Math.floor((future.getTime() - now) / 1e3);
+    }
+    return distance;
+  })();
   let tick = (() => {
     if (started === null) {
       return { hours: 0, minutes: "00", seconds: "00" };
-    }
-    let difference = Math.floor((now - started.getTime()) / 1e3);
-    if (duration !== 0) {
-      const future = new Date(started.getTime() + duration * 36e5);
-      difference = Math.floor((future.getTime() - now) / 1e3);
     }
     return {
       hours: Math.floor(difference / 3600).toString(10).padStart(2, "0"),
@@ -843,7 +846,7 @@ function Timer($$payload, $$props) {
       seconds: (difference % 60).toString(10).padStart(2, "0")
     };
   })();
-  $$payload.out += `<article class="svelte-10tx4k0"><p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(tick.hours)}</span> <span class="units svelte-10tx4k0">hrs</span></p> <p class="colon svelte-10tx4k0">:</p> <p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(tick.minutes)}</span> <span class="units svelte-10tx4k0">min</span></p> <p class="colon svelte-10tx4k0">:</p> <p class="svelte-10tx4k0"><span class="svelte-10tx4k0">${escape_html(tick.seconds)}</span> <span class="units svelte-10tx4k0">sec</span></p></article>`;
+  $$payload.out += `<article${attr_class("svelte-1yn3hhw", void 0, { "complete": difference < 0 ? true : false })}><p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.hours)}</span> <span class="units svelte-1yn3hhw">hrs</span></p> <p class="colon svelte-1yn3hhw">:</p> <p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.minutes)}</span> <span class="units svelte-1yn3hhw">min</span></p> <p class="colon svelte-1yn3hhw">:</p> <p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.seconds)}</span> <span class="units svelte-1yn3hhw">sec</span></p></article>`;
   pop();
 }
 function FastingView($$payload, $$props) {
