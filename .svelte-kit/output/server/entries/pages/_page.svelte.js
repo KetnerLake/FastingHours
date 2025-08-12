@@ -710,9 +710,9 @@ function Icon($$payload, $$props) {
 function DurationGroup($$payload, $$props) {
   push();
   let { value = 0 } = $$props;
-  $$payload.out += `<div class="svelte-192yjol"><button type="button"${attr_class("svelte-192yjol", void 0, { "selected": value === 0 ? true : false })}>`;
+  $$payload.out += `<div class="svelte-ziixid"><button type="button"${attr_class("svelte-ziixid", void 0, { "selected": value === 0 ? true : false })}>`;
   Icon($$payload, { height: "20", icon: "stash:infinity-duotone", width: "20" });
-  $$payload.out += `<!----></button> <button type="button"${attr_class("svelte-192yjol", void 0, { "selected": value === 14 ? true : false })}>14h</button> <button type="button"${attr_class("svelte-192yjol", void 0, { "selected": value === 16 ? true : false })}>16h</button> <button type="button"${attr_class("svelte-192yjol", void 0, { "selected": value === 23 ? true : false })}>23h</button> <button type="button"${attr_class("svelte-192yjol", void 0, { "selected": value === 40 ? true : false })}>40h</button></div>`;
+  $$payload.out += `<!----></button> <button type="button"${attr_class("svelte-ziixid", void 0, { "selected": value === 14 ? true : false })}>14h</button> <button type="button"${attr_class("svelte-ziixid", void 0, { "selected": value === 16 ? true : false })}>16h</button> <button type="button"${attr_class("svelte-ziixid", void 0, { "selected": value === 23 ? true : false })}>23h</button> <button type="button"${attr_class("svelte-ziixid", void 0, { "selected": value === 40 ? true : false })}>40h</button></div>`;
   pop();
 }
 function ActivityGraph($$payload, $$props) {
@@ -1145,10 +1145,10 @@ function HungerEditor($$payload, $$props) {
   bind_props($$props, { close, showModal });
   pop();
 }
-function RadioGroup($$payload, $$props) {
+function ScreenGroup($$payload, $$props) {
   push();
-  let { selected = 0 } = $$props;
-  $$payload.out += `<ul class="svelte-tu3q0a"><li><button${attr_class("fasting svelte-tu3q0a", void 0, { "selected": selected === 0 ? true : false })} type="button">Fasting</button></li> <li><button${attr_class("hours svelte-tu3q0a", void 0, { "selected": selected === 1 ? true : false })} type="button">Hours</button></li></ul>`;
+  let { value = 0 } = $$props;
+  $$payload.out += `<ul class="svelte-tu3q0a"><li><button${attr_class("fasting svelte-tu3q0a", void 0, { "selected": value === 0 ? true : false })} type="button">Fasting</button></li> <li><button${attr_class("hours svelte-tu3q0a", void 0, { "selected": value === 1 ? true : false })} type="button">Hours</button></li></ul>`;
   pop();
 }
 function Settings($$payload, $$props) {
@@ -1436,6 +1436,8 @@ function _page($$payload, $$props) {
         0
       );
       water = total;
+      return db.browseWater();
+    }).then((data) => {
       const today = /* @__PURE__ */ new Date();
       today.setHours(0, 0, 0, 0);
       const volumeByDate = {};
@@ -1543,7 +1545,7 @@ function _page($$payload, $$props) {
     }
   }
   $$payload.out += `<main class="svelte-odvko0"><header class="svelte-odvko0"><span></span> `;
-  RadioGroup($$payload, { selected: screen });
+  ScreenGroup($$payload, { value: screen });
   $$payload.out += `<!----> <button type="button" class="svelte-odvko0">`;
   Icon($$payload, {
     height: "20",

@@ -14,7 +14,7 @@
       minute: '2-digit'
     } );    
     return formatter.format( value );    
-  }  
+  }
 </script>
 
 <section>

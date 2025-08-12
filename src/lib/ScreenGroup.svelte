@@ -1,17 +1,17 @@
 <script>
-  let {onchange, selected = 0} = $props();
+  let {onchange, value = 0} = $props();
 
   function onFastingClick() {
-    if( selected !== 0 ) {
-      selected = 0;
-      if( onchange ) onchange( selected );
+    if( value !== 0 ) {
+      value = 0;
+      if( onchange ) onchange( value );
     }
   }
 
   function onHoursClick() {
-    if( selected !== 1 ) {
-      selected = 1;
-      if( onchange ) onchange( selected );
+    if( value !== 1 ) {
+      value = 1;
+      if( onchange ) onchange( value );
     }
   }  
 </script>
@@ -20,7 +20,7 @@
   <li>
     <button 
       class="fasting" 
-      class:selected={selected === 0 ? true : false} 
+      class:selected={value === 0 ? true : false} 
       onclick={onFastingClick} 
       type="button">
       Fasting
@@ -29,7 +29,7 @@
   <li>
     <button 
       class="hours" 
-      class:selected={selected === 1 ? true : false} 
+      class:selected={value === 1 ? true : false} 
       onclick={onHoursClick} 
       type="button">
       Hours

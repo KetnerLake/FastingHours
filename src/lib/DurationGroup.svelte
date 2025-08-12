@@ -53,7 +53,7 @@
     border-left: solid 1px #00000040;        
   }
 
-    button:last-of-type {
+  button:last-of-type {
     border-bottom-right-radius: 4px;    
     border-top-right-radius: 4px;
   }

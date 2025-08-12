@@ -8,7 +8,7 @@
   import HungerEditor from "$lib/HungerEditor.svelte";
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";  
-  import RadioGroup from "$lib/RadioGroup.svelte";
+  import ScreenGroup from "$lib/ScreenGroup.svelte";
   import Settings from "$lib/Settings.svelte";  
   import WaterEditor from "$lib/WaterEditor.svelte";
 
@@ -353,17 +353,8 @@
         return previous + current.volume;
       }, 0 );
       water = total;
-
-      // data[0].created.setDate( 9 );
-      // console.log( data );
-
-      /*
-      data.push( {
-        created: new Date( 2025, 7, 9 ),
-        volume: 16
-      } );
-      */
-
+      return db.browseWater();
+    } ).then( ( data ) => {
       const today = new Date();
       today.setHours( 0, 0, 0, 0 );
 
@@ -529,7 +520,7 @@
     }
   }
 
-  function onScreenClick( index ) {
+  function onScreenChange( index ) {
     if( screen !== index ) {
       window.localStorage.setItem( 'fh_screen', index );
       screen = index;
@@ -588,7 +579,7 @@
 
   <header>
     <span></span>
-    <RadioGroup onchange={onScreenClick} selected={screen} />
+    <ScreenGroup onchange={onScreenChange} value={screen} />
     <button onclick={onSettingsClick} type="button">
       <Icon height="20" icon="material-symbols:person-outline-rounded" width="20" />
     </button>
