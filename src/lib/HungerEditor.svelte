@@ -1,7 +1,15 @@
 <script>
+  import DateTimePicker from "./DateTimePicker.svelte";  
+  import HungerSelect from "./HungerSelect.svelte";  
   import Icon from "@iconify/svelte";
-
-  let {item = null, levels = [], oncancel, ondelete, onsave, units = 'oz'} = $props();
+    
+  let {
+    item = null, 
+    levels = [], 
+    oncancel, 
+    ondelete, 
+    onsave
+  } = $props();
 
   let dialog = $state();
 
@@ -13,21 +21,21 @@
     if( oncancel ) oncancel();
   }
 
+  function onDateChange( value ) {
+    const created = new Date( value.getTime() );
+    item = {... item, created};
+  }
+
   function onDeleteClick() {
     if( ondelete ) ondelete( item.id );
   }  
 
-  function onLevelClick( amount ) {
+  function onLevelChange( amount ) {
     const level = amount;
     item = {... item, level};
   }
 
   function onSaveClick() {
-    if( item === null ) {
-      const level = 5;
-      item = {... item, level};
-    }
-
     if( onsave ) onsave( item );
   }
 
@@ -43,28 +51,13 @@
 
 <dialog bind:this={dialog}>
 
-  <h3>{item && item.id && item.id !== null ? 'Edit' : 'Add'} Hunger</h3>
+  <h3>Edit Hunger</h3>
 
-  <ul>
-    {#each levels as level}
-      {@const icon = level.value === current ? 'material-symbols:radio-button-checked-outline' : 'material-symbols:circle-outline'}
-      <li>
-        <button onclick={() => onLevelClick( level.value )} type="button">
-          <p>{level.label}</p>  
-          <Icon 
-            color={level.value === current ? '#0284c7' : '#161616'} 
-            height="20" 
-            {icon} 
-            width="20" />
-        </button>
-      </li>
-    {/each}
-  </ul>
+  <HungerSelect items={levels} onchange={onLevelChange} value={current} />
+  <DateTimePicker label="Checked" onchange={onDateChange} value={item && item.created ? item.created : new Date()} />
 
   <footer>
-    {#if item && item.id && item.id !== null}
-      <button class="delete" onclick={onDeleteClick} type="button">Delete</button>            
-    {/if}
+    <button class="delete" onclick={onDeleteClick} type="button">Delete</button>            
     <button class="cancel" onclick={onCancelClick} type="button">Cancel</button>    
     <button onclick={onSaveClick} type="button">Save</button>    
   </footer>
@@ -154,58 +147,5 @@
     margin: 0;
     padding: 0 0 12px 0;
     text-align: left;
-  }  
-
-  ul {
-    background: #ffffff;
-    border-radius: 4px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul li {
-    border-bottom: solid 1px #00000010;
-    box-sizing: border-box;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul li:last-of-type {
-    border-bottom: solid 1px transparent;
-  }  
-
-  ul li button {
-    align-items: center;
-    appearance: none;
-    background: none;
-    border: none;
-    box-sizing: border-box;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    height: 40px;
-    margin: 0;
-    outline: none;
-    padding: 0 12px 0 16px;    
-    width: 100%;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  ul li button p {
-    box-sizing: border-box;
-    color: #161616;
-    cursor: pointer;
-    flex-basis: 0;
-    flex-grow: 1;
-    font-family: 'Roboto Variable', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0.10px;
-    line-height: 24px;
-    margin: 0;
-    padding: 0;      
-    text-align: left;
-  }
+  } 
 </style>

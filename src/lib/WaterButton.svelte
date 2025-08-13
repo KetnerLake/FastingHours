@@ -2,15 +2,17 @@
   import Icon from "@iconify/svelte";
   import { onMount } from "svelte";
 
-  let {items = [], onchange, value = 0} = $props();  
+  let {
+    items = [], 
+    onchange,
+    units = 'oz', 
+    value = 0
+  } = $props();  
 
   let open = $state( false );
 
   let button = $state();
   let popover = $state();
-
-  let icon = $derived( items.length > 0 ? items[value].icon : '' );  
-  let label = $derived( items.length > 0 ? items[value].label : '' );
 
   onMount( () => {
     document.addEventListener( 'click', onDocumentClick );
@@ -20,8 +22,6 @@
   } );
 
   function onButtonClick() {
-    const rect = button.getBoundingClientRect();
-    popover.style.width = ( rect.width - 2 ) + 'px';
     open = !open;
   }
 
@@ -32,30 +32,25 @@
   }
 
   function onItemClick( item ) {
-    value = item.value;
-    open = false;
-
-    if( onchange ) onchange( item );
+    open = false;          
+    if( onchange ) onchange( item.value );
   }
 </script>
 
 <label>
 
   <button bind:this={button} onclick={onButtonClick} type="button">
-    <Icon height="20" icon={icon} width="20" />
-    <span>{label}</span>
-    <Icon height="20" icon="material-symbols:keyboard-arrow-down-rounded" width="20" />
+    <Icon height="20" icon="material-symbols:water-drop-outline-rounded" width="20" />
+    <span>{value} {units}</span>
+    <Icon height="20" icon="material-symbols:keyboard-arrow-down-rounded" width="20" />    
   </button>
 
   <ul bind:this={popover} class:open>
     {#each items as item}
-      <li class:selected={value === item.value ? true : false}>
+      <li>
         <button onclick={() => onItemClick( item )} type="button">
-          <Icon height="20" icon={item.icon} width="20" />
           <span>{item.label}</span>
-          {#if item.value === value}
-            <Icon height="20" icon="material-symbols:check-rounded" width="20" />          
-          {/if}
+          <span>{item.value} {units}</span>
         </button>
       </li>
     {/each}
@@ -76,6 +71,7 @@
   }
 
   label {
+    justify-self: end;
     position: relative;
   }
 
@@ -128,11 +124,12 @@
     padding: 4px 0 4px 0;
     position: absolute;
     right: 0;
+    width: 175px;
     z-index: 25;
   }
 
   ul.open {
-    animation: open 0.30s forwards;        
+    animation: open 0.30s forwards;    
     display: flex;
   }
 
@@ -172,21 +169,15 @@
     text-align: left;
   }  
 
+  ul li button span:last-of-type {  
+    text-align: right;
+  }
+
   ul li button:hover {
     background: #00000010;
   }
 
   ul li button:hover span {
     color: #000000;
-  }  
-
-  ul li.selected button {
-    background: #0284c7;
-    color: #ffffff;
-  }
-
-  ul li.selected button span {
-    color: #ffffff;
-    font-weight: 500;        
   }  
 </style>

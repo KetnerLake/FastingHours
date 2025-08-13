@@ -413,10 +413,6 @@
     } );    
   }
 
-  function onFastingHunger() {
-    hunger_editor.showModal();
-  }
-
   function onFastingStart() {
     db.addHistory()
     .then( () => {
@@ -424,10 +420,6 @@
       loadActivity();
       loadHistory();
     } );
-  }
-
-  function onFastingWater() {
-    water_editor.showModal();
   }
 
   function onHistoryDelete( id ) {
@@ -498,6 +490,14 @@
     }
   }
 
+  function onHungerAdd( level ) {
+    db.addHunger( level )
+    .then( ( item ) => {
+      loadHunger();
+      loadHistory();
+    } );      
+  }
+
   function onHungerDelete( id ) {
     db.deleteHunger( id )
     .then( () => {
@@ -509,22 +509,13 @@
   }  
 
   function onHungerSave( value ) {
-    if( hunger_item === null ) {
-      db.addHunger( value.level )
-      .then( ( item ) => {
-        hunger_editor.close();
-        loadHunger();
-        loadHistory();
-      } );      
-    } else {
-      db.editHunger( value )
-      .then( ( data ) => {
-        hunger_editor.close();
-        hunger_item = null;
-        loadHunger();
-        loadHistory();
-      } );
-    }
+    db.editHunger( value )
+    .then( ( data ) => {
+      hunger_editor.close();
+      hunger_item = null;
+      loadHunger();
+      loadHistory();
+    } );
   }
 
   function onScreenChange( index ) {
@@ -552,6 +543,14 @@
     }
   }  
 
+  function onWaterAdd( volume ) {
+    db.addWater( volume )
+    .then( ( item ) => {
+      loadWater();
+      loadHistory();
+    } );    
+  }
+
   function onWaterDelete( id ) {
     db.deleteWater( id )
     .then( () => {
@@ -563,22 +562,13 @@
   }
 
   function onWaterSave( value ) {
-    if( water_item === null ) {
-      db.addWater( value.volume )
-      .then( ( item ) => {
-        water_editor.close();
-        loadWater();
-        loadHistory();
-      } );
-    } else {
-      db.editWater( value )
-      .then( ( data ) => {
-        water_editor.close();
-        water_item = null;
-        loadWater();
-        loadHistory();
-      } );      
-    }
+    db.editWater( value )
+    .then( ( data ) => {
+      water_editor.close();
+      water_item = null;
+      loadWater();
+      loadHistory();
+    } );      
   }
 </script>
 
@@ -602,11 +592,11 @@
         {now}
         onduration={onFastingDuration}
         onend={onFastingEnd}
-        onhunger={onFastingHunger}
+        onhunger={onHungerAdd}
         onsettings={onSettingsClick} 
         onstart={onFastingStart}
         onsun={onSunEnable}
-        onwater={onFastingWater}
+        onwater={onWaterAdd}
         {started}
         {sun}
         {volume}        

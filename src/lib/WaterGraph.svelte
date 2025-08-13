@@ -156,6 +156,7 @@
     border-bottom-right-radius: 4px;    
     box-sizing: border-box;
     height: 24px;
+    transition: width 0.30s ease-in-out;
   }
 
   div.column p {

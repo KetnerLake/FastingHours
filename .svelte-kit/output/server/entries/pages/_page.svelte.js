@@ -768,25 +768,25 @@ function ActivityGraph($$payload, $$props) {
 }
 function GraphSelect($$payload, $$props) {
   push();
-  let { items = [], mount = null, value = 0 } = $$props;
+  let { items = [], value = 0 } = $$props;
   let open = false;
   let icon = items.length > 0 ? items[value].icon : "";
   let label = items.length > 0 ? items[value].label : "";
   const each_array = ensure_array_like(items);
-  $$payload.out += `<label class="svelte-1uz3cqu"><button type="button" class="svelte-1uz3cqu">`;
+  $$payload.out += `<label class="svelte-dpktq5"><button type="button" class="svelte-dpktq5">`;
   Icon($$payload, { height: "20", icon, width: "20" });
-  $$payload.out += `<!----> <span class="svelte-1uz3cqu">${escape_html(label)}</span> `;
+  $$payload.out += `<!----> <span class="svelte-dpktq5">${escape_html(label)}</span> `;
   Icon($$payload, {
     height: "20",
     icon: "material-symbols:keyboard-arrow-down-rounded",
     width: "20"
   });
-  $$payload.out += `<!----></button> <ul${attr_class("svelte-1uz3cqu", void 0, { "open": open, "top": mount === "top" ? true : false })}><!--[-->`;
+  $$payload.out += `<!----></button> <ul${attr_class("svelte-dpktq5", void 0, { "open": open })}><!--[-->`;
   for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
     let item = each_array[$$index];
-    $$payload.out += `<li${attr_class("svelte-1uz3cqu", void 0, { "selected": value === item.value ? true : false })}><button type="button" class="svelte-1uz3cqu">`;
+    $$payload.out += `<li${attr_class("svelte-dpktq5", void 0, { "selected": value === item.value ? true : false })}><button type="button" class="svelte-dpktq5">`;
     Icon($$payload, { height: "20", icon: item.icon, width: "20" });
-    $$payload.out += `<!----> <span class="svelte-1uz3cqu">${escape_html(item.label)}</span> `;
+    $$payload.out += `<!----> <span class="svelte-dpktq5">${escape_html(item.label)}</span> `;
     if (item.value === value) {
       $$payload.out += "<!--[-->";
       Icon($$payload, {
@@ -844,10 +844,38 @@ function GraphSection($$payload, $$props) {
   }
   $$payload.out += `<!--]--></div> `;
   GraphSelect($$payload, {
-    items: options,
-    mount: "top"
+    items: options
   });
   $$payload.out += `<!----></footer></section>`;
+  pop();
+}
+function HungerButton($$payload, $$props) {
+  push();
+  let { items = [], value = 5 } = $$props;
+  let open = false;
+  let label = (() => {
+    const match = items.find((current) => current.value === value ? true : false);
+    return match.label;
+  })();
+  const each_array = ensure_array_like(items);
+  $$payload.out += `<label class="svelte-a6ycms"><button type="button" class="svelte-a6ycms">`;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:fork-spoon-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----> <span class="svelte-a6ycms">${escape_html(label)}</span> `;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:keyboard-arrow-down-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----></button> <ul${attr_class("svelte-a6ycms", void 0, { "open": open })}><!--[-->`;
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    let item = each_array[$$index];
+    $$payload.out += `<li class="svelte-a6ycms"><button type="button" class="svelte-a6ycms"><span class="svelte-a6ycms">${escape_html(item.label)}</span></button></li>`;
+  }
+  $$payload.out += `<!--]--></ul></label>`;
   pop();
 }
 function Timer($$payload, $$props) {
@@ -874,6 +902,31 @@ function Timer($$payload, $$props) {
   $$payload.out += `<article${attr_class("svelte-1yn3hhw", void 0, { "complete": difference < 0 ? true : false })}><p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.hours)}</span> <span class="units svelte-1yn3hhw">hrs</span></p> <p class="colon svelte-1yn3hhw">:</p> <p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.minutes)}</span> <span class="units svelte-1yn3hhw">min</span></p> <p class="colon svelte-1yn3hhw">:</p> <p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.seconds)}</span> <span class="units svelte-1yn3hhw">sec</span></p></article>`;
   pop();
 }
+function WaterButton($$payload, $$props) {
+  push();
+  let { items = [], units = "oz", value = 0 } = $$props;
+  let open = false;
+  const each_array = ensure_array_like(items);
+  $$payload.out += `<label class="svelte-1yteqtn"><button type="button" class="svelte-1yteqtn">`;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:water-drop-outline-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----> <span class="svelte-1yteqtn">${escape_html(value)} ${escape_html(units)}</span> `;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:keyboard-arrow-down-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----></button> <ul${attr_class("svelte-1yteqtn", void 0, { "open": open })}><!--[-->`;
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    let item = each_array[$$index];
+    $$payload.out += `<li class="svelte-1yteqtn"><button type="button" class="svelte-1yteqtn"><span class="svelte-1yteqtn">${escape_html(item.label)}</span> <span class="svelte-1yteqtn">${escape_html(item.value)} ${escape_html(units)}</span></button></li>`;
+  }
+  $$payload.out += `<!--]--></ul></label>`;
+  pop();
+}
 function FastingView($$payload, $$props) {
   push();
   let {
@@ -888,10 +941,16 @@ function FastingView($$payload, $$props) {
     volume = null,
     water = 0
   } = $$props;
-  function formatHunger(value) {
-    const item = levels.find((current) => current.value === value ? true : false);
-    return item.label;
-  }
+  const water_options = [
+    { value: 8, label: "Cup" },
+    { value: 12, label: "Can" },
+    { value: 16, label: "Bottle" },
+    { value: 20, label: "Medium" },
+    { value: 30, label: "Gatorade" },
+    { value: 32, label: "Big Q" },
+    { value: 44, label: "QT Large" },
+    { value: 52, label: "Extra Large" }
+  ];
   function formatStarted(value) {
     if (value === null) return null;
     const formatter = new Intl.DateTimeFormat(navigator.language, {
@@ -904,39 +963,31 @@ function FastingView($$payload, $$props) {
     });
     return formatter.format(value);
   }
-  $$payload.out += `<section class="svelte-cj8gv0"><header class="svelte-cj8gv0"><h3 class="svelte-cj8gv0">Fasting</h3> <button type="button" class="svelte-cj8gv0">`;
+  $$payload.out += `<section class="svelte-1wi0ic3"><header class="svelte-1wi0ic3"><h3 class="svelte-1wi0ic3">Fasting</h3> <button type="button" class="svelte-1wi0ic3">`;
   Icon($$payload, {
     height: "20",
     icon: "material-symbols:person-outline-rounded",
     width: "20"
   });
-  $$payload.out += `<!----></button></header> <article class="svelte-cj8gv0">`;
+  $$payload.out += `<!----></button></header> <article class="svelte-1wi0ic3">`;
   if (started === null) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<p class="svelte-cj8gv0">You are not fasting.</p>`;
+    $$payload.out += `<p class="svelte-1wi0ic3">You are not fasting.</p>`;
   } else {
     $$payload.out += "<!--[!-->";
-    $$payload.out += `<p class="svelte-cj8gv0">You are fasting.</p> `;
+    $$payload.out += `<p class="svelte-1wi0ic3">You are fasting.</p> `;
     Timer($$payload, { duration, now, started });
     $$payload.out += `<!----> `;
     DurationGroup($$payload, { value: duration });
-    $$payload.out += `<!----> <p class="started svelte-cj8gv0">Started ${escape_html(formatStarted(started))}</p>`;
+    $$payload.out += `<!----> <p class="started svelte-1wi0ic3">Started ${escape_html(formatStarted(started))}</p>`;
   }
-  $$payload.out += `<!--]--> <button class="primary svelte-cj8gv0" type="button">${escape_html(started === null ? "Start" : "Stop")} fasting</button></article> <div class="graph svelte-cj8gv0">`;
+  $$payload.out += `<!--]--> <button class="primary svelte-1wi0ic3" type="button">${escape_html(started === null ? "Start" : "Stop")} fasting</button></article> <div class="graph svelte-1wi0ic3">`;
   GraphSection($$payload, { activity, days: 7, onsun, sun, water: volume });
-  $$payload.out += `<!----></div> <footer class="svelte-cj8gv0"><button class="hunger secondary svelte-cj8gv0" type="button">`;
-  Icon($$payload, {
-    height: "20",
-    icon: "material-symbols:fork-spoon-rounded",
-    width: "20"
-  });
-  $$payload.out += `<!----> <span>${escape_html(formatHunger(hunger))}</span></button> <button class="water secondary svelte-cj8gv0" type="button">`;
-  Icon($$payload, {
-    height: "20",
-    icon: "material-symbols:water-drop-outline-rounded",
-    width: "20"
-  });
-  $$payload.out += `<!----> <span>${escape_html(water)} oz</span></button></footer></section>`;
+  $$payload.out += `<!----></div> <footer class="svelte-1wi0ic3">`;
+  HungerButton($$payload, { items: levels, value: hunger });
+  $$payload.out += `<!----> `;
+  WaterButton($$payload, { items: water_options, value: water });
+  $$payload.out += `<!----></footer></section>`;
   pop();
 }
 function Calendar($$payload, $$props) {
@@ -1005,7 +1056,7 @@ function Calendar($$payload, $$props) {
 }
 function DateTimePicker($$payload, $$props) {
   push();
-  let { label, value = /* @__PURE__ */ new Date() } = $$props;
+  let { label, onchange, value = /* @__PURE__ */ new Date() } = $$props;
   function formatDate(value2) {
     const formatter = new Intl.DateTimeFormat(navigator.language, { month: "short", day: "numeric" });
     return formatter.format(value2);
@@ -1034,6 +1085,11 @@ function HistoryEditor($$payload, $$props) {
     title = "Edit Fast Start"
   } = $$props;
   let dialog = void 0;
+  function onCalendarChange(selected) {
+    const change = { ...item };
+    change[field] = new Date(selected.getTime());
+    item = { ...change };
+  }
   function close() {
     dialog.close();
   }
@@ -1043,6 +1099,7 @@ function HistoryEditor($$payload, $$props) {
   $$payload.out += `<dialog class="svelte-13glclx"><h3 class="svelte-13glclx">${escape_html(title)}</h3> `;
   DateTimePicker($$payload, {
     label,
+    onchange: onCalendarChange,
     value: item && item.id && item.id !== null ? item[field] : /* @__PURE__ */ new Date()
   });
   $$payload.out += `<!----> <textarea placeholder="Notes" class="svelte-13glclx">`;
@@ -1130,18 +1187,50 @@ function HoursView($$payload, $$props) {
   HistoryList($$payload, { items: history });
   $$payload.out += `<!----></article></section>`;
 }
+function HungerSelect($$payload, $$props) {
+  push();
+  let { items = [], value = 0 } = $$props;
+  let open = false;
+  let label = (() => {
+    if (items.length === 0) return "";
+    const match = items.find((current) => current.value === value ? true : false);
+    return match.label;
+  })();
+  const each_array = ensure_array_like(items);
+  $$payload.out += `<label class="svelte-148k8wo"><button tabindex="-1" type="button" class="svelte-148k8wo"><span class="svelte-148k8wo">${escape_html(label)}</span> `;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:keyboard-arrow-down-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----></button> <ul${attr_class("svelte-148k8wo", void 0, { "open": open })}><!--[-->`;
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    let item = each_array[$$index];
+    $$payload.out += `<li${attr_class("svelte-148k8wo", void 0, { "selected": value === item.value ? true : false })}><button type="button" class="svelte-148k8wo"><span class="svelte-148k8wo">${escape_html(item.label)}</span> `;
+    if (item.value === value) {
+      $$payload.out += "<!--[-->";
+      Icon($$payload, {
+        height: "20",
+        icon: "material-symbols:check-rounded",
+        width: "20"
+      });
+    } else {
+      $$payload.out += "<!--[!-->";
+    }
+    $$payload.out += `<!--]--></button></li>`;
+  }
+  $$payload.out += `<!--]--></ul></label>`;
+  pop();
+}
 function HungerEditor($$payload, $$props) {
   push();
-  let {
-    item = null,
-    levels = [],
-    oncancel,
-    ondelete,
-    onsave,
-    units = "oz"
-  } = $$props;
+  let { item = null, levels = [], oncancel, ondelete, onsave } = $$props;
   let dialog = void 0;
   let current = item && item.level && item.level !== null ? item.level : 5;
+  function onDateChange(value) {
+    const created = new Date(value.getTime());
+    item = { ...item, created };
+  }
   function close() {
     dialog.close();
     item = null;
@@ -1149,28 +1238,15 @@ function HungerEditor($$payload, $$props) {
   function showModal() {
     dialog.showModal();
   }
-  const each_array = ensure_array_like(levels);
-  $$payload.out += `<dialog class="svelte-1gyfgoj"><h3 class="svelte-1gyfgoj">${escape_html(item && item.id && item.id !== null ? "Edit" : "Add")} Hunger</h3> <ul class="svelte-1gyfgoj"><!--[-->`;
-  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
-    let level = each_array[$$index];
-    const icon = level.value === current ? "material-symbols:radio-button-checked-outline" : "material-symbols:circle-outline";
-    $$payload.out += `<li class="svelte-1gyfgoj"><button type="button" class="svelte-1gyfgoj"><p class="svelte-1gyfgoj">${escape_html(level.label)}</p> `;
-    Icon($$payload, {
-      color: level.value === current ? "#0284c7" : "#161616",
-      height: "20",
-      icon,
-      width: "20"
-    });
-    $$payload.out += `<!----></button></li>`;
-  }
-  $$payload.out += `<!--]--></ul> <footer class="svelte-1gyfgoj">`;
-  if (item && item.id && item.id !== null) {
-    $$payload.out += "<!--[-->";
-    $$payload.out += `<button class="delete svelte-1gyfgoj" type="button">Delete</button>`;
-  } else {
-    $$payload.out += "<!--[!-->";
-  }
-  $$payload.out += `<!--]--> <button class="cancel svelte-1gyfgoj" type="button">Cancel</button> <button type="button" class="svelte-1gyfgoj">Save</button></footer></dialog>`;
+  $$payload.out += `<dialog class="svelte-1hqchgg"><h3 class="svelte-1hqchgg">Edit Hunger</h3> `;
+  HungerSelect($$payload, { items: levels, value: current });
+  $$payload.out += `<!----> `;
+  DateTimePicker($$payload, {
+    label: "Checked",
+    onchange: onDateChange,
+    value: item && item.created ? item.created : /* @__PURE__ */ new Date()
+  });
+  $$payload.out += `<!----> <footer class="svelte-1hqchgg"><button class="delete svelte-1hqchgg" type="button">Delete</button> <button class="cancel svelte-1hqchgg" type="button">Cancel</button> <button type="button" class="svelte-1hqchgg">Save</button></footer></dialog>`;
   bind_props($$props, { close, showModal });
   pop();
 }
@@ -1191,11 +1267,46 @@ function Settings($$payload, $$props) {
   $$payload.out += `<dialog class="svelte-msa23r"><h3 class="svelte-msa23r">Settings</h3> <article class="svelte-msa23r"><p class="svelte-msa23r">Settings.</p></article> <footer class="svelte-msa23r"><button type="button" class="svelte-msa23r">Done</button></footer></dialog>`;
   bind_props($$props, { close, showModal });
 }
+function WaterSelect($$payload, $$props) {
+  push();
+  let { items = [], units = "oz", value = 0 } = $$props;
+  let open = false;
+  let label = (() => {
+    if (items.length === 0) return "";
+    const match = items.find((current) => current.value === value ? true : false);
+    return match.label;
+  })();
+  const each_array = ensure_array_like(items);
+  $$payload.out += `<label class="svelte-148k8wo"><button tabindex="-1" type="button" class="svelte-148k8wo"><span class="svelte-148k8wo">${escape_html(label)}</span> <span class="svelte-148k8wo">${escape_html(value)} ${escape_html(units)}</span> `;
+  Icon($$payload, {
+    height: "20",
+    icon: "material-symbols:keyboard-arrow-down-rounded",
+    width: "20"
+  });
+  $$payload.out += `<!----></button> <ul${attr_class("svelte-148k8wo", void 0, { "open": open })}><!--[-->`;
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    let item = each_array[$$index];
+    $$payload.out += `<li${attr_class("svelte-148k8wo", void 0, { "selected": value === item.value ? true : false })}><button type="button" class="svelte-148k8wo"><span class="svelte-148k8wo">${escape_html(item.label)}</span> <span class="svelte-148k8wo">${escape_html(item.value)} oz</span> `;
+    if (item.value === value) {
+      $$payload.out += "<!--[-->";
+      Icon($$payload, {
+        height: "20",
+        icon: "material-symbols:check-rounded",
+        width: "20"
+      });
+    } else {
+      $$payload.out += "<!--[!-->";
+    }
+    $$payload.out += `<!--]--></button></li>`;
+  }
+  $$payload.out += `<!--]--></ul></label>`;
+  pop();
+}
 function WaterEditor($$payload, $$props) {
   push();
   let { item = null, oncancel, ondelete, onsave, units = "oz" } = $$props;
   let dialog = void 0;
-  let sizes = [
+  let options = [
     { value: 8, label: "Cup" },
     { value: 12, label: "Can" },
     { value: 16, label: "Bottle" },
@@ -1206,6 +1317,10 @@ function WaterEditor($$payload, $$props) {
     { value: 52, label: "Extra Large" }
   ];
   let volume = item && item.volume && item.volume !== null ? item.volume : 8;
+  function onDateChange(value) {
+    const created = new Date(value.getTime());
+    item = { ...item, created };
+  }
   function close() {
     dialog.close();
     item = null;
@@ -1213,28 +1328,15 @@ function WaterEditor($$payload, $$props) {
   function showModal() {
     dialog.showModal();
   }
-  const each_array = ensure_array_like(sizes);
-  $$payload.out += `<dialog class="svelte-1sbih0z"><h3 class="svelte-1sbih0z">${escape_html(item && item.id && item.id !== null ? "Edit" : "Add")} Water</h3> <ul class="svelte-1sbih0z"><!--[-->`;
-  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
-    let size = each_array[$$index];
-    const icon = size.value === volume ? "material-symbols:radio-button-checked-outline" : "material-symbols:circle-outline";
-    $$payload.out += `<li class="svelte-1sbih0z"><button type="button" class="svelte-1sbih0z"><p class="svelte-1sbih0z">${escape_html(size.label)}</p> <p class="svelte-1sbih0z">${escape_html(size.value)} ${escape_html(units)}</p> `;
-    Icon($$payload, {
-      color: size.value === volume ? "#0284c7" : "#161616",
-      height: "20",
-      icon,
-      width: "20"
-    });
-    $$payload.out += `<!----></button></li>`;
-  }
-  $$payload.out += `<!--]--></ul> <footer class="svelte-1sbih0z">`;
-  if (item && item.id && item.id !== null) {
-    $$payload.out += "<!--[-->";
-    $$payload.out += `<button class="delete svelte-1sbih0z" type="button">Delete</button>`;
-  } else {
-    $$payload.out += "<!--[!-->";
-  }
-  $$payload.out += `<!--]--> <button class="cancel svelte-1sbih0z" type="button">Cancel</button> <button type="button" class="svelte-1sbih0z">Save</button></footer></dialog>`;
+  $$payload.out += `<dialog class="svelte-1kewhwu"><h3 class="svelte-1kewhwu">Edit Water</h3> `;
+  WaterSelect($$payload, { items: options, units, value: volume });
+  $$payload.out += `<!----> `;
+  DateTimePicker($$payload, {
+    label: "Finished",
+    onchange: onDateChange,
+    value: item && item.created ? item.created : /* @__PURE__ */ new Date()
+  });
+  $$payload.out += `<!----> <footer class="svelte-1kewhwu"><button class="delete svelte-1kewhwu" type="button">Delete</button> <button class="cancel svelte-1kewhwu" type="button">Cancel</button> <button type="button" class="svelte-1kewhwu">Save</button></footer></dialog>`;
   bind_props($$props, { close, showModal });
   pop();
 }
@@ -1529,20 +1631,12 @@ function _page($$payload, $$props) {
     });
   }
   function onHungerSave(value) {
-    if (hunger_item === null) {
-      db.addHunger(value.level).then((item) => {
-        hunger_editor.close();
-        loadHunger();
-        loadHistory();
-      });
-    } else {
-      db.editHunger(value).then((data) => {
-        hunger_editor.close();
-        hunger_item = null;
-        loadHunger();
-        loadHistory();
-      });
-    }
+    db.editHunger(value).then((data) => {
+      hunger_editor.close();
+      hunger_item = null;
+      loadHunger();
+      loadHistory();
+    });
   }
   function onSunEnable() {
     const response = confirm("Sunrise/set (important for religious observations) needs to know your location? Enable location detection?");
@@ -1565,20 +1659,12 @@ function _page($$payload, $$props) {
     });
   }
   function onWaterSave(value) {
-    if (water_item === null) {
-      db.addWater(value.volume).then((item) => {
-        water_editor.close();
-        loadWater();
-        loadHistory();
-      });
-    } else {
-      db.editWater(value).then((data) => {
-        water_editor.close();
-        water_item = null;
-        loadWater();
-        loadHistory();
-      });
-    }
+    db.editWater(value).then((data) => {
+      water_editor.close();
+      water_item = null;
+      loadWater();
+      loadHistory();
+    });
   }
   $$payload.out += `<main class="svelte-odvko0"><header class="svelte-odvko0"><span></span> `;
   ScreenGroup($$payload, { value: screen });

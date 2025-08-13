@@ -1,8 +1,10 @@
 <script>
   import DurationGroup from "./DurationGroup.svelte";  
   import GraphSection from "./GraphSection.svelte";  
+  import HungerButton from "./HungerButton.svelte";  
   import Icon from "@iconify/svelte";
   import Timer from "$lib/Timer.svelte";
+  import WaterButton from "./WaterButton.svelte";
 
   let {
     activity = null,
@@ -16,17 +18,23 @@
     onsettings, 
     onstart, 
     onsun,
-    onwater, 
+    onwater,
     started = null, 
     sun = null,
     volume = null,
     water = 0
   } = $props();
 
-  function formatHunger( value ) {
-    const item = levels.find( ( current ) => current.value === value ? true : false );
-    return item.label;
-  }
+  const water_options = [
+    {value: 8, label: 'Cup'}, 
+    {value: 12, label: 'Can'}, 
+    {value: 16, label: 'Bottle'}, 
+    {value: 20, label: 'Medium'}, 
+    {value: 30, label: 'Gatorade'},
+    {value: 32, label: 'Big Q'},
+    {value: 44, label: 'QT Large'},
+    {value: 52, label: 'Extra Large'}
+  ];
 
   function formatStarted( value ) {
     if( value === null ) return null;
@@ -85,20 +93,14 @@
   </div>
 
   <footer>
-    <button class="hunger secondary" onclick={onhunger} type="button">
-      <Icon 
-        height="20" 
-        icon="material-symbols:fork-spoon-rounded" 
-        width="20" />
-      <span>{formatHunger( hunger )}</span>
-    </button>  
-    <button class="water secondary" onclick={onwater} type="button">
-      <Icon 
-        height="20" 
-        icon="material-symbols:water-drop-outline-rounded" 
-        width="20" />
-      <span>{water} oz</span>    
-    </button>    
+    <HungerButton 
+      items={levels} 
+      onchange={onhunger} 
+      value={hunger} />
+    <WaterButton 
+      items={water_options} 
+      onchange={onwater} 
+      value={water} />
   </footer>
 
 </section>
@@ -126,40 +128,6 @@
     outline: none;
     padding: 0 16px 0 16px;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  button.secondary {
-    align-items: center;
-    appearance: none;
-    background: #ffffff;
-    border: solid 1px #00000040;
-    border-radius: 4px;
-    box-sizing: border-box;
-    color: #161616;
-    cursor: pointer;
-    display: flex;
-    font-family: 'Roboto Variable', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    gap: 8px;
-    justify-content: center;
-    letter-spacing: 0.10px;
-    line-height: 20px;
-    height: 40px;
-    margin: 0;
-    outline: none;
-    padding: 0 16px 0 16px;
-    -webkit-tap-highlight-color: transparent;    
-  }
-
-  button.hunger {
-    justify-self: start;
-    padding: 0 16px 0 12px;    
-  }
-
-  button.water {
-    justify-self: end;
-    padding: 0 16px 0 12px;    
   }
 
   footer {

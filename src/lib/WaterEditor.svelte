@@ -1,10 +1,12 @@
 <script>
+  import DateTimePicker from "./DateTimePicker.svelte";  
   import Icon from "@iconify/svelte";
+  import WaterSelect from "./WaterSelect.svelte";
 
   let {item = null, oncancel, ondelete, onsave, units = 'oz'} = $props();
 
   let dialog = $state();
-  let sizes = $state( [
+  let options = $state( [
     {value: 8, label: 'Cup'}, 
     {value: 12, label: 'Can'}, 
     {value: 16, label: 'Bottle'}, 
@@ -23,20 +25,20 @@
     if( oncancel ) oncancel();
   }
 
+  function onDateChange( value ) {
+    const created = new Date( value.getTime() );
+    item = {... item, created};
+  }
+
   function onDeleteClick() {
     if( ondelete ) ondelete( item.id );
   }
 
   function onSaveClick() {
-    if( item === null ) {
-      const volume = 8;
-      item = {... item, volume};
-    }
-
     if( onsave ) onsave( item );
   }
 
-  function onSizeClick( amount ) {
+  function onSizeChange( amount ) {
     const volume = amount;
     item = {... item, volume};
   }
@@ -53,29 +55,20 @@
 
 <dialog bind:this={dialog}>
 
-  <h3>{item && item.id && item.id !== null ? 'Edit' : 'Add'} Water</h3>
+  <h3>Edit Water</h3>
 
-  <ul>
-    {#each sizes as size}
-      {@const icon = size.value === volume ? 'material-symbols:radio-button-checked-outline' : 'material-symbols:circle-outline'}
-      <li>
-        <button onclick={() => onSizeClick( size.value )} type="button">
-          <p>{size.label}</p>  
-          <p>{size.value} {units}</p>
-          <Icon 
-            color={size.value === volume ? '#0284c7' : '#161616'} 
-            height="20" 
-            {icon} 
-            width="20" />
-        </button>
-      </li>
-    {/each}
-  </ul>
+  <WaterSelect 
+    items={options} 
+    onchange={onSizeChange} 
+    {units} 
+    value={volume} />
+  <DateTimePicker 
+    label="Finished" 
+    onchange={onDateChange} 
+    value={item && item.created ? item.created : new Date()} />
 
   <footer>
-    {#if item && item.id && item.id !== null}
-      <button class="delete" onclick={onDeleteClick} type="button">Delete</button>            
-    {/if}
+    <button class="delete" onclick={onDeleteClick} type="button">Delete</button>            
     <button class="cancel" onclick={onCancelClick} type="button">Cancel</button>    
     <button onclick={onSaveClick} type="button">Save</button>    
   </footer>
@@ -166,57 +159,4 @@
     padding: 0 0 12px 0;
     text-align: left;
   }  
-
-  ul {
-    background: #ffffff;
-    border-radius: 4px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul li {
-    border-bottom: solid 1px #00000010;
-    box-sizing: border-box;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul li:last-of-type {
-    border-bottom: solid 1px transparent;
-  }  
-
-  ul li button {
-    align-items: center;
-    appearance: none;
-    background: none;
-    border: none;
-    box-sizing: border-box;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    height: 40px;
-    margin: 0;
-    outline: none;
-    padding: 0 12px 0 16px;    
-    width: 100%;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  ul li button p {
-    box-sizing: border-box;
-    color: #161616;
-    cursor: pointer;
-    flex-basis: 0;
-    flex-grow: 1;
-    font-family: 'Roboto Variable', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0.10px;
-    line-height: 24px;
-    margin: 0;
-    padding: 0;      
-    text-align: left;
-  }
 </style>
