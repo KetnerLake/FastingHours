@@ -365,23 +365,18 @@
         volumeByDate[key] = ( volumeByDate[key] || 0 ) + volume;
       }
 
-      console.log( volumeByDate );
-
       // Step 2: Build result for the last 7 days (newest first)
       const result = [];
       for( let i = 0; i < 7; i++ ) {
         const date = new Date( today.getTime() );
         date.setDate( today.getDate() - i );
         const key = toLocalDateKey( date );
-        console.log( key );
         result.push( {created: new Date( date.getTime() ), volume: volumeByDate[key] || 0} );
       }
 
       // Step 3: Compute average
       const totalVolume = result.reduce( ( sum, {volume} ) => sum + volume, 0 );
       const averageVolume = totalVolume / result.length;      
-
-      console.log( result );
 
       volume = {
         average: averageVolume,

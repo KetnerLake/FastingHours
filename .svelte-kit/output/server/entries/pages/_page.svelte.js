@@ -1450,13 +1450,11 @@ function _page($$payload, $$props) {
         const key = toLocalDateKey(created);
         volumeByDate[key] = (volumeByDate[key] || 0) + volume2;
       }
-      console.log(volumeByDate);
       const result = [];
       for (let i = 0; i < 7; i++) {
         const date = new Date(today.getTime());
         date.setDate(today.getDate() - i);
         const key = toLocalDateKey(date);
-        console.log(key);
         result.push({
           created: new Date(date.getTime()),
           volume: volumeByDate[key] || 0
@@ -1464,7 +1462,6 @@ function _page($$payload, $$props) {
       }
       const totalVolume = result.reduce((sum, { volume: volume2 }) => sum + volume2, 0);
       const averageVolume = totalVolume / result.length;
-      console.log(result);
       volume = { average: averageVolume, daily: [...result] };
     });
   }
