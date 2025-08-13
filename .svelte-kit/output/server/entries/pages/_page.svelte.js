@@ -1,4 +1,4 @@
-import { y as current_component, v as pop, t as push, z as attr_class, A as ensure_array_like, x as escape_html, F as attr_style, G as maybe_selected, J as attr, K as bind_props } from "../../chunks/index.js";
+import { y as current_component, v as pop, t as push, z as attr_class, A as ensure_array_like, x as escape_html, F as attr_style, G as attr, J as bind_props } from "../../chunks/index.js";
 import "clsx";
 import Dexie from "dexie";
 import daylight from "suncalc";
@@ -766,34 +766,62 @@ function ActivityGraph($$payload, $$props) {
   $$payload.out += `<!--]--></div></figure>`;
   pop();
 }
-function Select($$payload, $$props) {
+function GraphSelect($$payload, $$props) {
   push();
-  let { children, icon, label, value = 0 } = $$props;
-  $$payload.out += `<div class="svelte-avz5er">`;
-  Icon($$payload, { color: "#161616", height: "20", icon, width: "20" });
-  $$payload.out += `<!----> <p class="svelte-avz5er">${escape_html(label)}</p> `;
+  let { items = [], mount = null, value = 0 } = $$props;
+  let open = false;
+  let icon = items.length > 0 ? items[value].icon : "";
+  let label = items.length > 0 ? items[value].label : "";
+  const each_array = ensure_array_like(items);
+  $$payload.out += `<label class="svelte-1uz3cqu"><button type="button" class="svelte-1uz3cqu">`;
+  Icon($$payload, { height: "20", icon, width: "20" });
+  $$payload.out += `<!----> <span class="svelte-1uz3cqu">${escape_html(label)}</span> `;
   Icon($$payload, {
-    color: "#161616",
     height: "20",
     icon: "material-symbols:keyboard-arrow-down-rounded",
     width: "20"
   });
-  $$payload.out += `<!----> <select class="svelte-avz5er">`;
-  $$payload.select_value = value;
-  children?.($$payload);
-  $$payload.out += `<!---->`;
-  $$payload.select_value = void 0;
-  $$payload.out += `</select></div>`;
+  $$payload.out += `<!----></button> <ul${attr_class("svelte-1uz3cqu", void 0, { "open": open, "top": mount === "top" ? true : false })}><!--[-->`;
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    let item = each_array[$$index];
+    $$payload.out += `<li${attr_class("svelte-1uz3cqu", void 0, { "selected": value === item.value ? true : false })}><button type="button" class="svelte-1uz3cqu">`;
+    Icon($$payload, { height: "20", icon: item.icon, width: "20" });
+    $$payload.out += `<!----> <span class="svelte-1uz3cqu">${escape_html(item.label)}</span> `;
+    if (item.value === value) {
+      $$payload.out += "<!--[-->";
+      Icon($$payload, {
+        height: "20",
+        icon: "material-symbols:check-rounded",
+        width: "20"
+      });
+    } else {
+      $$payload.out += "<!--[!-->";
+    }
+    $$payload.out += `<!--]--></button></li>`;
+  }
+  $$payload.out += `<!--]--></ul></label>`;
   pop();
 }
 function GraphSection($$payload, $$props) {
   push();
   let { activity = null, days = 10, onsun, sun, water = null } = $$props;
+  const options = [
+    {
+      icon: "material-symbols:local-fire-department-outline-rounded",
+      label: "Fasting",
+      value: 0
+    },
+    {
+      icon: "material-symbols:water-drop-outline-rounded",
+      label: "Water",
+      value: 1
+    }
+  ];
   function formatTime(value) {
     const formatter = new Intl.DateTimeFormat(navigator.language, { hour: "numeric", minute: "2-digit" });
     return formatter.format(value);
   }
-  $$payload.out += `<section class="svelte-smok7a">`;
+  $$payload.out += `<section class="svelte-wl8176">`;
   {
     $$payload.out += "<!--[-->";
     ActivityGraph($$payload, {
@@ -801,10 +829,10 @@ function GraphSection($$payload, $$props) {
       daily: activity && activity.daily ? activity.daily : []
     });
   }
-  $$payload.out += `<!--]--> <footer class="svelte-smok7a"><div class="daynight svelte-smok7a">`;
+  $$payload.out += `<!--]--> <footer class="svelte-wl8176"><div class="daynight svelte-wl8176">`;
   if (sun === null) {
     $$payload.out += "<!--[-->";
-    $$payload.out += `<button class="sun svelte-smok7a" type="button">Sunrise/sunset</button>`;
+    $$payload.out += `<button class="sun svelte-wl8176" type="button">Sunrise/sunset</button>`;
   } else {
     $$payload.out += "<!--[!-->";
     Icon($$payload, {
@@ -812,15 +840,12 @@ function GraphSection($$payload, $$props) {
       icon: sun && sun.icon ? sun.icon : null,
       width: "16"
     });
-    $$payload.out += `<!----> <p class="svelte-smok7a">${escape_html(sun && sun.timing ? formatTime(sun.timing) : "")}</p>`;
+    $$payload.out += `<!----> <p class="svelte-wl8176">${escape_html(sun && sun.timing ? formatTime(sun.timing) : "")}</p>`;
   }
   $$payload.out += `<!--]--></div> `;
-  Select($$payload, {
-    icon: "material-symbols:mode-heat-outline-rounded",
-    label: "Fasting",
-    children: ($$payload2) => {
-      $$payload2.out += `<option data-icon="material-symbols:mode-heat-outline-rounded" selected value="0"${maybe_selected($$payload2, "0")}>Fasting</option> <option data-icon="material-symbols:water-drop-outline-rounded" value="1"${maybe_selected($$payload2, "1")}>Water</option>`;
-    }
+  GraphSelect($$payload, {
+    items: options,
+    mount: "top"
   });
   $$payload.out += `<!----></footer></section>`;
   pop();

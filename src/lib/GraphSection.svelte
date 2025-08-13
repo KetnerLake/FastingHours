@@ -1,11 +1,18 @@
 <script>
   import ActivityGraph from "./ActivityGraph.svelte";
+  import GraphSelect from "./GraphSelect.svelte";  
   import Icon from "@iconify/svelte";
-  import Select from "./Select.svelte";
   import WaterGraph from "./WaterGraph.svelte";
 
   let {activity = null, days = 10, onsun, sun, water = null} = $props();   
 
+  const options = [
+    {icon: 'material-symbols:local-fire-department-outline-rounded', label: 'Fasting', value: 0},
+    {icon: 'material-symbols:water-drop-outline-rounded', label: 'Water', value: 1} 
+  ];
+
+  // {icon: 'material-symbols:fork-spoon-rounded', label: 'Hunger', value: 2}       
+  
   let graph = $state( 0 );
 
   function formatTime( value ) {
@@ -41,11 +48,10 @@
         <p>{sun && sun.timing ? formatTime( sun.timing ) : ''}</p>
       {/if}   
     </div>    
-    <Select icon="material-symbols:mode-heat-outline-rounded" label="Fasting" onchange={( value ) => graph = value}>
-      <option data-icon="material-symbols:mode-heat-outline-rounded" selected value="0">Fasting</option>
-      <option data-icon="material-symbols:water-drop-outline-rounded" value="1">Water</option>      
-      <!-- <option data-icon="material-symbols:fork-spoon-rounded" value="2">Hunger</option> -->            
-    </Select>
+    <GraphSelect 
+      items={options} 
+      mount="top" 
+      onchange={( item ) => graph = item.value} />
   </footer>
 
 </section>
@@ -79,6 +85,7 @@
     max-width: 660px;
     min-width: 330px;
     padding: 8px 0 0 0;
+    position: relative;
     width: 100%;
   }
 

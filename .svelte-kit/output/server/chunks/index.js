@@ -263,9 +263,6 @@ function ensure_array_like(array_like_or_iterator) {
   }
   return [];
 }
-function maybe_selected(payload, value) {
-  return value === payload.select_value ? " selected" : "";
-}
 export {
   ensure_array_like as A,
   BROWSER as B,
@@ -273,11 +270,10 @@ export {
   DERIVED as D,
   EFFECT_RAN as E,
   attr_style as F,
-  maybe_selected as G,
+  attr as G,
   HYDRATION_ERROR as H,
   INSPECT_EFFECT as I,
-  attr as J,
-  bind_props as K,
+  bind_props as J,
   LEGACY_PROPS as L,
   MAYBE_DIRTY as M,
   ROOT_EFFECT as R,
