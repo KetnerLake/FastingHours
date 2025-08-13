@@ -33,6 +33,7 @@
 
   export function close() {
     dialog.close();
+    item = null;    
   }
 
   export function showModal() {

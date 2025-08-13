@@ -361,16 +361,19 @@
       // Step 1: Pre-group volumes by date (YYYY-MM-DD → sum)
       const volumeByDate = {};
       for( const {created, volume} of data ) {
-        const key = new Date( created ).toISOString().slice( 0, 10 );
+        const key = toLocalDateKey( created );
         volumeByDate[key] = ( volumeByDate[key] || 0 ) + volume;
       }
+
+      console.log( volumeByDate );
 
       // Step 2: Build result for the last 7 days (newest first)
       const result = [];
       for( let i = 0; i < 7; i++ ) {
-        const date = new Date( today );
+        const date = new Date( today.getTime() );
         date.setDate( today.getDate() - i );
-        const key = date.toISOString().slice( 0, 10 );
+        const key = toLocalDateKey( date );
+        console.log( key );
         result.push( {created: new Date( date.getTime() ), volume: volumeByDate[key] || 0} );
       }
 
@@ -378,12 +381,21 @@
       const totalVolume = result.reduce( ( sum, {volume} ) => sum + volume, 0 );
       const averageVolume = totalVolume / result.length;      
 
+      console.log( result );
+
       volume = {
         average: averageVolume,
         daily: [... result]
       };
     } );    
   }
+
+  function toLocalDateKey( date ) {
+    const y = date.getFullYear();
+    const m = String( date.getMonth() + 1 ).padStart( 2, '0' );
+    const d = String( date.getDate() ).padStart( 2, '0' );
+    return `${y}-${m}-${d}`;
+  }  
 
   function onFastingDuration( value ) {
     duration = value;

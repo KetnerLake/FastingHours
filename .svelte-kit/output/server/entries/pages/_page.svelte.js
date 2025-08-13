@@ -1119,6 +1119,7 @@ function HungerEditor($$payload, $$props) {
   let current = item && item.level && item.level !== null ? item.level : 5;
   function close() {
     dialog.close();
+    item = null;
   }
   function showModal() {
     dialog.showModal();
@@ -1182,6 +1183,7 @@ function WaterEditor($$payload, $$props) {
   let volume = item && item.volume && item.volume !== null ? item.volume : 8;
   function close() {
     dialog.close();
+    item = null;
   }
   function showModal() {
     dialog.showModal();
@@ -1445,14 +1447,16 @@ function _page($$payload, $$props) {
       today.setHours(0, 0, 0, 0);
       const volumeByDate = {};
       for (const { created, volume: volume2 } of data) {
-        const key = new Date(created).toISOString().slice(0, 10);
+        const key = toLocalDateKey(created);
         volumeByDate[key] = (volumeByDate[key] || 0) + volume2;
       }
+      console.log(volumeByDate);
       const result = [];
       for (let i = 0; i < 7; i++) {
-        const date = new Date(today);
+        const date = new Date(today.getTime());
         date.setDate(today.getDate() - i);
-        const key = date.toISOString().slice(0, 10);
+        const key = toLocalDateKey(date);
+        console.log(key);
         result.push({
           created: new Date(date.getTime()),
           volume: volumeByDate[key] || 0
@@ -1460,8 +1464,15 @@ function _page($$payload, $$props) {
       }
       const totalVolume = result.reduce((sum, { volume: volume2 }) => sum + volume2, 0);
       const averageVolume = totalVolume / result.length;
+      console.log(result);
       volume = { average: averageVolume, daily: [...result] };
     });
+  }
+  function toLocalDateKey(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
   }
   function onHistoryDelete(id) {
     if (started !== null) {
