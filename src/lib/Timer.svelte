@@ -20,11 +20,14 @@
         seconds: '00'
       };
     }
+
+    let hours = Math.floor( difference / 3600 );
+    hours = hours < 0 ? '+' + Math.abs( hours ).toString( 10 ) : Math.abs( hours ).toString( 10 );
     
     return {
-      hours: Math.floor( difference / 3600 ).toString( 10 ).padStart( 2, '0' ),
-      minutes: Math.floor( ( difference % 3600 ) / 60 ).toString( 10 ).padStart( 2, '0' ),
-      seconds: ( difference % 60 ).toString( 10 ).padStart( 2, '0' ) 
+      hours: hours,
+      minutes: Math.abs( Math.floor( ( difference % 3600 ) / 60 ) ).toString( 10 ).padStart( 2, '0' ),
+      seconds: Math.abs( ( difference % 60 ) ).toString( 10 ).padStart( 2, '0' ) 
     };
   } );
 </script>

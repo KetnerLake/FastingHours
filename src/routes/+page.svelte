@@ -28,6 +28,16 @@
   let hunger_editor = $state();
   let hunger_item = $state( null );
   let hunger = $state( 5 );
+  let now = $state( null );
+  let screen = $state( 0 );    
+  let settings = $state();  
+  let started = $state( null );
+  let sun = $state( null );
+  let volume = $state( null );  
+  let water = $state( 0 );
+  let water_editor = $state();
+  let water_item = $state( null );
+
   let levels = $state( [
     {value: 1, label: 'Starving'}, 
     {value: 2, label: 'Very hungry'}, 
@@ -40,15 +50,16 @@
     {value: 9, label: 'Stomach aches'},
     {value: 10, label: 'Sick'}
   ] );    
-  let now = $state( null );
-  let screen = $state( 0 );    
-  let settings = $state();  
-  let started = $state( null );
-  let sun = $state( null );
-  let volume = $state( null );  
-  let water = $state( 0 );
-  let water_editor = $state();
-  let water_item = $state( null );
+  let volumes = $state( [
+    {value: 8, label: 'Cup'}, 
+    {value: 12, label: 'Can'}, 
+    {value: 16, label: 'Bottle'}, 
+    {value: 20, label: 'Medium'}, 
+    {value: 30, label: 'Gatorade'},
+    {value: 32, label: 'Big Q'},
+    {value: 44, label: 'QT Large'},
+    {value: 52, label: 'Extra Large'}
+  ] );
 
   onMount( () => {
     // Last screen viewed
@@ -599,7 +610,8 @@
         onwater={onWaterAdd}
         {started}
         {sun}
-        {volume}        
+        {volume}
+        {volumes}
         {water} />
     </article>
     <article>
@@ -634,7 +646,8 @@
   bind:this={water_editor} 
   item={water_item}
   ondelete={onWaterDelete}
-  onsave={onWaterSave} />
+  onsave={onWaterSave}
+  options={volumes} />
 <Settings bind:this={settings} />
 
 <style>

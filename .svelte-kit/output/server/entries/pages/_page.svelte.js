@@ -893,10 +893,12 @@ function Timer($$payload, $$props) {
     if (started === null) {
       return { hours: 0, minutes: "00", seconds: "00" };
     }
+    let hours = Math.floor(difference / 3600);
+    hours = hours < 0 ? "+" + Math.abs(hours).toString(10) : Math.abs(hours).toString(10);
     return {
-      hours: Math.floor(difference / 3600).toString(10).padStart(2, "0"),
-      minutes: Math.floor(difference % 3600 / 60).toString(10).padStart(2, "0"),
-      seconds: (difference % 60).toString(10).padStart(2, "0")
+      hours,
+      minutes: Math.abs(Math.floor(difference % 3600 / 60)).toString(10).padStart(2, "0"),
+      seconds: Math.abs(difference % 60).toString(10).padStart(2, "0")
     };
   })();
   $$payload.out += `<article${attr_class("svelte-1yn3hhw", void 0, { "complete": difference < 0 ? true : false })}><p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.hours)}</span> <span class="units svelte-1yn3hhw">hrs</span></p> <p class="colon svelte-1yn3hhw">:</p> <p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.minutes)}</span> <span class="units svelte-1yn3hhw">min</span></p> <p class="colon svelte-1yn3hhw">:</p> <p class="svelte-1yn3hhw"><span class="svelte-1yn3hhw">${escape_html(tick.seconds)}</span> <span class="units svelte-1yn3hhw">sec</span></p></article>`;
@@ -939,18 +941,9 @@ function FastingView($$payload, $$props) {
     started = null,
     sun = null,
     volume = null,
+    volumes = [],
     water = 0
   } = $$props;
-  const water_options = [
-    { value: 8, label: "Cup" },
-    { value: 12, label: "Can" },
-    { value: 16, label: "Bottle" },
-    { value: 20, label: "Medium" },
-    { value: 30, label: "Gatorade" },
-    { value: 32, label: "Big Q" },
-    { value: 44, label: "QT Large" },
-    { value: 52, label: "Extra Large" }
-  ];
   function formatStarted(value) {
     if (value === null) return null;
     const formatter = new Intl.DateTimeFormat(navigator.language, {
@@ -986,7 +979,7 @@ function FastingView($$payload, $$props) {
   $$payload.out += `<!----></div> <footer class="svelte-1wi0ic3">`;
   HungerButton($$payload, { items: levels, value: hunger });
   $$payload.out += `<!----> `;
-  WaterButton($$payload, { items: water_options, value: water });
+  WaterButton($$payload, { items: volumes, value: water });
   $$payload.out += `<!----></footer></section>`;
   pop();
 }
@@ -1304,18 +1297,15 @@ function WaterSelect($$payload, $$props) {
 }
 function WaterEditor($$payload, $$props) {
   push();
-  let { item = null, oncancel, ondelete, onsave, units = "oz" } = $$props;
+  let {
+    item = null,
+    oncancel,
+    ondelete,
+    onsave,
+    options = [],
+    units = "oz"
+  } = $$props;
   let dialog = void 0;
-  let options = [
-    { value: 8, label: "Cup" },
-    { value: 12, label: "Can" },
-    { value: 16, label: "Bottle" },
-    { value: 20, label: "Medium" },
-    { value: 30, label: "Gatorade" },
-    { value: 32, label: "Big Q" },
-    { value: 44, label: "QT Large" },
-    { value: 52, label: "Extra Large" }
-  ];
   let volume = item && item.volume && item.volume !== null ? item.volume : 8;
   function onDateChange(value) {
     const created = new Date(value.getTime());
@@ -1355,6 +1345,14 @@ function _page($$payload, $$props) {
   let hunger_editor = void 0;
   let hunger_item = null;
   let hunger = 5;
+  let now = null;
+  let screen = 0;
+  let started = null;
+  let sun = null;
+  let volume = null;
+  let water = 0;
+  let water_editor = void 0;
+  let water_item = null;
   let levels = [
     { value: 1, label: "Starving" },
     { value: 2, label: "Very hungry" },
@@ -1367,14 +1365,16 @@ function _page($$payload, $$props) {
     { value: 9, label: "Stomach aches" },
     { value: 10, label: "Sick" }
   ];
-  let now = null;
-  let screen = 0;
-  let started = null;
-  let sun = null;
-  let volume = null;
-  let water = 0;
-  let water_editor = void 0;
-  let water_item = null;
+  let volumes = [
+    { value: 8, label: "Cup" },
+    { value: 12, label: "Can" },
+    { value: 16, label: "Bottle" },
+    { value: 20, label: "Medium" },
+    { value: 30, label: "Gatorade" },
+    { value: 32, label: "Big Q" },
+    { value: 44, label: "QT Large" },
+    { value: 52, label: "Extra Large" }
+  ];
   function formatLocalDate(date) {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -1685,6 +1685,7 @@ function _page($$payload, $$props) {
     started,
     sun,
     volume,
+    volumes,
     water
   });
   $$payload.out += `<!----></article> <article class="svelte-odvko0">`;
@@ -1715,7 +1716,8 @@ function _page($$payload, $$props) {
   WaterEditor($$payload, {
     item: water_item,
     ondelete: onWaterDelete,
-    onsave: onWaterSave
+    onsave: onWaterSave,
+    options: volumes
   });
   $$payload.out += `<!----> `;
   Settings($$payload, {});

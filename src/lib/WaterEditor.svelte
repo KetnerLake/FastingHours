@@ -3,19 +3,9 @@
   import Icon from "@iconify/svelte";
   import WaterSelect from "./WaterSelect.svelte";
 
-  let {item = null, oncancel, ondelete, onsave, units = 'oz'} = $props();
+  let {item = null, oncancel, ondelete, onsave, options = [], units = 'oz'} = $props();
 
   let dialog = $state();
-  let options = $state( [
-    {value: 8, label: 'Cup'}, 
-    {value: 12, label: 'Can'}, 
-    {value: 16, label: 'Bottle'}, 
-    {value: 20, label: 'Medium'}, 
-    {value: 30, label: 'Gatorade'},
-    {value: 32, label: 'Big Q'},
-    {value: 44, label: 'QT Large'},
-    {value: 52, label: 'Extra Large'}
-  ] );
 
   let volume = $derived( item && item.volume && item.volume !== null ? item.volume : 8 );  
 

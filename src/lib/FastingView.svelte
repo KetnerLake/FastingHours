@@ -22,19 +22,9 @@
     started = null, 
     sun = null,
     volume = null,
+    volumes = [],
     water = 0
   } = $props();
-
-  const water_options = [
-    {value: 8, label: 'Cup'}, 
-    {value: 12, label: 'Can'}, 
-    {value: 16, label: 'Bottle'}, 
-    {value: 20, label: 'Medium'}, 
-    {value: 30, label: 'Gatorade'},
-    {value: 32, label: 'Big Q'},
-    {value: 44, label: 'QT Large'},
-    {value: 52, label: 'Extra Large'}
-  ];
 
   function formatStarted( value ) {
     if( value === null ) return null;
@@ -98,7 +88,7 @@
       onchange={onhunger} 
       value={hunger} />
     <WaterButton 
-      items={water_options} 
+      items={volumes} 
       onchange={onwater} 
       value={water} />
   </footer>
