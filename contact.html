@@ -17,33 +17,35 @@
   <body>
 
     <!-- Navigation -->
-    <krh-navigation href="./" title="Fasting Hours">
+    <lake-navigation href="./" title="Fasting Hours">
       <a href="./index.html#features">Features</a>
       <a href="./index.html#steps">How It Works</a>      
       <a href="./index.html#benefits">Benefits</a>          
-      <krh-action href="https://app.fastinghours.com" size="lg" slot="action">Try Now</krh-action>  
-    </krh-navigation>
+      <lake-action href="https://app.fastinghours.com" size="lg" slot="action">Try Now</lake-action>  
+    </lake-navigation>
 
-    <krh-page title="Contact">
+    <lake-page title="Contact">
 
       <p slot="description">Have a question, feedback, or need support? I would love to hear from you. Send me a message and I will get back to you as soon as possible.</p>
 
-      <form>
-        <krh-input id="email" label="Email Address" required></krh-input>
-        <krh-select id="category" label="Category" required></krh-select>
-        <krh-input id="subject" label="Subject" required></krh-input>        
-        <krh-textarea id="message" label="Message" required></krh-textarea>  
+      <div class="form">
+        <lake-input id="email" label="Email Address" required></lake-input>
+        <lake-input id="company" label="Leave this field blank"></lake-input>
+        <input id="company" type="text">
+        <lake-select id="category" label="Category" required></lake-select>
+        <lake-input id="subject" label="Subject" required></lake-input>        
+        <lake-textarea id="message" label="Message" required></lake-textarea>  
         <button type="button">Send Message</button>
         <p><strong>Response Time:</strong>  I typically respond within 24-48 hours during business days</p>
-      </form>
+      </div>
 
       <article class="centered" style="margin-top: 64px;">
-        <krh-action href="/" size="lg">Back to Fasting Hours</krh-action>  
+        <lake-action href="/" size="lg">Back to Fasting Hours</lake-action>  
       </article>
 
-    </krh-page>
+    </lake-page>
 
-    <krh-footer brand="Fasting Hours" slogan="Simple fast tracking centered on you.">
+    <lake-footer brand="Fasting Hours" slogan="Simple fast tracking centered on you.">
       <ul>
         <li>Product</li>
         <li><a href="./index.html#features">Features</a></li>
@@ -56,12 +58,14 @@
         <li><a href="./contact.html">Contact</a></li>
         <li><a href="./privacy.html">Privacy</a></li>        
       </ul>      
-    </krh-footer>
+    </lake-footer>
 
-    <script src="./comp/components.js" type="module"></script>
+    <script src="https://ketnerlake.com/components.js" type="module"></script>
 
     <script type="module">
-      import {KetnerLake} from "https://ketnerlake.com/script/ketnerlake.js";
+      import {KetnerLake} from "https://ketnerlake.com/utility.js";
+
+      const start = Date.now();
 
       const options = [
         'Select a category',
@@ -76,10 +80,23 @@
 
       const category = document.querySelector( '#category' );
       category.options = options;
+      const company = document.querySelector( '#company' );
       const email = document.querySelector( '#email' );
       const message = document.querySelector( '#message' );      
       const send = document.querySelector( 'button' );      
       send.addEventListener( 'click', () => {
+        const end = Date.now();
+
+        if( ( ( end - start ) / 1000 ) < 5 ) {
+          alert( 'Review the form and try again.' );
+          return;
+        }
+
+        if( company.value !== null ) {
+          alert( 'Review the form and try again.' );
+          return;          
+        }
+
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         if( email.value === null ) {

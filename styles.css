@@ -15,11 +15,11 @@ body {
   padding: 0;
 }
 
-krh-cta krh-action {
+lake-cta lake-action {
   margin-bottom: 16px;
 }
 
-krh-cta ul {
+lake-cta ul {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -30,7 +30,7 @@ krh-cta ul {
   padding: 0;
 }
 
-krh-cta ul li {
+lake-cta ul li {
   color: #ffffff;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -41,22 +41,22 @@ krh-cta ul li {
   padding: 0;
 }
 
-krh-cta ul li:after {      
+lake-cta ul li:after {      
   content: '•';
   margin: 0 8px 0 8px;
 }
 
-krh-cta ul li:before {      
+lake-cta ul li:before {      
   content: '✓';
   margin-right: 4px;
 }
 
-krh-cta ul li:last-of-type:after {            
+lake-cta ul li:last-of-type:after {            
   content: '';
   margin: 0;
 }
 
-krh-footer ul {
+lake-footer ul {
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -64,12 +64,12 @@ krh-footer ul {
   padding: 0;
 }
 
-krh-footer ul li {      
+lake-footer ul li {      
   margin: 0 0 8px 0;
   padding: 0;
 }
 
-krh-footer ul li a {
+lake-footer ul li a {
   color: var( --light-text );
   display: inline-block;
   font-family: 'Open Sans', sans-serif;
@@ -80,11 +80,11 @@ krh-footer ul li a {
   transition: color 0.30s ease-in-out;
 }
 
-krh-footer ul li a:hover {
+lake-footer ul li a:hover {
   color: var( --secondary-text );
 }      
 
-krh-footer ul li:first-of-type {      
+lake-footer ul li:first-of-type {      
   color: #ffffff;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;        
@@ -93,11 +93,11 @@ krh-footer ul li:first-of-type {
   margin: 0 0 16px 0;
 }
 
-krh-landing {
+lake-landing {
   margin: 89px 0 0 0;
 }
 
-krh-landing h1 {
+lake-landing h1 {
   background: var( --gradient );
   color: #ffffff;
   display: inline-block;
@@ -109,11 +109,11 @@ krh-landing h1 {
   padding: 0;
 }
 
-krh-landing krh-action {
+lake-landing lake-action {
   margin: 0 0 32px 0;
 }
 
-krh-landing p {
+lake-landing p {
   color: #ffffff;
   display: inline-block;
   font-family: 'Open Sans', sans-serif;
@@ -124,7 +124,7 @@ krh-landing p {
   padding: 0;
 }      
 
-krh-navigation {
+lake-navigation {
   backdrop-filter: blur( 10px );        
   border-bottom: 1px solid #e0e0e0;                
   position: fixed;
@@ -133,7 +133,7 @@ krh-navigation {
   z-index: 100;
 }
 
-krh-navigation a {
+lake-navigation a {
   background: #00000000;
   border-radius: 4px;
   color: var( --primary-text );
@@ -150,16 +150,16 @@ krh-navigation a {
     color 0.15s ease-in-out;
 }
 
-krh-navigation a:hover {
+lake-navigation a:hover {
   background: #00000010;        
   color: var( --secondary-text );
 }
 
-krh-page article {
+lake-page article {
   padding: 0 0 16px 0;
 }
 
-krh-page article.centered {
+lake-page article.centered {
   align-items: center;
   border-top-style: solid;
   border-top-color: rgb( from var( --light-text ) r g b / 20% );
@@ -170,7 +170,7 @@ krh-page article.centered {
   padding: 32px;
 }
 
-krh-page article p {
+lake-page article p {
   color: var( --primary-text );
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -180,15 +180,15 @@ krh-page article p {
   padding: 0;
 }
 
-krh-page article p span {
+lake-page article p span {
   font-weight: 700;
 }
 
-krh-page article:last-of-type {
+lake-page article:last-of-type {
   margin: 0;
 }
 
-krh-page form {
+lake-page div.form {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
@@ -199,7 +199,7 @@ krh-page form {
   padding: 32px;
 }
 
-krh-page form > button {
+lake-page div.form > button {
   align-self: flex-start;
   background: var( --gradient );
   border-radius: 8px;
@@ -222,11 +222,11 @@ krh-page form > button {
   transition: transform 0.15s ease-in-out;       
 }
 
-krh-page form > button:hover {
+lake-page div.form > button:hover {
   transform: translateY( -4px );                  
 }        
 
-krh-page form > p {
+lake-page div.form > p {
   background: rgb( from var( --gradient-start ) r g b / 0.20 );
   border-left: solid 4px var( --gradient-start );
   border-radius: 12px;
@@ -239,7 +239,7 @@ krh-page form > p {
   padding: 16px;
 }
 
-krh-page h2 {
+lake-page h2 {
   border-bottom-color: var( --gradient-start );
   border-bottom-style: solid;
   border-bottom-width: 2px;
@@ -252,7 +252,7 @@ krh-page h2 {
   padding: 0 0 8px 0;
 }
 
-krh-page p[slot=description] {
+lake-page p[slot=description] {
   color: var( --light-text );
   font-family: 'Open Sans', sans-serif;
   font-size: 20px;
@@ -263,8 +263,8 @@ krh-page p[slot=description] {
   text-align: center;           
 }
 
-krh-page p.updated span,
-krh-page p.updated {
+lake-page p.updated span,
+lake-page p.updated {
   color: var( --light-text );
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -275,12 +275,12 @@ krh-page p.updated {
   text-align: left;           
 }
 
-krh-page ul {
+lake-page ul {
   margin: 0 0 16px 24px;
   padding: 0;
 }
 
-krh-page ul li {
+lake-page ul li {
   color: var( --primary-text );
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -290,13 +290,17 @@ krh-page ul li {
   padding: 0;
 }
 
-krh-page ul li span {
+lake-page ul li span {
   font-weight: 700;
 }
 
-krh-feature a,
-krh-question a {
+lake-feature a,
+lake-question a {
   color: var( --secondary-text );
+}
+
+#company {
+  display: none;
 }
 
 #feedback,
@@ -305,29 +309,29 @@ krh-question a {
 }
 
 @media( max-width: 768px ) {
-  krh-cta ul {
+  lake-cta ul {
     width: 80%;
   }
 
-  krh-landing h1 {
+  lake-landing h1 {
     font-size: 40px;
     line-height: 64px;
     text-align: center;
   }
 
-  krh-landing p {  
+  lake-landing p {  
     text-align: center;
   }
 }
 
 @media( max-width: 768px ) {
-  krh-landing h1 {
+  lake-landing h1 {
     font-size: 32px;
     line-height: 38px;
     max-width: 80%;
   }
   
-  krh-landing p {  
+  lake-landing p {  
     font-size: 18px;
     line-height: 24px;
     max-width: 80%;
@@ -336,11 +340,11 @@ krh-question a {
 }        
 
 @media( max-width: 480px ) {
-  krh-landing h1 {
+  lake-landing h1 {
     max-width: 90%;
   }
   
-  krh-landing p {  
+  lake-landing p {  
     max-width: 90%;
   }  
 }        
