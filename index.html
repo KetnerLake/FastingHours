@@ -4,9 +4,22 @@
   
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Simple fast tracking centered on you." />
+    <meta name="description" content="Track intermittent fasting on any device — desktop, tablet, or phone. No app to download, works in any browser. Free forever." />
 
-    <title>Fasting Hours</title>
+    <title>Fasting Hours — Free Fasting Tracker. No Download Required.</title>
+
+    <link rel="canonical" href="https://fastinghours.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fastinghours.com/" />
+    <meta property="og:title" content="Fasting Hours — Free Fasting Tracker. No Download Required." />
+    <meta property="og:description" content="Track intermittent fasting on any device — desktop, tablet, or phone. No app to download, works in any browser. Free forever." />
+    <meta property="og:image" content="https://fastinghours.com/img/og-image.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fasting Hours — Free Fasting Tracker. No Download Required." />
+    <meta name="twitter:description" content="Track intermittent fasting on any device — desktop, tablet, or phone. No app to download, works in any browser." />
+    <meta name="twitter:image" content="https://fastinghours.com/img/og-image.png" />
 
     <link rel="icon" type="image/svg+xml" href="./img/fh.svg" />
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
@@ -27,15 +40,15 @@
     <!-- Landing -->
     <lake-landing>
       <h1>Finally Stick to Your Fasting Goals</h1>
-      <p>The simple fasting tracker that helps you build consistent habits. Monitor your progress, understand your hunger patterns, and achieve lasting results — without counting calories.</p>
+      <p>The simple fasting tracker that works on any device — desktop, tablet, or phone. No app to download, no account required. Build consistent habits, monitor your progress, and achieve lasting results — without counting calories.</p>
       <lake-action flat href="https://app.fastinghours.com" size="lg">Start Your Free Journey</lake-action>
       <lake-tag icon="⏰" label="Build Consistency" slot="tags"></lake-tag>
       <lake-tag icon="📈" label="Track Progress" slot="tags"></lake-tag>
       <lake-tag icon="🧠" label="Understand Hunger" slot="tags"></lake-tag>   
       <lake-carousel hide-picker slot="media">
-        <img src="./img/fasting-countdown.png">
-        <img src="./img/history-fasting-chart.png">        
-        <img src="./img/history-water-chart.png">        
+        <img src="./img/fasting-countdown.png" alt="Fasting countdown timer showing active fast progress">
+        <img src="./img/history-fasting-chart.png" alt="Fasting history chart showing consistency over time">
+        <img src="./img/history-water-chart.png" alt="Water intake tracking chart">        
       </lake-carousel>         
     </lake-landing>
 
@@ -43,6 +56,9 @@
     <lake-section id="features" title="Everything You Need to Build Lasting Habits">
       <lake-feature icon="⏱️" title="Effortless Timing">
         Start your fast with one click. A timer shows your fasting duration. Choose a fasting period for a countdown to success.
+      </lake-feature>
+      <lake-feature icon="🌐" title="Works Everywhere">
+        Works on desktop, tablet, and phone — right in your browser. No app to download. Most trackers are phone-only. This one isn't.
       </lake-feature>
       <lake-feature icon="📈" title="Visual Progress">
         See your consistency improve with innovative charts. Visualize patterns and averages. Adjust your approach. Celebrate your wins.
@@ -55,9 +71,6 @@
       </lake-feature>
       <lake-feature icon="🔒" title="Complete Privacy">
         Your data stays on your device. No accounts, no tracking, no sharing. Just you and your progress. Want data across devices? <a href="https://app.fastinghours.com?signup">Get lifetime access</a>.
-      </lake-feature>
-      <lake-feature icon="🌐" title="Works Everywhere">
-        Use on any device, any browser. No apps to download or update. You always have the latest features. Always available when you need it.
       </lake-feature>            
     </lake-section>
 
@@ -157,6 +170,63 @@
         <li><a href="./privacy.html">Privacy</a></li>        
       </ul>      
     </lake-footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "I am new to fasting. Which schedule should I start with?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Do not over analyze. Just start. Aim for 8 hours while you sleep. Feel like you have more in you? Start aiming for 12 hours. Work up to 16, 23, or even 40."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will this help me lose weight?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Intermittent fasting can support weight loss by helping you eat fewer calories. Fasting Hours helps you stay consistent with your fasting schedule."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I get really hungry during my fast?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Until you've taught your brain otherwise, it will want to eat. Stay hydrated. Tracking helps you take a moment to remember who is the boss of you."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it safe to track everything locally?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If you clear your browser's data, you will lose your fasting history. Want import/export, automated backup, and cross-device sync? Get lifetime access at app.fastinghours.com."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this if I have health conditions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Always consult your doctor before starting any fasting regimen, especially with health conditions. Fasting Hours is a tracking tool, not medical advice."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I break my fast early?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No problem! Log when you stopped and start fresh next time. Consistency matters more than perfection. Use the data to understand what works for you."
+          }
+        }
+      ]
+    }
+    </script>
 
     <script src="https://ketnerlake.com/components.js" type="module"></script>
 
